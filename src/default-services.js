@@ -1,6 +1,7 @@
 module.exports = [
   {
     name: 'Netflix',
+    title: 'Netflix',
     logo: 'services/netflix.png',
     url: 'https://netflix.com/browse',
     color: '#e50914',
@@ -9,6 +10,7 @@ module.exports = [
   },
   {
     name: 'YouTube',
+    title: 'YouTube',
     logo: 'services/youtube.svg',
     url: 'https://youtube.com',
     color: '#ff0000',
@@ -17,6 +19,7 @@ module.exports = [
   },
   {
     name: 'YouTube TV',
+    title: 'YouTube TV',
     hidden: true,
     logo: 'services/youtube.svg',
     url: 'https://youtube.com/tv',
@@ -27,6 +30,7 @@ module.exports = [
   },
   {
     name: 'Twitch',
+    title: 'Twitch',
     logo: 'services/twitch.svg',
     url: 'https://twitch.tv',
     color: '#6441a5',
@@ -35,7 +39,7 @@ module.exports = [
   },
   {
     name: 'Floatplane',
-    hidden: true,
+    title: 'Floatplane',
     logo: 'services/floatplane.svg',
     url: 'https://floatplane.com/',
     color: '#00aeef',
@@ -44,7 +48,7 @@ module.exports = [
   },
   {
     name: 'Hulu',
-    hidden: true,
+    title: 'Hulu',
     logo: 'services/hulu.svg',
     url: 'https://www.hulu.com/',
     color: '#1ce783',
@@ -53,7 +57,7 @@ module.exports = [
   },
   {
     name: 'Amazon Prime Video',
-    hidden: true,
+    title: 'Amazon Prime Video',
     logo: 'services/amazon-prime-video.svg',
     url: 'https://www.primevideo.com/',
     color: '#46ABE2',
@@ -62,7 +66,7 @@ module.exports = [
   },
   {
     name: 'Disney+',
-    hidden: true,
+    title: 'Disney+',
     logo: 'services/disney+.svg',
     url: 'https://www.disneyplus.com/',
     color: '#ffffff',
@@ -71,6 +75,7 @@ module.exports = [
   },
   {
     name: 'CBS All Access',
+    title: 'CBS All Access',
     hidden: true,
     logo: 'services/cbs-all-access.png',
     url: 'https://www.cbs.com/all-access/',
@@ -80,6 +85,7 @@ module.exports = [
   },
   {
     name: 'Vudu',
+    title: 'Vudu',
     hidden: true,
     logo: 'services/vudu.svg',
     url: 'https://vudu.com',
@@ -89,9 +95,78 @@ module.exports = [
   },
   {
     name: 'Crunchyroll',
+    title: 'Crunchyroll',
+    hidden: true,
     logo: 'services/crunchyroll.png',
     url: 'https://crunchyroll.com',
     color: '#ffe600',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Orange TV',
+    title: 'Orange TV',
+    hidden: true,
+    logo: 'services/orange_tv.svg',
+    url: 'https://chaines-tv.orange.fr',
+    color: '#E6883B',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Pluto TV',
+    title: 'Pluto TV',
+    logo: 'services/pluto_tv.png',
+    url: 'https://pluto.tv',
+    color: '#FFFFFF',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Runtime TV',
+    title: 'Runtime TV',
+    hidden: true,
+    logo: 'services/runtime_tv.webp',
+    url: 'https://www.runtime.tv',
+    color: '#ffdd00',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Peacock TV',
+    title: 'Peacock TV',
+    logo: 'services/peacock.svg',
+    url: 'https://www.peacocktv.com/',
+    color: '#05AC3F',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Vimeo',
+    title: 'Vimeo',
+    logo: 'services/vimeo.png',
+    url: 'https://vimeo.com/',
+    color: '#1ab7ea',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Bitmovin',
+    title: 'Bitmovin (For testing Widevine CDM)',
+    hidden: true,
+    logo: 'services/bitmovin.svg',
+    url: 'https://bitmovin.com/demos/drm',
+    color: '#1FAAE2',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Woolyss HTML5 Media Tester',
+    title: 'Woolyss HTML5 Media Tester',
+    hidden: true,
+    logo: 'services/woolyss.svg',
+    url: 'https://tools.woolyss.com/html5-audio-video-tester/',
+    color: '#811ac0',
     style: {},
     permissions: []
   }

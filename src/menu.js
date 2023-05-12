@@ -1,7 +1,8 @@
-const { Menu, shell } = require('electron');
+const { Menu, shell, app, BrowserWindow } = require('electron');
 const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
+const electronLog = require('electron-log');
 
 module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var servicesMenuItems = [];
@@ -14,7 +15,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       label: service.name,
       visible: !service.hidden,
       click() {
-        console.log('Changing URL To: ' + service.url);
+        electronLog.info('Loading URL: ' + service.url);
         mainWindow.loadURL(service.url);
         mainWindow.send('run-loader', service);
       }
@@ -62,13 +63,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
 
   return Menu.buildFromTemplate([
     {
-      label: 'ElectronPlayer',
+      label: 'Quark Player',
       submenu: [
-        { label: 'ElectronPlayer (' + app.getVersion() + ')', enabled: false },
-        { label: 'Created By Oscar Beaumont', enabled: false },
+        { label: 'Open File', enabled: true },
+        {
+          type: 'separator'
+        },
         {
           label: 'Quit ElectronPlayer',
-          accelerator: 'Command+Q', // TODO: Non Mac Shortcut
+          accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
           click() {
             app.quit();
           }
@@ -79,16 +82,19 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       label: 'Services',
       submenu: [
         {
-          label: 'Menu',
-          accelerator: 'CmdOrCtrl+H',
+          label: 'Main Menu',
+          accelerator: 'CmdOrCtrl+M',
           click() {
-            console.log('Change To The Menu');
+            electronLog.info('Opening main menu...');
             mainWindow.webContents.userAgent = defaultUserAgent;
-            mainWindow.loadFile('src/ui/index.html');
+            mainWindow.loadFile('./ui/index.html');
           }
         },
         {
-          label: 'Custom Url',
+          type: 'separator'
+        },
+        {
+          label: 'Custom URL',
           accelerator: 'CmdOrCtrl+O',
           click() {
             prompt({
@@ -106,7 +112,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 inputtedURL = 'http://example.org';
               }
 
-              console.log('Opening Custom URL: ' + inputtedURL);
+              electronLog.info('Opening Custom URL: ' + inputtedURL);
               mainWindow.loadURL(inputtedURL);
             }
           })
@@ -132,6 +138,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           type: 'checkbox',
           click(e) {
             store.set('options.hideWindowFrame', e.checked);
+            electronLog.info('Relaunching Quark Player...');
             app.emit('relaunch');
           },
           checked: store.get('options.hideWindowFrame')
@@ -151,19 +158,20 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           checked: !!store.get('options.windowDetails')
         },
         {
-          label: 'Picture In Picture (Mac Only) *',
+          label: 'Picture In Picture *',
           type: 'checkbox',
           click(e) {
             store.set('options.pictureInPicture', e.checked);
+            electronLog.info('Relaunching Quark Player...');
             app.emit('relaunch');
           },
           checked: store.get('options.pictureInPicture')
             ? store.get('options.pictureInPicture')
             : false,
-          visible: process.platform === 'darwin'
+          visible: process.platform === 'darwin' || process.platform === 'linux' || process.platform === 'win32'
         },
         {
-          label: 'Adblock *',
+          label: 'Enable AdBlocker *',
           type: 'checkbox',
           click(e) {
             store.set('options.adblock', e.checked);
@@ -178,6 +186,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             });
 
             // Restart the app
+            electronLog.info('Relaunching Quark Player...');
             app.relaunch();
             app.quit();
           },
@@ -228,13 +237,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           ].concat(defaultServiceMenuItems)
         },
         {
-          label: 'Edit Config',
+          label: 'Edit Config File',
           click() {
             store.openInEditor();
           }
         },
         {
-          label: 'Reset all settings *',
+          label: 'Reset all Settings *',
           click() {
             // Reset Config
             store.clear();
@@ -244,14 +253,19 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               app.getPath('userData'),
               'adblock-engine-cache.txt'
             );
-            fs.unlinkSync(engineCachePath);
+            fs.access(engineCachePath, fs.constants.F_OK, (err) => {
+              if (!err) {
+                fs.unlinkSync(engineCachePath);
+              }
+            });
 
             // Restart the app
+            electronLog.info('Relaunching Quark Player...');
             app.relaunch();
             app.quit();
           }
         },
-        { label: '* Means App Will Restart', enabled: false }
+        { label: '* Requires an App Restart', enabled: false }
       ]
     },
     {
@@ -269,6 +283,26 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       ]
     },
     {
+      label: 'View',
+      submenu: [
+        {
+          role: 'zoomin'
+        },
+        {
+          role: 'zoomout'
+        },
+        {
+          role: 'resetzoom'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'togglefullscreen'
+        }
+      ]
+    },
+    {
       label: 'Developer',
       submenu: [
         {
@@ -276,6 +310,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdOrCtrl+R',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.reload();
+          }
+        },
+        {
+          label: 'Force Reload',
+          accelerator: 'CmdOrCtrl+Shift+R',
+          click() {
+            mainWindow.webContents.reloadIgnoringCache();
           }
         },
         {
@@ -287,34 +328,68 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
-          type: 'separator'
-        },
-        {
-          role: 'resetzoom'
-        },
-        {
-          role: 'zoomin'
-        },
-        {
-          role: 'zoomout'
+          label: 'Open Developer Tools (Detached)',
+          accelerator:
+            process.platform === 'darwin' ? 'Ctrl+Shift+F12' : 'F12',
+          click(item) {
+            mainWindow.webContents.openDevTools({ mode: 'detach' });
+          }
         },
         {
           type: 'separator'
         },
         {
-          role: 'togglefullscreen'
+          label: 'View humans.txt',
+          accelerator: 'Ctrl+Alt+Shift+H',
+          click() {
+            const humansWindow = new BrowserWindow({width: 500, height: 500, title: "Humans.txt"});
+            humansWindow.loadFile('./humans.txt');
+          }
+        },
+        {
+          label: 'Open chrome://gpu',
+          accelerator: 'Ctrl+Alt+G',
+          click() {
+            const gpuWindow = new BrowserWindow({width: 900, height: 700, title: "GPU Internals"});
+            gpuWindow.loadURL('chrome://gpu');
+          }
+        },
+        {
+          label: 'Relaunch App',
+          click() {
+            electronLog.warn('Restarting Electron...');
+            app.relaunch();
+            app.quit();
+          }
         }
       ]
     },
     {
       role: 'help',
       submenu: [
-        {
-          label: 'More Information',
-          click() {
+        { label: 'Quark Player v' + app.getVersion(), enabled: false },
+        { label: 'Created By Oscar Beaumont &&',
+			click() {
             shell.openExternal(
-              'http://github.com/oscartbeaumont/ElectronPlayer'
+              'https://github.com/oscartbeaumont/ElectronPlayer#readme'
             );
+          }
+        },
+        { label: 'Maintained by Alex313031',
+			click() {
+            shell.openExternal(
+              'https://github.com/Alex313031/quarkplayer#readme'
+            );
+          }
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'About App',
+          click() {
+            const aboutWindow = new BrowserWindow({width: 500, height: 400, title: "About Quark Player"});
+            aboutWindow.loadFile('./ui/about.html');
           }
         }
       ]

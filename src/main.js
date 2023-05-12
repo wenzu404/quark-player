@@ -15,37 +15,53 @@ const headerScript = fs.readFileSync(
   'utf8'
 );
 
+require('@electron/remote/main').initialize();
+const contextBridge = require('electron').contextBridge;
+const electronLog = require('electron-log');
+
 // Create Global Varibles
 let mainWindow; // Global Windows Object
 const menu = require('./menu');
 const store = new Store();
 
-// Analytics endpoint
-const simpleAnalyticsEndpoint = "https://esa.otbeaumont.me/api";
 let defaultUserAgent;
 
 async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 890,
-    height: 600,
+    width: 1024,
+    height: 768,
+    icon: path.join(__dirname, 'icon64.png'),
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       nodeIntegrationInWorker: false,
-      contextIsolation: false, // Must be disabled for preload script. I am not aware of a workaround but this *shouldn't* effect security
+      experimentalFeatures: true,
+      webviewTag: true,
+      darkTheme: true,
+      autoHideMenuBar: false,
+      devTools: true,
+      toolbar: true,
+      javascript: true,
+      nativeWindowOpen: true,
+      // Must be disabled for preload script. I am not aware of a workaround but this *shouldn't* effect security
+      contextIsolation: false,
       enableRemoteModule: true,
       plugins: true,
       preload: path.join(__dirname, 'client-preload.js')
     },
-
+    trafficLightPosition: {
+      x: 18,
+      y: 18,
+    },
     // Window Styling
+    // @ts-ignore
     transparent: true,
+    darkTheme: true,
     vibrancy: 'ultra-dark',
     frame: store.get('options.pictureInPicture')
       ? false
       : !store.get('options.hideWindowFrame'),
     alwaysOnTop: store.get('options.alwaysOnTop'),
-    toolbar: false,
     backgroundColor: '#00000000',
     fullscreen: store.get('options.launchFullscreen')
   });
@@ -60,7 +76,7 @@ async function createWindow() {
     );
 
     if (fs.existsSync(engineCachePath)) {
-      console.log('Adblock engine cache found. Loading it into app.');
+      electronLog.info('Adblock engine cache found. Loading it into main process...');
       var engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
       );
@@ -72,7 +88,7 @@ async function createWindow() {
     // Backup Engine Cache to Disk
     fs.writeFile(engineCachePath, engine.serialize(), err => {
       if (err) throw err;
-      console.log('Adblock Engine file cache has been updated!');
+      electronLog.info('Adblock engine file cache has been updated!');
     });
   }
 
@@ -110,7 +126,7 @@ async function createWindow() {
   if (!store.get('version')) {
     store.set('version', app.getVersion());
     store.set('services', []);
-    console.log('Initialised Config!');
+    electronLog.info('Initialized Configuration');
   }
 
   // Load the services and merge the users and default services
@@ -147,29 +163,29 @@ async function createWindow() {
     relaunchToPage = store.get('relaunch.toPage');
 
   if (relaunchToPage !== undefined) {
-    console.log('Relaunching Page ' + relaunchToPage);
+    electronLog.info('Relaunching page: ' + relaunchToPage);
     mainWindow.loadURL(relaunchToPage);
     store.delete('relaunch.toPage');
   } else if (defaultService == 'lastOpenedPage' && lastOpenedPage) {
-    console.log('Loading The Last Opened Page ' + lastOpenedPage);
+    electronLog.info('Loading the last opened page: ' + lastOpenedPage);
     mainWindow.loadURL(lastOpenedPage);
   } else if (defaultService != undefined) {
     defaultService = global.services.find(
       service => service.name == defaultService
     );
     if (defaultService.url) {
-      console.log('Loading The Default Service ' + defaultService.url);
+      electronLog.info('Loading the default service: ' + defaultService.url);
       mainWindow.loadURL(defaultService.url);
       mainWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
     } else {
-      console.log(
-        "Error Default Service Doesn't Have A URL Set. Falling back to the menu."
+      electronLog.warn(
+        "Error: Default service does not have a URL set. Falling back to main menu."
       );
-      mainWindow.loadFile('src/ui/index.html');
+      mainWindow.loadFile('./ui/index.html');
     }
   } else {
-    console.log('Loading The Main Menu');
-    mainWindow.loadFile('src/ui/index.html');
+    electronLog.info('Loading main menu');
+    mainWindow.loadFile('./ui/index.html');
   }
 
   // Emitted when the window is closing
@@ -215,51 +231,18 @@ async function createWindow() {
           service.permissions.includes(permission)) ||
         permission == 'fullscreen'
       ) {
-        console.log(
-          `Allowed Requested Browser Permission '${permission}' For Site '${websiteOrigin}'`
+        electronLog.info(
+          `Note: Allowed requested browser permission '${permission}' for site: '${websiteOrigin}'`
         );
         return callback(true);
       }
 
-      console.log(
-        `Rejected Requested Browser Permission '${permission}' For Site '${websiteOrigin}'`
+      electronLog.warn(
+        `Note: Rejected requested browser permission '${permission}' for site: '${websiteOrigin}'`
       );
       return callback(false);
     }
   );
-
-  // Analytics
-  // Simple Analytics is used which protects the users privacy. This tracking allow the developers to build
-  // a better product with more insight into what devices it is being used on so better testing can be done.
-  let unique = false;
-  if(!store.get('_do_not_edit___date_')) {
-    store.set('_do_not_edit___date_', (new Date()).getTime())
-    unique = true;
-  } else {
-    let now = new Date();
-    let lastPing = new Date(new Date(store.get('_do_not_edit___date_')));
-    if (lastPing.getFullYear() !== now.getFullYear() || lastPing.getMonth() !== now.getMonth() || lastPing.getDate() !== now.getDate()) {
-      store.set('_do_not_edit___date_', now.getTime())
-      unique = true;
-    }
-  }
-
-  fetch(simpleAnalyticsEndpoint, {
-      method: 'POST',
-      headers: {
-        "User-Agent": "ElectronPlayer",
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-          url: "https://electronplayer.otbeaumont.me/" + store.get('version'),
-          ua: mainWindow.webContents.userAgent,
-          width: mainWindow.getSize()[0],
-          unique: unique,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          urlReferrer: process.platform
-      })
-  })
 }
 
 // This method is called when the broswer window's dom is ready
@@ -287,12 +270,61 @@ function mainWindowClosed() {
 // The timeout fixes the trasparent background on Linux ???? why
 app.on('ready', () => setTimeout(createWindow, 500));
 
+app.commandLine.appendSwitch('no-sandbox');
+// Enable experimental web features
+//app.commandLine.appendSwitch('enable-experimental-web-platform-features');
+// Including new Canvas2D APIs
+app.commandLine.appendSwitch('new-canvas-2d-api');
+// These two allow easier local web development
+// Allow file:// URIs to read other file:// URIs
+app.commandLine.appendSwitch('allow-file-access-from-files');
+// Enable local DOM to access all resources in a tree
+app.commandLine.appendSwitch('enable-local-file-accesses');
+// Enable QUIC for faster handshakes
+app.commandLine.appendSwitch('enable-quic');
+// Enable inspecting ALL layers
+app.commandLine.appendSwitch('enable-ui-devtools');
+// Force enable GPU acceleration
+app.commandLine.appendSwitch('ignore-gpu-blocklist');
+// Force enable GPU rasterization
+app.commandLine.appendSwitch('enable-gpu-rasterization');
+// Enable Zero Copy for GPU memory associated with Tiles
+app.commandLine.appendSwitch('enable-zero-copy');
+// Inform GPU process that GPU context will not be lost in power saving modes
+// Useful for fixing blank or pink screens/videos upon system resume, etc
+app.commandLine.appendSwitch('gpu-no-context-lost');
+// Enable all WebGL Features
+app.commandLine.appendSwitch('enable-webgl-draft-extensions');
+// Transparent overlays for Promethium UI
+app.commandLine.appendSwitch('enable-transparent-visuals');
+
+// Enable native CPU-mappable GPU memory buffer support on Linux
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
+}
+
+// Enable useful features
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch(
+  'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder',
+  );
+}
+// VAAPI is only applicable on linux so copy above without vaapi flags
+if (process.platform === 'win32' || process.platform === 'darwin') {
+  app.commandLine.appendSwitch(
+  'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+  );
+}
+
+if (process.env.NODE_ENV === 'development') {
+  app.commandLine.appendSwitch('remote-debugging-port', '9222');
+}
+
 // This is a custom event that is used to relaunch the application.
 // It destroys and recreates the broswer window. This is used to apply
-// settings that Electron doesn't allow to be changed on an active
-// broswer window.
+// settings that Electron doesn't allow to be changed in an active
+// browser window.
 app.on('relaunch', () => {
-  console.log('Relaunching The Application!');
 
   // Store details to remeber when relaunched
   if (mainWindow.getURL() != '') {
@@ -315,11 +347,12 @@ app.on('relaunch', () => {
 
   // Create a New BroswerWindow
   createWindow();
+  electronLog.info('Electron restarted! [ Loading main.js ]');
 });
 
 // Chnage the windows url when told to by the ui
 ipcMain.on('open-url', (e, service) => {
-  console.log('Openning Service ' + service.name);
+  electronLog.info('Opening service: ' + service.name);
   mainWindow.webContents.userAgent = service.userAgent ? service.userAgent : defaultUserAgent;
   mainWindow.loadURL(service.url);
 });
@@ -347,6 +380,7 @@ app.on('window-all-closed', () => {
 // dock icon is clicked and there are no other windows open.
 app.on('activate', () => {
   if (mainWindow === null) {
+    electronLog.info('Electron restarted! [ Loading main.js ]');
     createWindow();
   }
 });

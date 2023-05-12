@@ -1,9 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
 body {
   -webkit-app-region: drag;
   margin: 0;
   background-color: rgba(52, 52, 52, 0.95);
   display: grid;
   height: 100vh;
+  font-family: 'Roboto', sans-serif;
 }
 
 body.loading .services {
@@ -12,7 +21,7 @@ body.loading .services {
 }
 
 h3 {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
 }
 
@@ -20,9 +29,13 @@ h3 {
   width: 90%;
   min-height: 200px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
-  margin: auto;
+  border-radius: 12px;
+  border: 1px solid #191919;
+  box-shadow: 1px 30px 30px rgba(0, 0, 0, 0.2);
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -36,7 +49,8 @@ h3 {
 .services > .service {
   flex: 1;
   padding: 30px 20px;
-  border-radius: 10px;
+  border-radius: 12px;
+  margin: 4px;
   text-decoration: none;
   cursor: pointer;
   -webkit-user-drag: none;
@@ -47,11 +61,16 @@ h3 {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
+.services > .service:active {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
 .services > .service > img,
 .loader > img {
   margin: 0 auto;
   display: block;
   height: 110px;
+  max-width: 300px;
   width: auto;
   padding: 5px 0;
   -webkit-user-drag: none;
@@ -97,4 +116,39 @@ h3 {
     opacity: 0;
     transform: scale(1) translate(-50%, -50%);
   }
+}
+
+/* Scrolling settings */
+
+/* Width & Height */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+/* Track */
+body::-webkit-scrollbar-track {
+  background-color: rgba(52, 52, 52, 0.95);
+}
+/* Track Piece */
+body::-webkit-scrollbar-track-piece {
+  background-color: rgba(52, 52, 52, 0.95);
+  -webkit-border-radius: 5px;
+}
+/* Corner */
+body::-webkit-scrollbar-corner {
+  background-color: rgba(52, 52, 52, 0.95);
+}
+/* Handle */
+body::-webkit-scrollbar-thumb { 
+  height: auto;
+  background-color: rgba(52, 52, 52, 0.95);
+  -webkit-border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.60);
+}
+/* Handle on Hover */
+body::-webkit-scrollbar-thumb:hover {
+  height: auto;
+  background-color: rgba(62, 62, 62, 0.95);
+  -webkit-border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.60);
 }

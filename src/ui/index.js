@@ -60,6 +60,7 @@ services.forEach(service => {
   // create service element
   let elem = createElement('a', 'service');
   elem.setAttribute('href', '#');
+  elem.setAttribute('title', service.title);
 
   // create img element
   let img = createElement('img', null, service.style);
@@ -84,8 +85,9 @@ services.forEach(service => {
     if (isLoading()) return;
 
     animateLoader(service, img);
+    console.log(`Animation load`);
     console.log(
-      `Switching to service ${service.name}} at the URL ${service.url}...`
+      `Switching to service ${service.name}} at URL: ${service.url}...`
     );
     ipc.send('open-url', service);
   });
@@ -99,7 +101,8 @@ ipc.on('run-loader', (e, service) => {
   let img = document.getElementById(service.name);
 
   animateLoader(service, img);
+  console.log(`Animation load`);
   console.log(
-    `Switching to service ${service.name}} at the URL ${service.url}...`
+    `Switching to service ${service.name}} at URL: ${service.url}...`
   );
 });

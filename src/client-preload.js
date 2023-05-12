@@ -5,6 +5,8 @@ without injecting them into external websites,
 this is done for obvious security benefits.
 */
 
+const contextBridge = require('electron').contextBridge;
+
 global.ipc = require('electron').ipcRenderer;
 
 // Prevent Injecting To Another Websites
