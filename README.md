@@ -1,3 +1,4 @@
+# Quark Player
 ## ElectronPlayer
 
 #### If you are experiencing issues playing DRM content using the Mac version please try the `v3.0.0` beta which can be found [here](https://electronplayer-beta.otbeaumont.me/)

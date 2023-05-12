@@ -1,0 +1,13 @@
+----TODO----
+
+update webpreferences
+update default services
+update service logos
+update app icon
+update menus
+add chrom://gpu
+update electron
+
+------------Notes-----------------
+main accent color:
+TBD

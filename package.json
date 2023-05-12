@@ -1,24 +1,46 @@
 {
-  "name": "electronplayer",
-  "version": "2.0.8",
-  "description": "An Electron Based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane And More",
+  "name": "quarkplayer",
+  "appName": "quarkplayer",
+  "version": "3.0.0",
+  "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron --no-sandbox .",
     "test": "echo 'TODO: Tests'",
-    "build": "electron-builder -c build/electron-builder.yml -p never"
+    "clean": "rimraf node_modules && rimraf dist",
+    "distclean": "rimraf dist",
+    "lint": "eslint \"src/**/*.ts*\" \"src/**/*.tsx*\"",
+    "build": "electron-builder --dir",
+    "dev": "electron-builder start",
+    "dist": "electron-builder",
+    "postinstall": "patch-package"
   },
-  "repository": "https://github.com/oscartbeaumont/ElectronPlayer.git",
-  "author": "Oscar Beaumont <oscar@otbeaumont.me> (https://otbeaumont.me)",
+  "repository": "https://github.com/Alex313031/quarkplayer.git",
+  "author": "Alex313031 <alex313031@gmail.com>",
+  "homepage": "https://github.com/Alex313031/quarkplayer#readme",
+  "bugs": {
+    "url": "https://github.com/Alex313031/quarkplayer/issues"
+  },
   "license": "MIT",
   "devDependencies": {
-    "electron": "https://github.com/castlabs/electron-releases#v12.0.11-wvvmp",
-    "electron-builder": "^22.3.2"
+    "@electron/remote": "1.0.4",
+    "@types/chrome": "0.0.179",
+    "electron": "https://github.com/castlabs/electron-releases#v12.2.3-wvvmp",
+    "electron-builder": "22.14.13",
+    "patch-package": "6.4.7",
+    "postinstall-postinstall": "2.1.0",
+    "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@cliqz/adblocker-electron": "^1.5.0",
-    "electron-prompt": "^1.5.1",
-    "electron-store": "^5.1.1",
+    "@cliqz/adblocker": "1.22.7",
+    "@cliqz/adblocker-content": "1.22.7",
+    "@cliqz/adblocker-electron": "1.22.7",
+    "@cliqz/adblocker-electron-preload": "1.22.7",
+    "@cliqz/adblocker-extended-selectors": "1.22.7",
+    "electron-localshortcut": "3.2.1",
+    "electron-log": "4.4.8",
+    "electron-prompt": "1.6.2",
+    "electron-store": "5.2.0",
     "node-fetch": "^2.6.0"
   }
 }
