@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "electron ./src",
+    "winstart": "electron .\src",
     "test": "echo 'TODO: Tests'",
     "clean": "rimraf node_modules && rimraf dist && cd src && npm run clean",
     "distclean": "rimraf dist",

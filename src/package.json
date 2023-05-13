@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "electron .",
+    "winstart": "electron .",
     "test": "echo 'TODO: Tests'",
     "clean": "rimraf node_modules",
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
