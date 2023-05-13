@@ -4,7 +4,9 @@
 
 <div align="center">
   <h1>Quark Player</h1>
-  An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More. This is a fork and successor of [ElectronPlayer](https://github.com/oscartbeaumont/ElectronPlayer).
+  An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More.
+  <br/>
+  This is a fork and successor of <a target="_blank" rel="noopener" href="https://github.com/oscartbeaumont/ElectronPlayer">ElectronPlayer</a>.
 </div>
 
 # Features
@@ -14,9 +16,11 @@
  - Always On Top Window
  - Set Startup Page (Any service, or remember last opened page)
  - Frameless Window
- - Rough Mac Picture in Picture Support (Floating Window, Above All Desktop and Fullscreen Applications)
+ - Rough Picture in Picture Support (Floating Window, Above all Window, and Fullscreen)
  - Full Screen Window on Startup
  - Alt+Left and Alt+Right to navigate back/forward in page
+ - Custom Electron top bar menu with multiple functions.
+ - Right click menu with functions similar to Chromium.
 
 ## Screenshot
 ![Main Menu/UI](assets/screenshot.png)

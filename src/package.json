@@ -1,7 +1,7 @@
 {
   "name": "quarkplayer",
   "appName": "quarkplayer",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./main.js",
   "scripts": {
@@ -34,6 +34,7 @@
     "@cliqz/adblocker-electron-preload": "1.22.7",
     "@cliqz/adblocker-extended-selectors": "1.22.7",
     "@electron/remote": "1.2.2",
+    "electron-context-menu": "3.6.1",
     "electron-localshortcut": "3.2.1",
     "electron-log": "4.4.8",
     "electron-prompt": "1.6.2",

@@ -17,6 +17,8 @@ const headerScript = fs.readFileSync(
 
 require('@electron/remote/main').initialize();
 const contextBridge = require('electron').contextBridge;
+
+const contextMenu = require('electron-context-menu');
 const electronLog = require('electron-log');
 
 // Create Global Varibles
@@ -187,6 +189,29 @@ async function createWindow() {
     electronLog.info('Loading main menu');
     mainWindow.loadFile('./ui/index.html');
   }
+
+  contextMenu({
+     showSaveImageAs: true,
+     showSelectAll: false,
+     showCopyImage: true,
+     showCopyImageAddress: true,
+     showSaveImageAs: true,
+     showCopyVideoAddress: true,
+     showSaveVideoAs: true,
+     showCopyLink: true,
+     showSaveLinkAs: true,
+     showInspectElement: true,
+     showLookUpSelection: true,
+     showSearchWithGoogle: true,
+     prepend: (defaultActions, parameters, browserWindow) => [
+        {    label: 'Open Video in New Window',
+        // Only show it when right-clicking text
+        visible: parameters.mediaType === 'video',
+        click: () => {
+            createNewWindow();
+        }
+     }]
+  });
 
   // Emitted when the window is closing
   mainWindow.on('close', e => {
