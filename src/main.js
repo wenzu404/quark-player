@@ -37,6 +37,7 @@ try {
 async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    title: 'Quark Player',
     width: 1024,
     height: 768,
     icon: path.join(__dirname, 'icon64.png'),
@@ -74,6 +75,7 @@ async function createWindow() {
     fullscreen: store.get('options.launchFullscreen')
   });
   require("@electron/remote/main").enable(mainWindow.webContents);
+  //mainWindow.setTitle(require('./package.json').appName);
 
   defaultUserAgent = mainWindow.webContents.userAgent;
 

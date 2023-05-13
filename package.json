@@ -1,6 +1,6 @@
 {
-  "name": "quarkplayer",
-  "appName": "quarkplayer",
+  "name": "quark-player",
+  "appName": "quark-player",
   "version": "3.1.0",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "electron ./src",
-    "winstart": "electron .\src",
+    "winstart": "electron src",
     "test": "echo 'TODO: Tests'",
     "clean": "rimraf node_modules && rimraf dist && cd src && npm run clean",
     "distclean": "rimraf dist",
