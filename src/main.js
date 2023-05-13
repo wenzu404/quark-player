@@ -53,8 +53,8 @@ async function createWindow() {
       devTools: true,
       javascript: true,
       plugins: true,
-      preload: path.join(__dirname, 'client-preload.js'),
       enableRemoteModule: true,
+      preload: path.join(__dirname, 'client-preload.js'),
       nativeWindowOpen: true
     },
     trafficLightPosition: {
