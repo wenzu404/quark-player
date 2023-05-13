@@ -11,7 +11,7 @@
     "start": "electron ./src",
     "winstart": "electron src",
     "test": "echo 'TODO: Tests'",
-    "clean": "rimraf node_modules && rimraf dist && cd src && npm run clean",
+    "clean": "rimraf dist && rimraf node_modules",
     "distclean": "rimraf dist",
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
     "build": "cross-env NODE_ENV=production electron-builder --dir",
