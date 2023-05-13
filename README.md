@@ -4,7 +4,7 @@
 
 <div align="center">
   <h1>Quark Player</h1>
-  An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More.
+  An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More!
   <br/>
   This is a fork and successor of <a target="_blank" rel="noopener" href="https://github.com/oscartbeaumont/ElectronPlayer">ElectronPlayer</a>.
 </div>
@@ -57,11 +57,11 @@ npm run dist # To make installation packages
 
 ## Documentation
 
-See [Docs](docs/readme.md)
+See [Docs](https://github.com/Alex313031/quarkplayer/tree/master/docs#readme)
 
 ## TODO
 
-See [TODO.txt](TODO.txt).
+See [TODO.txt](TODO.txt)
 
 ## Contributors
 
