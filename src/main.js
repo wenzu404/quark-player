@@ -50,15 +50,12 @@ async function createWindow() {
       contextIsolation: false,
       experimentalFeatures: true,
       webviewTag: true,
-      darkTheme: true,
-      autoHideMenuBar: false,
       devTools: true,
-      toolbar: true,
       javascript: true,
       plugins: true,
       preload: path.join(__dirname, 'client-preload.js'),
-      nativeWindowOpen: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      nativeWindowOpen: true
     },
     trafficLightPosition: {
       x: 16,
@@ -66,7 +63,8 @@ async function createWindow() {
     },
     // Window Styling
     // @ts-ignore
-    transparent: true,
+    transparent: process.platform === 'win32' ? false : true,
+    autoHideMenuBar: false,
     darkTheme: true,
     vibrancy: 'ultra-dark',
     frame: store.get('options.pictureInPicture')
@@ -74,7 +72,8 @@ async function createWindow() {
       : !store.get('options.hideWindowFrame'),
     alwaysOnTop: store.get('options.alwaysOnTop'),
     backgroundColor: '#00000000',
-    fullscreen: store.get('options.launchFullscreen')
+    fullscreen: store.get('options.launchFullscreen'),
+    toolbar: true
   });
   require("@electron/remote/main").enable(mainWindow.webContents);
   //mainWindow.setTitle(require('./package.json').appName);
