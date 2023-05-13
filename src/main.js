@@ -38,6 +38,8 @@ async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     title: 'Quark Player',
+    resizable: true,
+    maximizable: true,
     width: 1024,
     height: 768,
     icon: path.join(__dirname, 'icon64.png'),
@@ -55,7 +57,7 @@ async function createWindow() {
       javascript: true,
       plugins: true,
       preload: path.join(__dirname, 'client-preload.js'),
-      nativeWindowOpen: false,
+      nativeWindowOpen: true,
       enableRemoteModule: true
     },
     trafficLightPosition: {
