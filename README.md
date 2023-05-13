@@ -1,12 +1,11 @@
-# Quark Player
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Alex313031/quarkplayer/master/Logo.png" width="200">
+</p>
 
-<img src="https://raw.githubusercontent.com/Alex313031/quarkplayer/master/Logo.png" width="200">
-
-An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More. This is a fork and successor of [ElectronPlayer](https://github.com/oscartbeaumont/ElectronPlayer).
-
-![Main Menu/UI](assets/screenshot.png)
-
-_The apps main menu interface_
+<div align="center">
+  <h1>Quark Player</h1>
+  An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More. This is a fork and successor of [ElectronPlayer](https://github.com/oscartbeaumont/ElectronPlayer).
+</div>
 
 # Features
 
@@ -18,6 +17,11 @@ _The apps main menu interface_
  - Rough Mac Picture in Picture Support (Floating Window, Above All Desktop and Fullscreen Applications)
  - Full Screen Window on Startup
  - Alt+Left and Alt+Right to navigate back/forward in page
+
+## Screenshot
+![Main Menu/UI](assets/screenshot.png)
+
+_The app's main menu interface_
 
 # Installation
 
