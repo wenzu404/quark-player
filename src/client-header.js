@@ -3,8 +3,9 @@ menubar which can be used to move the window around
 and exit from frameless window on linux which were
 the frameless window hides the settings menu.
 */
+const electronLog = require('electron-log');
 
-console.log('ElectronPlayer: Injected Header');
+electronLog.info('quarkplayer: Injected Header');
 
 document.body.insertAdjacentHTML(
   'beforeend',

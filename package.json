@@ -1,18 +1,21 @@
 {
   "name": "quarkplayer",
   "appName": "quarkplayer",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "start": "electron ./src",
     "test": "echo 'TODO: Tests'",
     "clean": "rimraf node_modules && rimraf dist && cd src && npm run clean",
     "distclean": "rimraf dist",
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
-    "build": "electron-builder --dir",
-    "dev": "electron-builder start",
-    "dist": "electron-builder",
+    "build": "cross-env NODE_ENV=production electron-builder --dir",
+    "dev": "cross-env NODE_ENV=development electron-builder start",
+    "dist": "cross-env NODE_ENV=production electron-builder",
     "postinstall": "patch-package"
   },
   "repository": "https://github.com/Alex313031/quarkplayer.git",
@@ -25,24 +28,25 @@
   "devDependencies": {
     "@types/chrome": "0.0.179",
     "asar": "3.2.0",
-    "electron": "https://github.com/castlabs/electron-releases#v13.6.9-wvvmp",
+    "cross-env": "7.0.3",
+    "electron": "https://github.com/castlabs/electron-releases#v19.1.9+wvcus",
     "electron-builder": "22.14.13",
     "patch-package": "6.4.7",
     "postinstall-postinstall": "2.1.0",
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@cliqz/adblocker": "1.22.7",
-    "@cliqz/adblocker-content": "1.22.7",
-    "@cliqz/adblocker-electron": "1.22.7",
-    "@cliqz/adblocker-electron-preload": "1.22.7",
-    "@cliqz/adblocker-extended-selectors": "1.22.7",
-    "@electron/remote": "1.2.2",
+    "@cliqz/adblocker": "1.26.5",
+    "@cliqz/adblocker-content": "1.26.5",
+    "@cliqz/adblocker-electron": "1.26.5",
+    "@cliqz/adblocker-electron-preload": "1.26.5",
+    "@cliqz/adblocker-extended-selectors": "1.26.5",
+    "@electron/remote": "2.0.9",
     "electron-context-menu": "3.6.1",
     "electron-localshortcut": "3.2.1",
     "electron-log": "4.4.8",
-    "electron-prompt": "1.6.2",
-    "electron-store": "5.2.0",
-    "node-fetch": "^2.6.0"
+    "electron-prompt": "1.7.0",
+    "electron-store": "6.0.1",
+    "node-fetch": "2.6.11"
   }
 }

@@ -5,11 +5,11 @@ without injecting them into external websites,
 this is done for obvious security benefits.
 */
 
-const contextBridge = require('electron').contextBridge;
+const remote = require('@electron/remote');
 
 global.ipc = require('electron').ipcRenderer;
 
 // Prevent Injecting To Another Websites
 if (window.location.protocol === 'file:') {
-  global.services = require('electron').remote.getGlobal('services');
+  global.services = remote.getGlobal('services');
 }

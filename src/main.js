@@ -1,7 +1,10 @@
 // Modules to control application life and create native browser window
 const fs = require('fs'),
   path = require('path'),
-  { app, BrowserWindow, session, Menu, ipcMain } = require('electron'),
+  { app, session, components, BrowserWindow, Menu, ipcMain } = require('electron'),
+  contextBridge = require('electron').contextBridge,
+  contextMenu = require('electron-context-menu'),
+  electronLog = require('electron-log'),
   Store = require('electron-store'),
   {
     ElectronBlocker,
@@ -15,18 +18,21 @@ const headerScript = fs.readFileSync(
   'utf8'
 );
 
+// Initialize Electron remote module
 require('@electron/remote/main').initialize();
-const contextBridge = require('electron').contextBridge;
-
-const contextMenu = require('electron-context-menu');
-const electronLog = require('electron-log');
 
 // Create Global Varibles
 let mainWindow; // Global Windows Object
 const menu = require('./menu');
 const store = new Store();
 
+// Floating UA variable
 let defaultUserAgent;
+
+// Needed for electron-context-menu
+try {
+  require('electron-reloader')(module);
+} catch {}
 
 async function createWindow() {
   // Create the browser window.
@@ -37,6 +43,8 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
+      // Must be disabled for preload script. I am not aware of a workaround but this *shouldn't* effect security
+      contextIsolation: false,
       experimentalFeatures: true,
       webviewTag: true,
       darkTheme: true,
@@ -44,12 +52,10 @@ async function createWindow() {
       devTools: true,
       toolbar: true,
       javascript: true,
-      nativeWindowOpen: true,
-      // Must be disabled for preload script. I am not aware of a workaround but this *shouldn't* effect security
-      contextIsolation: false,
-      enableRemoteModule: true,
       plugins: true,
-      preload: path.join(__dirname, 'client-preload.js')
+      preload: path.join(__dirname, 'client-preload.js'),
+      nativeWindowOpen: false,
+      enableRemoteModule: true
     },
     trafficLightPosition: {
       x: 16,
@@ -67,6 +73,7 @@ async function createWindow() {
     backgroundColor: '#00000000',
     fullscreen: store.get('options.launchFullscreen')
   });
+  require("@electron/remote/main").enable(mainWindow.webContents);
 
   defaultUserAgent = mainWindow.webContents.userAgent;
 
@@ -292,8 +299,13 @@ function mainWindowClosed() {
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-// The timeout fixes the trasparent background on Linux ???? why
-app.on('ready', () => setTimeout(createWindow, 500));
+app.whenReady().then(async () => {
+  await components.whenReady();
+  console.log('WidevineCDM component ready!\n Info:', components.status());
+  // The timeout fixes the trasparent background on Linux ???? why
+  //setTimeout(createWindow, 500);
+  createWindow();
+});
 
 app.commandLine.appendSwitch('no-sandbox');
 // Enable experimental web features
@@ -346,7 +358,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // This is a custom event that is used to relaunch the application.
-// It destroys and recreates the broswer window. This is used to apply
+// It destroys and recreates the browser window. This is used to apply
 // settings that Electron doesn't allow to be changed in an active
 // browser window.
 app.on('relaunch', () => {
@@ -368,11 +380,11 @@ app.on('relaunch', () => {
 
   // Close App
   mainWindow.close();
-  mainWindow = undefined;
+  // mainWindow = undefined;
 
   // Create a New BroswerWindow
   createWindow();
-  electronLog.info('Electron restarted! [ Loading main.js ]');
+  console.log('Electron restarted! [ Loading main.js ]');
 });
 
 // Chnage the windows url when told to by the ui

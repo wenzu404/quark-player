@@ -1,4 +1,4 @@
-const { Menu, shell, app, dialog, BrowserWindow } = require('electron');
+const { Menu, shell, components, BrowserWindow, app, dialog } = require('electron');
 const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
@@ -8,6 +8,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var servicesMenuItems = [];
   var defaultServiceMenuItems = [];
   var enabledServicesMenuItems = [];
+  require("@electron/remote/main").enable(mainWindow.webContents);
 
   if (services !== undefined) {
     // Menu with all services that can be clicked for easy switching

@@ -15,6 +15,7 @@ module.exports = [
     url: 'https://youtube.com',
     color: '#ff0000',
     style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
   },
   {
@@ -25,7 +26,7 @@ module.exports = [
     url: 'https://youtube.com/tv',
     color: '#ff0000',
     style: {},
-    userAgent: "Mozilla/5.0 (SMART-TV; Linux; Tizen 4.0.0.2) AppleWebkit/605.1.15 (KHTML, like Gecko)",
+    userAgent: "Mozilla/5.0 (SMART-TV; LINUX; Tizen 5.0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/5.0 TV Safari/537.36",
     permissions: []
   },
   {
@@ -44,6 +45,7 @@ module.exports = [
     url: 'https://floatplane.com/',
     color: '#00aeef',
     style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
   },
   {
@@ -167,6 +169,7 @@ module.exports = [
     url: 'https://bitmovin.com/demos/drm',
     color: '#1FAAE2',
     style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
   },
   {
@@ -177,6 +180,18 @@ module.exports = [
     url: 'https://tools.woolyss.com/html5-audio-video-tester/',
     color: '#811ac0',
     style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
+    permissions: []
+  },
+  {
+    name: 'Google',
+    title: 'Google (For testing or web browsing)',
+    hidden: true,
+    logo: 'imgs/google.svg',
+    url: 'https://www.google.com/',
+    color: '#EA4335',
+    style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
   }
 ];

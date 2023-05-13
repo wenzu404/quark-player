@@ -1,7 +1,7 @@
 {
-  "electronVersion": "13.6.9",
+  "electronVersion": "19.1.9",
   "electronDownload": {
-    "version": "13.6.9-wvvmp",
+    "version": "19.1.9+wvcus",
     "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
   },
   "asar": true,
@@ -32,13 +32,13 @@
     "vendor": "Alex313031",
     "synopsis": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
     "category": "Network;Browser;Media;AudioVideo;",
-    "executableName": "quarkplayer",
-    "artifactName": "Quark-Player_${version}_${arch}.${ext}",
+    "executableName": "quark-player",
+    "artifactName": "quark-player_${version}_${arch}.${ext}",
     "desktop": {
       "Name": "Quark Player",
-      "StartupWMClass": "quarkplayer",
+      "StartupWMClass": "quark-player",
       "Keywords": "electron;netflix;media;",
-      "Icon": "quarkplayer"
+      "Icon": "quark-player"
     }
   },
   "win": {
@@ -47,12 +47,12 @@
       "nsis"
     ],
     "publisherName": "Alex313031",
-    "executableName": "Quarkplayer",
-    "artifactName": "Quark_Player_win64_${version}_${arch}.${ext}"
+    "executableName": "quark_player",
+    "artifactName": "quark_player_win64_${version}_${arch}.${ext}"
   },
   "nsis": {
     "shortcutName": "Quark Player",
-    "artifactName": "Quark_Player_Setup_${version}_${arch}.${ext}",
+    "artifactName": "quark_player_setup_${version}_${arch}.${ext}",
     "deleteAppDataOnUninstall": false,
     "uninstallDisplayName": "Quark Player ${version}"
   },
