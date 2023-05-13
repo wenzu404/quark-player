@@ -1,4 +1,4 @@
-const { Menu, shell, app, BrowserWindow } = require('electron');
+const { Menu, shell, app, dialog, BrowserWindow } = require('electron');
 const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
@@ -65,17 +65,41 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
     {
       label: 'Quark Player',
       submenu: [
-        { label: 'Open File', enabled: true },
+        {
+          label: 'Go Back',
+          accelerator: 'Alt+Left',
+          click() {
+            mainWindow.webContents.goBack()
+            electronLog.info('Navigated back');
+          }
+        },
+        {
+          label: 'Go Forward',
+          accelerator: 'Alt+Right',
+          click() {
+            mainWindow.webContents.goForward()
+            electronLog.info('Navigated forward');
+          }
+        },
+        {
+          type: 'separator'
+        },
+        { label: 'Open File',
+		  accelerator: 'Ctrl+Shift+O',
+		  click() {
+			dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
+		  }
+		},
         {
           type: 'separator'
         },
         {
-          label: 'Quit ElectronPlayer',
+          label: 'Quit Quark Player',
           accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
           click() {
             app.quit();
           }
-        }
+        },
       ]
     },
     {
@@ -285,6 +309,25 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
     {
       label: 'View',
       submenu: [
+        {
+          label: 'Go Back',
+          accelerator: 'Alt+Left',
+          click() {
+            mainWindow.webContents.goBack()
+            electronLog.info('Navigated back');
+          }
+        },
+        {
+          label: 'Go Forward',
+          accelerator: 'Alt+Right',
+          click() {
+            mainWindow.webContents.goForward()
+            electronLog.info('Navigated forward');
+          }
+        },
+        {
+          type: 'separator'
+        },
         {
           role: 'zoomin'
         },

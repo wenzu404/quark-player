@@ -1,13 +1,14 @@
 {
   "name": "quarkplayer",
   "appName": "quarkplayer",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo 'TODO: Tests'",
     "clean": "rimraf node_modules",
+    "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
     "postinstall": "patch-package"
   },
   "repository": "https://github.com/Alex313031/quarkplayer.git",
@@ -18,8 +19,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@electron/remote": "1.2.2",
     "@types/chrome": "0.0.179",
+    "asar": "3.2.0",
     "electron": "https://github.com/castlabs/electron-releases#v13.6.9-wvvmp",
     "electron-builder": "22.14.13",
     "patch-package": "6.4.7",
@@ -32,6 +33,7 @@
     "@cliqz/adblocker-electron": "1.22.7",
     "@cliqz/adblocker-electron-preload": "1.22.7",
     "@cliqz/adblocker-extended-selectors": "1.22.7",
+    "@electron/remote": "1.2.2",
     "electron-localshortcut": "3.2.1",
     "electron-log": "4.4.8",
     "electron-prompt": "1.6.2",

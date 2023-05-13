@@ -1,19 +1,19 @@
 {
-  "electronVersion": "21.4.4",
+  "electronVersion": "13.6.9",
   "electronDownload": {
-    "version": "21.4.4+wvcus",
+    "version": "13.6.9-wvvmp",
     "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
   },
   "asar": true,
-  "productName": "Promethium",
+  "productName": "Quark Player",
   "generateUpdatesFilesForAllChannels": false,
-  "appId": "com.alex313031.promethium",
+  "appId": "com.alex313031.quarkplayer",
   "directories": {
-      "app": ".",
-      "buildResources": "builder",
-      "output": "out"
+      "app": "./src",
+      "buildResources": "build",
+      "output": "dist"
   },
-  "files": [ "build/**/*", "package.json", "static/**/*" ],
+  "files": [ "**/*" ],
   "extraFiles": [
     {
       "from": "assets/icon64.png"
@@ -30,15 +30,15 @@
     ],
     "maintainer": "Alex313031",
     "vendor": "Alex313031",
-    "synopsis": "Extensible, fast, and innovative Electron based web browser with Material UI design elements.",
-    "category": "Network;Browser;",
-    "executableName": "promethium",
-    "artifactName": "${productName}_${version}_${arch}.${ext}",
+    "synopsis": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
+    "category": "Network;Browser;Media;AudioVideo;",
+    "executableName": "quarkplayer",
+    "artifactName": "Quark-Player_${version}_${arch}.${ext}",
     "desktop": {
-      "Name": "Promethium",
-      "StartupWMClass": "promethium",
-      "Keywords": "electron;webview;browser;wexond;",
-      "Icon": "promethium"
+      "Name": "Quark Player",
+      "StartupWMClass": "quarkplayer",
+      "Keywords": "electron;netflix;media;",
+      "Icon": "quarkplayer"
     }
   },
   "win": {
@@ -47,25 +47,16 @@
       "nsis"
     ],
     "publisherName": "Alex313031",
-    "executableName": "Promethium",
-    "artifactName": "Promethium_win64_${version}_${arch}.${ext}"
+    "executableName": "Quarkplayer",
+    "artifactName": "Quark_Player_win64_${version}_${arch}.${ext}"
   },
   "nsis": {
-    "include": "static/installer.nsh",
-    "shortcutName": "Promethium",
-    "artifactName": "Promethium_Setup_${version}_${arch}.${ext}",
+    "shortcutName": "Quark Player",
+    "artifactName": "Quark_Player_Setup_${version}_${arch}.${ext}",
     "deleteAppDataOnUninstall": false,
-    "uninstallDisplayName": "Promethium ${version}"
+    "uninstallDisplayName": "Quark Player ${version}"
   },
   "mac": {
     "category": "public.app-category.navigation"
-  },
-  "fileAssociations": [
-    {
-    "name": "Document",
-    "description": "Promethium",
-    "role": "Viewer",
-    "ext": "html"
-    }
-  ]
+  }
 }

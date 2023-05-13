@@ -33,7 +33,7 @@ async function createWindow() {
     height: 768,
     icon: path.join(__dirname, 'icon64.png'),
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
       nodeIntegrationInWorker: false,
       experimentalFeatures: true,
       webviewTag: true,
@@ -50,8 +50,8 @@ async function createWindow() {
       preload: path.join(__dirname, 'client-preload.js')
     },
     trafficLightPosition: {
-      x: 18,
-      y: 18,
+      x: 16,
+      y: 16,
     },
     // Window Styling
     // @ts-ignore

@@ -11,3 +11,6 @@ update electron
 ------------Notes-----------------
 main accent color:
 TBD
+
+- Add Tests - once Electron versions are the same between Mac and Linux (They are now the same, now what?)
+- Add Dependency Updates Alerter Bot

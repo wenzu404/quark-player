@@ -69,8 +69,9 @@ h3 {
 .loader > img {
   margin: 0 auto;
   display: block;
-  height: 110px;
-  max-width: 300px;
+  max-height: 128px;
+  max-width: 256px;
+  height: auto;
   width: auto;
   padding: 5px 0;
   -webkit-user-drag: none;

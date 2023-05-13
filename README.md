@@ -1,86 +1,70 @@
 # Quark Player
-## ElectronPlayer
 
-#### If you are experiencing issues playing DRM content using the Mac version please try the `v3.0.0` beta which can be found [here](https://electronplayer-beta.otbeaumont.me/)
+<img src="https://raw.githubusercontent.com/Alex313031/quarkplayer/master/Logo.png" width="200">
 
-[![Build Status](https://travis-ci.org/oscartbeaumont/ElectronPlayer.svg?branch=master)](https://travis-ci.org/oscartbeaumont/ElectronPlayer)
-[![ElectronPlayer](https://snapcraft.io/electronplayer/badge.svg)](https://snapcraft.io/electronplayer)
+An Electron based web video services player, supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video and More. This is a fork and successor of [ElectronPlayer](https://github.com/oscartbeaumont/ElectronPlayer).
 
-An Electron Based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane, Hulu, Amazon Prime Video And More. This is the successor to [Netflix-Desktop](https://github.com/oscartbeaumont/Netflix-Desktop).
-
-![ElectronPlayer Menu](docs/ElectronPlayer.png)
+![Main Menu/UI](assets/screenshot.png)
 
 _The apps main menu interface_
 
-## The Pain of Widevine
-
-People using this app should be aware of its difficultly to maintain due to the requirement of Widevine. Widevine is a DRM plugin created by Google and it is used by Netflix, Hulu and many other streaming services. Widevine has already caused an outright fail of Netflix within this app and the only solution I could find ended up with the app having multiple `package.json` files one for each os. They also each use different versions of Electron. The Mac version is using the older version of Electron and it is locked on a version which was published on the 5th of June 2019. Unless a fix presents itself this app will be discontinued in its current form when Netflix stop working on Mac. I have no clue when that will be but my guess is 1-2 years because I am sadly not expecting any working solutions to come foward. The only other possible solution is obtaining a Widevine signing certificate from Google. Which is not possible due to this being a "small" open source project. I may also [copy metastream](https://github.com/samuelmaddock/metastream/issues/85) and move the app to a browser based PWA instead of fully discontinuing it. A good article about this issue can be [read here](https://blog.samuelmaddock.com/posts/google-widevine-blocked-my-browser/).
-
 # Features
 
-- Multiple Streaming Services Support (JSON Configuration to add extra)
-- Adblock
-- Always On Top Window
-- Set Startup Page (Any Service or Remember Last Opended Page)
-- Frameless Window
-- Rough Mac Picture in Picture Support (Floating Window, Above All Desktop and Fullscreen Applications)
-- Full Screen Window on Startup
-
-# Analytics
-
-This application has analytics built in which is used to help the developers make a better product. [Simple Analytics](https://simpleanalytics.com) was chosen due to their strong views on keeping users private. They are also GDPR, CCPA, & PECR compliant. The data collected by the app can be viewed by anyone [here](https://simpleanalytics.com/electronplayer.otbeaumont.me).
+ - Multiple streaming services supported (You can use JSON configuration to add others)
+ - AdBlocker (provided by Cliqz)
+ - Always On Top Window
+ - Set Startup Page (Any service, or remember last opened page)
+ - Frameless Window
+ - Rough Mac Picture in Picture Support (Floating Window, Above All Desktop and Fullscreen Applications)
+ - Full Screen Window on Startup
+ - Alt+Left and Alt+Right to navigate back/forward in page
 
 # Installation
 
 ## Windows
 
-Please note Windows is currently only partially supported, as it doesn't support the Widevine package I am using. I am working on fixing this. Its progress can be loosely tracked in issue [#2](https://github.com/oscartbeaumont/ElectronPlayer/issues/2) and issue [#35](https://github.com/oscartbeaumont/ElectronPlayer/issues/35)
+There are .exe installers, and portable .zips in [Releases](https://github.com/Alex313031/quarkplayer/releases).
 
-## macOS
+## Linux
 
-Download the DMG Installer from the [Github Releases here](https://github.com/oscartbeaumont/ElectronPlayer/releases).
+There are .deb installers, .AppImages, and portable .zips in [Releases](https://github.com/Alex313031/quarkplayer/releases).
 
-## Linux Snap
+## MacOS
 
-You can install ElectronPlayer with a snap. This is recommended method of installation for Linux as automatic updates will occur.
+Working on it. Need a Mac to build.
+
+# Developing/Building
+
+Requires nodejs 12, 14, or 16. Lower or higher will not work. It is reccomended to use [nvm](https://github.com/nvm-sh/nvm) for installing/managing node versions.
+Yarn can also be used.
 
 ```bash
-snap install electronplayer
+git clone https://github.com/Alex313031/quarkplayer.git
+cd quarkplayer
+nvm install # Only use if you are using nvm
+npm install # Install needed npm deps
+npm run start # Run app in dev mode
+npm run dist # To make installation packages
 ```
 
-## Linux AppImage
+## Documentation
 
-Download the AppImage from the [Github Releases here](https://github.com/oscartbeaumont/ElectronPlayer/releases).
+See [Docs](docs/readme.md)
 
-## Arch Linux AUR
+## TODO
 
-There is an unofficial package on the Arch Linux User Repository provided by [@gardotd426](https://github.com/gardotd426)
+See [TODO.txt](TODO.txt).
 
-# Contributors
+## Contributors
 
 A huge thanks to the following people for contributing and helping shape this project.
 
+- [Oscar Beaumont](https://github.com/oscartbeaumont)
 - [Austin Kregel](https://github.com/austinkregel)
 - [Rasmus Lindroth](https://github.com/RasmusLindroth)
 - [Scrumplex](https://github.com/Scrumplex)
 
-# Developing
+## Analytics
 
-Sorry in advance that build system currently to get the app working is a mess and requires multiple package.json's this will hopefully be fixed in the future. Please contact me if you need help.
-
-```bash
-git clone https://github.com/oscartbeaumont/ElectronPlayer.git
-cd ElectronPlayer/
-npm install
-npm start
-```
-
-# TODO
-
-- Add Tests - once Electron versions are the same between Mac and Linux
-- Add Windows Support
-- Add Dependency Updates Alerter Bot
-
-## Should fix at some point
-
-- Menubar Transparency Glitch On Mac
+ - Removed Analytics!
+~~This application has analytics built in which is used to help the developers make a better product. [Simple Analytics](https://simpleanalytics.com) was chosen due to their strong views on keeping users private. They are also GDPR, CCPA, & PECR compliant. The data collected by the app can be viewed by anyone [here](https://simpleanalytics.com/electronplayer.otbeaumont.me).~~
