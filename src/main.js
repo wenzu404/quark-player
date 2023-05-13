@@ -380,7 +380,7 @@ app.on('relaunch', () => {
 
   // Close App
   mainWindow.close();
-  // mainWindow = undefined;
+  mainWindow = undefined;
 
   // Create a New BroswerWindow
   createWindow();

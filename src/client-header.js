@@ -5,7 +5,7 @@ the frameless window hides the settings menu.
 */
 const electronLog = require('electron-log');
 
-electronLog.info('quarkplayer: Injected Header');
+electronLog.info('Electron Status: Injected Header');
 
 document.body.insertAdjacentHTML(
   'beforeend',
