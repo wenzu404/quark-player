@@ -86,11 +86,11 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           type: 'separator'
         },
         { label: 'Open File',
-		  accelerator: 'Ctrl+Shift+O',
-		  click() {
-			dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
-		  }
-		},
+          accelerator: 'Ctrl+Shift+O',
+          click() {
+            dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
+          }
+        },
         {
           type: 'separator'
         },
@@ -413,14 +413,14 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       submenu: [
         { label: 'Quark Player v' + app.getVersion(), enabled: false },
         { label: 'Created By Oscar Beaumont &&',
-			click() {
+            click() {
             shell.openExternal(
               'https://github.com/oscartbeaumont/ElectronPlayer#readme'
             );
           }
         },
         { label: 'Maintained by Alex313031',
-			click() {
+            click() {
             shell.openExternal(
               'https://github.com/Alex313031/quarkplayer#readme'
             );
@@ -431,9 +431,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About App',
-          click() {
-            const aboutWindow = new BrowserWindow({width: 500, height: 400, title: "About Quark Player"});
-            aboutWindow.loadFile('./ui/about.html');
+          click(item) {
+            mainWindow.webContents.loadFile('./ui/about.html');
           }
         }
       ]
