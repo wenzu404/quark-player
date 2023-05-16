@@ -43,7 +43,7 @@ Working on it. Need a Mac to build.
 
 # Developing/Building
 
-Requires nodejs 12, 14, or 16. Lower or higher will not work. It is reccomended to use [nvm](https://github.com/nvm-sh/nvm) for installing/managing node versions.
+Requires nodejs 14, or 16. It is reccomended to use [nvm](https://github.com/nvm-sh/nvm) for installing/managing node versions.
 Yarn can also be used.
 
 ```bash
