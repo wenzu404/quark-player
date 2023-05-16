@@ -8,6 +8,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var servicesMenuItems = [];
   var defaultServiceMenuItems = [];
   var enabledServicesMenuItems = [];
+  // Get app version from package.json
+  var appVersion = app.getVersion();
+  // Enable remote module on sub-windows
   require("@electron/remote/main").enable(mainWindow.webContents);
 
   if (services !== undefined) {
@@ -480,7 +483,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             //mainWindow.webContents.loadFile('./ui/about.html');
             const aboutWindow = new BrowserWindow({
               width: 500,
-              height: 500,
+              height: 504,
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
@@ -498,6 +501,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             });
             require("@electron/remote/main").enable(aboutWindow.webContents);
             aboutWindow.loadFile('./ui/about.html');
+            electronLog.info('Opened about.html');
+            electronLog.info(`App Version: ` + appVersion);
           }
         }
       ]

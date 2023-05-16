@@ -34,6 +34,9 @@ try {
   require('electron-reloader')(module);
 } catch {}
 
+// Export app version from package.json
+var appVersion = app.getVersion();
+
 async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -347,8 +350,12 @@ function mainWindowClosed() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.whenReady().then(async () => {
+  // Initialize Widevine
   await components.whenReady();
   console.log('WidevineCDM component ready!\n Info:', components.status());
+
+  // Show version
+  electronLog.info(`Quark Player v` + appVersion);
   // The timeout fixes the trasparent background on Linux ???? why
   //setTimeout(createWindow, 500);
   createWindow();
