@@ -13,6 +13,7 @@ const fs = require('fs'),
   } = require('@cliqz/adblocker-electron'),
   fetch = require('node-fetch');
 
+// Load in the header script for frameless window
 const headerScript = fs.readFileSync(
   path.join(__dirname, 'client-header.js'),
   'utf8'
@@ -66,7 +67,6 @@ async function createWindow() {
       y: 16,
     },
     // Window Styling
-    // @ts-ignore
     transparent: process.platform === 'win32' ? false : true,
     autoHideMenuBar: false,
     darkTheme: true,
@@ -84,7 +84,7 @@ async function createWindow() {
 
   defaultUserAgent = mainWindow.webContents.userAgent;
 
-  // Connect Adblocker To Window if Enabled
+  // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
     let engineCachePath = path.join(
       app.getPath('userData'),
@@ -101,14 +101,14 @@ async function createWindow() {
     }
     engine.enableBlockingInSession(session.defaultSession);
 
-    // Backup Engine Cache to Disk
+    // Backup the Engine cache to disk
     fs.writeFile(engineCachePath, engine.serialize(), err => {
       if (err) throw err;
       electronLog.info('Adblock engine file cache has been updated!');
     });
   }
 
-  // Reset The Windows Size and Location
+  // Reset the Window's size and location
   let windowDetails = store.get('options.windowDetails');
   let relaunchWindowDetails = store.get('relaunch.windowDetails');
   if (relaunchWindowDetails) {
@@ -138,14 +138,14 @@ async function createWindow() {
     app.dock.show();
   }
 
-  // Detect and update version
+  // Detect and update config on null version
   if (!store.get('version')) {
     store.set('version', app.getVersion());
     store.set('services', []);
     electronLog.info('Initialized Configuration');
   }
 
-  // Load the services and merge the users and default services
+  // Load the services and merge the user's with default services
   let userServices = store.get('services') || [];
   global.services = userServices;
 
@@ -205,6 +205,7 @@ async function createWindow() {
   }
 
   contextMenu({
+     // Chromium context menu defaults
      showSaveImageAs: true,
      showSelectAll: true,
      showCopyImage: true,
@@ -217,6 +218,7 @@ async function createWindow() {
      showInspectElement: true,
      showLookUpSelection: true,
      showSearchWithGoogle: true,
+     // Allow opening videos in a new window
      prepend: (defaultActions, parameters, browserWindow) => [
         {    label: 'Open Video in New Window',
         // Only show it when right-clicking video
@@ -243,8 +245,10 @@ async function createWindow() {
          newwin.loadURL(vidURL);
         }
      }],
+     // Allow opening links in a new window
      prepend: (defaultActions, parameters, browserWindow) => [
         {    label: 'Open Link in New Window',
+        // Only show it when right-clicking a link
         visible: parameters.linkURL.trim().length > 0,
         click: (linkURL) => {
             const newwin = new BrowserWindow({
@@ -476,20 +480,31 @@ app.on('activate', () => {
   }
 });
 
-/* Restrict Electrons APIs In Renderer Process For Security */
+// Allow creating new instance with Ctrl+N
+app.on('new-window', () => {
+  createWindow();
+  electronLog.info('Created new BrowserWindow');
+  mainWindow.webContents.on('did-finish-load',() => {
+      mainWindow.setTitle(`Quark Player (New Instance)`);
+  });
+});
 
+// Called on disallowed remote API below
 function rejectEvent(event) {
   event.preventDefault();
 }
 
+// Sets services for preload script
 const allowedGlobals = new Set(['services']);
 app.on('remote-get-global', (event, webContents, globalName) => {
   if (!allowedGlobals.has(globalName)) {
     event.preventDefault();
   }
 });
+
+/* Restrict certain Electron APIs in the renderer process for security */
 app.on('remote-require', rejectEvent);
-app.on('remote-get-builtin', rejectEvent);
+//app.on('remote-get-builtin', rejectEvent);
 app.on('remote-get-current-window', rejectEvent);
 app.on('remote-get-current-web-contents', rejectEvent);
 app.on('remote-get-guest-web-contents', rejectEvent);

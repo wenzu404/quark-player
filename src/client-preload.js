@@ -3,12 +3,13 @@ This script is run during the loading of a webpage.
 It pulls all the required node apis for the menu
 without injecting them into external websites,
 this is done for obvious security benefits.
+
+It also dynamically gets versions of stuff
+to inject into the about page.
 */
 
-//const { app } = require('electron');
-
+const { app } = require('electron');
 const remote = require('@electron/remote');
-
 global.ipc = require('electron').ipcRenderer;
 
 // Prevent Injecting To Another Websites
@@ -28,13 +29,13 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // Get app version from package.json
-//var appVersion = remote.app.getVersion();
+var appVersion = remote.app.getVersion();
 
+// Show app version in about.html
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
     if (element) element.innerText = text
   }
-  // Show app version in about.html
-  replaceText(`quark-version`, `3.1.3`)
+  replaceText(`quark-version`, appVersion)
 });

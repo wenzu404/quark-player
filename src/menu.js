@@ -73,7 +73,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Go Back',
           accelerator: 'Alt+Left',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.goBack()
+            if (focusedWindow) focusedWindow.webContents.goBack();
             electronLog.info('Navigated back');
           }
         },
@@ -81,15 +81,22 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Go Forward',
           accelerator: 'Alt+Right',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.goForward()
+            if (focusedWindow) focusedWindow.webContents.goForward();
             electronLog.info('Navigated forward');
+          }
+        },
+        {
+          label: 'New Window',
+          accelerator: 'CmdorCtrl+N',
+          click(item) {
+            app.emit('new-window');
           }
         },
         {
           label: 'Close Window',
           accelerator: 'CmdorCtrl+W',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.close()
+            if (focusedWindow) focusedWindow.close();
             electronLog.info('Closed a window');
           }
         },
@@ -324,6 +331,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             });
 
             // Restart the app
+            electronLog.warn('Note: Reset All Settings!');
             electronLog.info('Relaunching Quark Player...');
             app.relaunch();
             app.quit();
@@ -353,7 +361,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Go Back',
           accelerator: 'Alt+Left',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.goBack()
+            if (focusedWindow) focusedWindow.webContents.goBack();
             electronLog.info('Navigated back');
           }
         },
@@ -361,15 +369,22 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Go Forward',
           accelerator: 'Alt+Right',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.goForward()
+            if (focusedWindow) focusedWindow.webContents.goForward();
             electronLog.info('Navigated forward');
+          }
+        },
+        {
+          label: 'New Window',
+          accelerator: 'CmdorCtrl+N',
+          click(item) {
+            app.emit('new-window');
           }
         },
         {
           label: 'Close Window',
           accelerator: 'CmdorCtrl+W',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.close()
+            if (focusedWindow) focusedWindow.close();
             electronLog.info('Closed a window');
           }
         },
@@ -457,9 +472,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
     },
     {
       role: 'help',
+      label: 'About',
       submenu: [
         { label: 'Quark Player v' + app.getVersion(), enabled: false },
-        { label: 'Created By Oscar Beaumont &&',
+        { label: 'Created by Oscar Beaumont &&',
             click() {
             shell.openExternal(
               'https://github.com/oscartbeaumont/ElectronPlayer#readme'
