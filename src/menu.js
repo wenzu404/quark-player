@@ -69,26 +69,62 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Go Back',
           accelerator: 'Alt+Left',
-          click() {
-            mainWindow.webContents.goBack()
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.goBack()
             electronLog.info('Navigated back');
           }
         },
         {
           label: 'Go Forward',
           accelerator: 'Alt+Right',
-          click() {
-            mainWindow.webContents.goForward()
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.goForward()
             electronLog.info('Navigated forward');
+          }
+        },
+        {
+          label: 'Close Window',
+          accelerator: 'CmdorCtrl+W',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.close()
+            electronLog.info('Closed a window');
           }
         },
         {
           type: 'separator'
         },
+        {
+          label: 'Open Custom URL',
+          accelerator: 'CmdOrCtrl+O',
+          click() {
+            prompt({
+              title: 'Open Custom URL (add https:// before URL)',
+              label: 'URL:',
+              inputAttrs: {
+                  type: 'url',
+                  placeholder: 'https://example.org'
+              },
+              alwaysOnTop: true
+          })
+          .then(inputtedURL => {
+            if (inputtedURL != null) {
+              if(inputtedURL == '') {
+                inputtedURL = 'https://example.org';
+              }
+
+              electronLog.info('Opening Custom URL: ' + inputtedURL);
+              mainWindow.loadURL(inputtedURL);
+            }
+          })
+          .catch(console.error);
+          }
+        },
         { label: 'Open File',
           accelerator: 'Ctrl+Shift+O',
           click() {
-            dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
+            dialog.showOpenDialogSync(mainWindow, { properties: ['openFile'] }).then(result => {
+				mainWindow.loadFile(result)});
+            //mainWindow.loadFile
           }
         },
         {
@@ -119,22 +155,22 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           type: 'separator'
         },
         {
-          label: 'Custom URL',
+          label: 'Open Custom URL',
           accelerator: 'CmdOrCtrl+O',
           click() {
             prompt({
-              title: 'Open Custom URL',
+              title: 'Open Custom URL (add https:// before URL)',
               label: 'URL:',
               inputAttrs: {
                   type: 'url',
-                  placeholder: 'http://example.org'
+                  placeholder: 'https://example.org'
               },
               alwaysOnTop: true
           })
           .then(inputtedURL => {
             if (inputtedURL != null) {
               if(inputtedURL == '') {
-                inputtedURL = 'http://example.org';
+                inputtedURL = 'https://example.org';
               }
 
               electronLog.info('Opening Custom URL: ' + inputtedURL);
@@ -313,17 +349,25 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Go Back',
           accelerator: 'Alt+Left',
-          click() {
-            mainWindow.webContents.goBack()
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.goBack()
             electronLog.info('Navigated back');
           }
         },
         {
           label: 'Go Forward',
           accelerator: 'Alt+Right',
-          click() {
-            mainWindow.webContents.goForward()
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.goForward()
             electronLog.info('Navigated forward');
+          }
+        },
+        {
+          label: 'Close Window',
+          accelerator: 'CmdorCtrl+W',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.close()
+            electronLog.info('Closed a window');
           }
         },
         {
@@ -353,14 +397,14 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Reload',
           accelerator: 'CmdOrCtrl+R',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.reload();
+            if (focusedWindow) focusedWindow.webContents.reload();
           }
         },
         {
           label: 'Force Reload',
           accelerator: 'CmdOrCtrl+Shift+R',
-          click() {
-            mainWindow.webContents.reloadIgnoringCache();
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.reloadIgnoringCache();
           }
         },
         {
@@ -374,7 +418,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Open Developer Tools (Detached)',
           accelerator:
-            process.platform === 'darwin' ? 'Ctrl+Shift+F12' : 'F12',
+            process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12',
           click(item) {
             mainWindow.webContents.openDevTools({ mode: 'detach' });
           }
@@ -384,15 +428,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'View humans.txt',
-          accelerator: 'Ctrl+Alt+Shift+H',
+          accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: 500, height: 500, title: "Humans.txt"});
+            const humansWindow = new BrowserWindow({width: 500, height: 600, title: "Humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
           }
         },
         {
           label: 'Open chrome://gpu',
-          accelerator: 'Ctrl+Alt+G',
+          accelerator: 'CmdorCtrl+Alt+G',
           click() {
             const gpuWindow = new BrowserWindow({width: 900, height: 700, title: "GPU Internals"});
             gpuWindow.loadURL('chrome://gpu');
@@ -431,6 +475,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About App',
+          accelerator: 'CmdorCtrl+Alt+Shift+A',
           click(item) {
             //mainWindow.webContents.loadFile('./ui/about.html');
             const aboutWindow = new BrowserWindow({
@@ -440,6 +485,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
                 contextIsolation: false,
+                sandbox: false,
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,

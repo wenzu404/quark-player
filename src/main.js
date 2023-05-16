@@ -48,6 +48,7 @@ async function createWindow() {
       nodeIntegrationInWorker: false,
       // Must be disabled for preload script. I am not aware of a workaround but this *shouldn't* effect security
       contextIsolation: false,
+      sandbox: false,
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
@@ -225,6 +226,7 @@ async function createWindow() {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
                 contextIsolation: false,
+                sandbox: false,
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
@@ -249,6 +251,7 @@ async function createWindow() {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
                 contextIsolation: false,
+                sandbox: false,
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
@@ -351,7 +354,7 @@ app.whenReady().then(async () => {
   createWindow();
 });
 
-app.commandLine.appendSwitch('no-sandbox');
+//app.commandLine.appendSwitch('no-sandbox');
 // Enable experimental web features
 //app.commandLine.appendSwitch('enable-experimental-web-platform-features');
 // Including new Canvas2D APIs
