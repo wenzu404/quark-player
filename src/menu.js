@@ -387,7 +387,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Ctrl+Alt+Shift+H',
           click() {
             const humansWindow = new BrowserWindow({width: 500, height: 500, title: "Humans.txt"});
-            humansWindow.loadFile('./humans.txt');
+            humansWindow.loadFile('./ui/humans.txt');
           }
         },
         {
@@ -432,7 +432,26 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'About App',
           click(item) {
-            mainWindow.webContents.loadFile('./ui/about.html');
+            //mainWindow.webContents.loadFile('./ui/about.html');
+            const aboutWindow = new BrowserWindow({
+              width: 500,
+              height: 500,
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                javascript: true,
+                plugins: true,
+                enableRemoteModule: true,
+                preload: path.join(__dirname, 'client-preload.js'),
+                nativeWindowOpen: true
+              },
+            });
+            require("@electron/remote/main").enable(aboutWindow.webContents);
+            aboutWindow.loadFile('./ui/about.html');
           }
         }
       ]

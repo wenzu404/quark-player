@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 const fs = require('fs'),
   path = require('path'),
-  { app, session, components, BrowserWindow, Menu, ipcMain } = require('electron'),
+  { app, session, components, BrowserWindow, Menu, ipcMain, dialog } = require('electron'),
   contextBridge = require('electron').contextBridge,
   contextMenu = require('electron-context-menu'),
   electronLog = require('electron-log'),
@@ -202,7 +202,7 @@ async function createWindow() {
 
   contextMenu({
      showSaveImageAs: true,
-     showSelectAll: false,
+     showSelectAll: true,
      showCopyImage: true,
      showCopyImageAddress: true,
      showSaveImageAs: true,
@@ -215,10 +215,51 @@ async function createWindow() {
      showSearchWithGoogle: true,
      prepend: (defaultActions, parameters, browserWindow) => [
         {    label: 'Open Video in New Window',
-        // Only show it when right-clicking text
+        // Only show it when right-clicking video
         visible: parameters.mediaType === 'video',
-        click: () => {
-            createNewWindow();
+        click: (linkURL) => {
+            const newwin = new BrowserWindow({
+              width: 1024,
+              height: 768,
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                javascript: true,
+                plugins: true,
+                enableRemoteModule: true,
+                nativeWindowOpen: true
+              },
+            });
+            const vidURL = parameters.srcURL;
+         newwin.loadURL(vidURL);
+        }
+     }],
+     prepend: (defaultActions, parameters, browserWindow) => [
+        {    label: 'Open Link in New Window',
+        visible: parameters.linkURL.trim().length > 0,
+        click: (linkURL) => {
+            const newwin = new BrowserWindow({
+              width: 1024,
+              height: 768,
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                javascript: true,
+                plugins: true,
+                enableRemoteModule: true,
+                nativeWindowOpen: true
+              },
+            });
+            const toURL = parameters.linkURL;
+         newwin.loadURL(toURL);
         }
      }]
   });
