@@ -152,8 +152,10 @@ async function createWindow() {
   require('./default-services').forEach(dservice => {
     let service = userServices.find(service => service.name == dservice.name);
     if (service) {
+      // Enumerate service properties from default-services.js
       global.services[userServices.indexOf(service)] = {
         name: service.name ? service.name : dservice.name,
+        title: service.title ? service.title : dservice.title,
         logo: service.logo ? service.logo : dservice.logo,
         url: service.url ? service.url : dservice.url,
         color: service.color ? service.color : dservice.color,

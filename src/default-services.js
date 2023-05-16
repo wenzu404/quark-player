@@ -163,7 +163,7 @@ module.exports = [
   },
   {
     name: 'Bitmovin',
-    title: 'Bitmovin (For testing Widevine CDM)',
+    title: 'Bitmovin (for testing Widevine)',
     hidden: true,
     logo: 'imgs/bitmovin.svg',
     url: 'https://bitmovin.com/demos/drm',
@@ -185,7 +185,7 @@ module.exports = [
   },
   {
     name: 'Google',
-    title: 'Google (For testing or web browsing)',
+    title: 'Google (for testing or web browsing)',
     hidden: true,
     logo: 'imgs/google.svg',
     url: 'https://www.google.com/',

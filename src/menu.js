@@ -450,6 +450,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click() {
             const humansWindow = new BrowserWindow({width: 500, height: 600, title: "Humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
+            electronLog.info('Opened humans.txt :)');
           }
         },
         {
@@ -457,6 +458,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+G',
           click() {
             const gpuWindow = new BrowserWindow({width: 900, height: 700, title: "GPU Internals"});
+            electronLog.info('Opening chrome://gpu');
             gpuWindow.loadURL('chrome://gpu');
           }
         },
@@ -480,6 +482,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             shell.openExternal(
               'https://github.com/oscartbeaumont/ElectronPlayer#readme'
             );
+            electronLog.info('Opened external browser');
           }
         },
         { label: 'Maintained by Alex313031',
@@ -487,6 +490,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             shell.openExternal(
               'https://github.com/Alex313031/quarkplayer#readme'
             );
+            electronLog.info('Opened external browser');
           }
         },
         {

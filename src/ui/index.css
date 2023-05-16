@@ -87,6 +87,10 @@ h3 {
   -webkit-app-region: no-drag;
 }
 
+.services > .service:active > .h3select {
+  color: #1be1be;
+}
+
 .loader {
   position: fixed;
   transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1); /* easeOutQuint */

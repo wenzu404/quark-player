@@ -73,6 +73,7 @@ services.forEach(service => {
 
   // create h3 element
   let h3 = document.createElement('h3');
+  h3.classList.add('h3select');
   h3.appendChild(document.createTextNode(service.name));
 
   // append h3 element to service element
