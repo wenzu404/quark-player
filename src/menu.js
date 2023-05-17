@@ -448,7 +448,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: 528, height: 628, title: "Humans.txt"});
+            const humansWindow = new BrowserWindow({width: 532, height: 628, title: "Humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
@@ -502,8 +502,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click(item) {
             //mainWindow.webContents.loadFile('./ui/about.html');
             const aboutWindow = new BrowserWindow({
-              width: 528,
-              height: 528,
+              width: 532,
+              height: 532,
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
