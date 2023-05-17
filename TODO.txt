@@ -15,4 +15,4 @@ TBD
 - Add Tests - once Electron versions are the same between Mac and Linux (They are now the same, now what?)
 - Add Dependency Updates Alerter Bot
 
-python3 -m castlabs_evs.vmp sign-pkg out\win-unpacked
+python3 -m castlabs_evs.vmp sign-pkg dist\win-unpacked
