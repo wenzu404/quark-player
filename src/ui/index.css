@@ -88,7 +88,7 @@ h3 {
 }
 
 .services > .service:active > .h3select {
-  color: #1be1be;
+  color: #87CEEB;
 }
 
 .loader {
