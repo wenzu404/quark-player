@@ -16,7 +16,7 @@
 	Role: Original Developer
 	Twitter: @oscartbeaumont
 	GitHub: @oscartbeaumont
-	Email: mailto:oscar@otbeaumont.me
+	Email: oscar@otbeaumont.me
 	From: Australia
 
 /* THANKS */
