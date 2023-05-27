@@ -434,11 +434,11 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
-          label: 'Open Developer Tools (Detached)',
+          label: 'Open Electron DevTools',
           accelerator:
             process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12',
           click(item) {
-            mainWindow.webContents.openDevTools({ mode: 'detach' });
+            mainWindow.openDevTools({ mode: 'detach' });
           }
         },
         {
