@@ -20,6 +20,7 @@
     "dist-linux": "cross-env NODE_ENV=production electron-builder -l",
     "dist-win": "cross-env NODE_ENV=production electron-builder -w --pd dist/win-unpacked",
     "dist-mac": "cross-env NODE_ENV=production electron-builder -m --pd dist/mac-unpacked",
+    "sign": "python3 -m castlabs_evs.vmp sign-pkg dist/win-unpacked",
     "postinstall": "patch-package"
   },
   "repository": "https://github.com/Alex313031/quarkplayer.git",
