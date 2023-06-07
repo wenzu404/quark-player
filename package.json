@@ -12,7 +12,7 @@
     "start": "electron ./src",
     "winstart": "electron src",
     "test": "echo 'TODO: Tests'",
-    "clean": "rimraf dist && rimraf node_modules",
+    "clean": "rimraf dist && rimraf node_modules && cd src && npm run clean",
     "distclean": "rimraf dist",
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
     "build": "cross-env NODE_ENV=production electron-builder --dir",
@@ -21,7 +21,7 @@
     "dist-win": "cross-env NODE_ENV=production electron-builder -w --pd dist/win-unpacked",
     "dist-mac": "cross-env NODE_ENV=production electron-builder -m --pd dist/mac-unpacked",
     "sign": "python3 -m castlabs_evs.vmp sign-pkg dist/win-unpacked",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package && electron-builder install-app-deps"
   },
   "repository": "https://github.com/Alex313031/quarkplayer.git",
   "author": "Alex313031 <alex313031@gmail.com>",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
-    "electron": "git+https://github.com/castlabs/electron-releases#e2b2fe9",
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.12+wvcus",
     "electron-builder": "22.14.13",
     "patch-package": "6.4.7",
     "postinstall-postinstall": "2.1.0",
@@ -52,5 +52,8 @@
     "electron-prompt": "1.7.0",
     "electron-store": "6.0.1",
     "node-fetch": "2.6.11"
+  },
+  "overrides": {
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.12+wvcus"
   }
 }
