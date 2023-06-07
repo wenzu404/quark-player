@@ -647,7 +647,7 @@ if (process.env.NODE_ENV === 'development') {
 // settings that Electron doesn't allow to be changed in an active
 // browser window.
 app.on('relaunch', () => {
-
+  electronLog.info('Relaunching Quark Player...');
   // Store details to remeber when relaunched
   if (mainWindow.getURL() != '') {
     store.set('relaunch.toPage', mainWindow.getURL());
@@ -669,8 +669,60 @@ app.on('relaunch', () => {
 
   // Create a New BroswerWindow
   createWindow();
-  console.log('Electron restarted! [ Loading main.js ]');
+  electronLog.info('Electron restarted! [ Loading main.js ]');
 });
+
+// Dialog box asking if user really wants to relaunch app
+// Emitted from certain menu items that require an Electron restart
+app.on('relaunch-confirm', () => {
+    dialog.showMessageBox(mainWindow, {
+        'type': 'question',
+        'title': 'Relaunch Confirmation',
+        'message': "Are you sure you want to relaunch Quark Player?",
+        'buttons': [
+            'Yes',
+            'No'
+        ]
+    })
+      // Dialog returns a promise so let's handle it correctly
+      .then((result) => {
+          // Bail if the user pressed "No" or escaped (ESC) from the dialog box
+          if (result.response !== 0) { return; }
+          // Testing.
+          if (result.response === 0) {
+              //console.log('The "Yes" button was pressed (main process)');
+              app.relaunch();
+              app.quit();
+              app.emit('relaunch');
+          }
+      })
+})
+
+// Same as the above except used when resetting settings
+app.on('reset-confirm', () => {
+    dialog.showMessageBox(mainWindow, {
+        'type': 'question',
+        'title': 'Settings Reset Confirmation',
+        'message': "Are you sure you want to reset *all* \nsettings to their defaults?",
+        'buttons': [
+            'Yes',
+            'No'
+        ]
+    })
+      // Dialog returns a promise so let's handle it correctly
+      .then((result) => {
+          // Bail if the user pressed "No" or escaped (ESC) from the dialog box
+          if (result.response !== 0) { return; }
+          // Testing.
+          if (result.response === 0) {
+              //console.log('The "Yes" button was pressed (main process)');
+              app.relaunch();
+              app.quit();
+              app.emit('relaunch');
+              electronLog.warn('Note: Reset All Settings!');
+          }
+      })
+})
 
 // Chnage the windows url when told to by the ui
 ipcMain.on('open-url', (e, service) => {

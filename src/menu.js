@@ -61,6 +61,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           services = currServices;
           store.set('services', currServices);
         }
+        app.emit('relaunch-confirm');
       }
     }));
   }
@@ -196,6 +197,30 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       label: 'Settings',
       submenu: [
         {
+          label: 'Enable AdBlocker *',
+          type: 'checkbox',
+          click(e) {
+            store.set('options.adblock', e.checked);
+
+            // Store details to remeber when relaunched
+            if (mainWindow.getURL() != '') {
+              store.set('relaunch.toPage', mainWindow.getURL());
+            }
+            store.set('relaunch.windowDetails', {
+              position: mainWindow.getPosition(),
+              size: mainWindow.getSize()
+            });
+
+            // Restart the app
+            //app.relaunch();
+            //app.quit();
+            app.emit('relaunch-confirm');
+          },
+          checked: store.get('options.adblock')
+            ? store.get('options.adblock')
+            : false
+        },
+        {
           label: 'Always On Top',
           type: 'checkbox',
           click(e) {
@@ -207,10 +232,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Frameless Window *',
           type: 'checkbox',
+          accelerator: 'CmdorCtrl+Alt+F',
           click(e) {
             store.set('options.hideWindowFrame', e.checked);
-            electronLog.info('Relaunching Quark Player...');
-            app.emit('relaunch');
+            app.emit('relaunch-confirm');
           },
           checked: store.get('options.hideWindowFrame')
             ? store.get('options.hideWindowFrame')
@@ -233,37 +258,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           type: 'checkbox',
           click(e) {
             store.set('options.pictureInPicture', e.checked);
-            electronLog.info('Relaunching Quark Player...');
-            app.emit('relaunch');
+            app.emit('relaunch-confirm');
           },
           checked: store.get('options.pictureInPicture')
             ? store.get('options.pictureInPicture')
             : false,
           visible: process.platform === 'darwin' || process.platform === 'linux' || process.platform === 'win32'
-        },
-        {
-          label: 'Enable AdBlocker *',
-          type: 'checkbox',
-          click(e) {
-            store.set('options.adblock', e.checked);
-
-            // Store details to remeber when relaunched
-            if (mainWindow.getURL() != '') {
-              store.set('relaunch.toPage', mainWindow.getURL());
-            }
-            store.set('relaunch.windowDetails', {
-              position: mainWindow.getPosition(),
-              size: mainWindow.getSize()
-            });
-
-            // Restart the app
-            electronLog.info('Relaunching Quark Player...');
-            app.relaunch();
-            app.quit();
-          },
-          checked: store.get('options.adblock')
-            ? store.get('options.adblock')
-            : false
         },
         {
           label: 'Start in Fullscreen',
@@ -276,7 +276,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             : false
         },
         {
-          label: 'Enabled Services',
+          label: 'Enable/Disable Services *',
           submenu: enabledServicesMenuItems
         },
         {
@@ -331,10 +331,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             });
 
             // Restart the app
-            electronLog.warn('Note: Reset All Settings!');
-            electronLog.info('Relaunching Quark Player...');
-            app.relaunch();
-            app.quit();
+            //app.relaunch();
+            //app.quit();
+            app.emit('reset-confirm');
           }
         },
         { label: '* Requires an App Restart', enabled: false }
@@ -436,9 +435,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Open Electron DevTools',
           accelerator:
-            process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12',
-          click(item) {
-            mainWindow.openDevTools({ mode: 'detach' });
+            process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12' || 'Ctrl+Shift+F12',
+          click(item, focusedWindow) {
+            focusedWindow.openDevTools({ mode: 'detach' });
           }
         },
         {
@@ -468,6 +467,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             electronLog.warn('Restarting Electron...');
             app.relaunch();
             app.quit();
+            app.emit('relaunch');
           }
         }
       ]
