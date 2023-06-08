@@ -13,7 +13,7 @@
     "winstart": "electron src",
     "test": "echo 'TODO: Tests'",
     "burn": "rimraf package-lock.json && cd src && rimraf package-lock.json",
-    "clean": "rimraf dist && rimraf node_modules && cd src && npm run clean",
+    "clean": "rimraf dist && rimraf src/node_modules && rimraf node_modules",
     "distclean": "rimraf dist",
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
     "build": "cross-env NODE_ENV=production electron-builder --dir",

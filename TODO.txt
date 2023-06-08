@@ -2,7 +2,6 @@
 
 update webpreferences
 update service logos
-fix app restart issue
 
 ------------Notes-----------------
 main accent color:
