@@ -4,7 +4,7 @@ module.exports = [
     title: 'Netflix',
     logo: 'imgs/netflix.png',
     url: 'https://netflix.com/browse',
-    color: '#e50914',
+    color: '#E50914',
     style: {},
     permissions: []
   },
@@ -13,7 +13,7 @@ module.exports = [
     title: 'YouTube',
     logo: 'imgs/youtube.svg',
     url: 'https://youtube.com',
-    color: '#ff0000',
+    color: '#FF0000',
     style: {},
     permissions: []
   },
@@ -23,7 +23,7 @@ module.exports = [
     hidden: true,
     logo: 'imgs/youtube.svg',
     url: 'https://youtube.com/tv',
-    color: '#ff0000',
+    color: '#FF0000',
     style: {},
     userAgent: "Mozilla/5.0 (SMART-TV; LINUX; Tizen 5.0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/5.0 TV Safari/537.36",
     permissions: []
@@ -33,7 +33,7 @@ module.exports = [
     title: 'Twitch',
     logo: 'imgs/twitch.svg',
     url: 'https://twitch.tv',
-    color: '#6441a5',
+    color: '#6441A5',
     style: {},
     permissions: []
   },
@@ -42,7 +42,7 @@ module.exports = [
     title: 'Floatplane',
     logo: 'imgs/floatplane.svg',
     url: 'https://floatplane.com/',
-    color: '#00aeef',
+    color: '#00AEEF',
     style: {},
     userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
@@ -52,7 +52,7 @@ module.exports = [
     title: 'Hulu',
     logo: 'imgs/hulu.svg',
     url: 'https://www.hulu.com/',
-    color: '#1ce783',
+    color: '#1CE783',
     style: {},
     permissions: []
   },
@@ -79,7 +79,7 @@ module.exports = [
     title: 'Disney+',
     logo: 'imgs/disney+.svg',
     url: 'https://www.disneyplus.com/',
-    color: '#ffffff',
+    color: '#AEFDFE',
     style: {},
     permissions: []
   },
@@ -89,7 +89,7 @@ module.exports = [
     hidden: true,
     logo: 'imgs/cbs-all-access.png',
     url: 'https://www.cbs.com/all-access/',
-    color: '#4ca3dd',
+    color: '#4CA3DD',
     style: {},
     permissions: []
   },
@@ -99,7 +99,7 @@ module.exports = [
     hidden: true,
     logo: 'imgs/vudu.svg',
     url: 'https://vudu.com',
-    color: '#3399ff',
+    color: '#3399FF',
     style: {},
     permissions: []
   },
@@ -109,7 +109,27 @@ module.exports = [
     hidden: true,
     logo: 'imgs/crunchyroll.png',
     url: 'https://crunchyroll.com',
-    color: '#ffe600',
+    color: '#FFE600',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Apple Music',
+    title: 'Apple Music',
+    hidden: true,
+    logo: 'imgs/apple-music.svg',
+    url: 'https://music.apple.com',
+    color: '#AB0012',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Spotify',
+    title: 'Spotify',
+    hidden: true,
+    logo: 'imgs/spotify.png',
+    url: 'https://open.spotify.com',
+    color: '#1ED760',
     style: {},
     permissions: []
   },
@@ -138,7 +158,7 @@ module.exports = [
     hidden: true,
     logo: 'imgs/runtime_tv.webp',
     url: 'https://www.runtime.tv',
-    color: '#ffdd00',
+    color: '#FFDD00',
     style: {},
     permissions: []
   },
@@ -156,7 +176,7 @@ module.exports = [
     title: 'Vimeo',
     logo: 'imgs/vimeo.png',
     url: 'https://vimeo.com/watch',
-    color: '#1ab7ea',
+    color: '#1AB7EA',
     style: {},
     permissions: []
   },
@@ -176,7 +196,7 @@ module.exports = [
     hidden: true,
     logo: 'imgs/woolyss.svg',
     url: 'https://tools.woolyss.com/html5-audio-video-tester/',
-    color: '#811ac0',
+    color: '#811AC0',
     style: {},
     permissions: []
   },

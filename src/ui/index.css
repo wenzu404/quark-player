@@ -9,7 +9,7 @@ html {
 body {
   -webkit-app-region: drag;
   margin: 0;
-  background-color: rgba(52, 52, 52, 0.95);
+  background-color: rgba(52, 52, 52, 0.96);
   display: grid;
   height: 100vh;
   font-family: 'Roboto', sans-serif;
@@ -104,7 +104,7 @@ h3 {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  animation: ripple 0.8s 0.2s cubic-bezier(0.23, 1, 0.32, 1) infinite; /* easeOutQuint */
+  animation: ripple 0.75s 0.2s cubic-bezier(0.23, 1, 0.32, 1) infinite; /* easeOutQuint */
   background-color: white; /* will be replaced later by JS */
   z-index: -1;
   transform-origin: top left;
@@ -113,7 +113,7 @@ h3 {
 
 @keyframes ripple {
   from {
-    opacity: 0.8;
+    opacity: 1;
     transform: scale(0) translate(-50%, -50%);
   }
 

@@ -8,7 +8,7 @@ It also dynamically gets versions of stuff
 to inject into the about page.
 */
 
-const { app } = require('electron');
+// const { electron } = require('electron');
 const remote = require('@electron/remote');
 global.ipc = require('electron').ipcRenderer;
 

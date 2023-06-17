@@ -1,4 +1,4 @@
-const { Menu, shell, components, BrowserWindow, app, dialog } = require('electron');
+const { Menu, shell, BrowserWindow, app, dialog } = require('electron');
 const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
@@ -89,7 +89,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'New Window',
           accelerator: 'CmdorCtrl+N',
-          click(item) {
+          click() {
             app.emit('new-window');
           }
         },
@@ -145,7 +145,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Quit Quark Player',
           accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
           click() {
-            app.quit();
+            app.emit('exit');
           }
         },
       ]
@@ -375,7 +375,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'New Window',
           accelerator: 'CmdorCtrl+N',
-          click(item) {
+          click() {
             app.emit('new-window');
           }
         },
@@ -433,6 +433,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          type: 'separator'
+        },
+        {
           label: 'Open Electron DevTools',
           accelerator:
             process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12' || 'Ctrl+Shift+F12',
@@ -441,33 +444,48 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
-          type: 'separator'
-        },
-        {
-          label: 'View Humans.txt',
-          accelerator: 'CmdorCtrl+Alt+Shift+H',
-          click() {
-            const humansWindow = new BrowserWindow({width: 532, height: 628, title: "Humans.txt"});
-            humansWindow.loadFile('./ui/humans.txt');
-            electronLog.info('Opened humans.txt :)');
-          }
-        },
-        {
           label: 'Open chrome://gpu',
           accelerator: 'CmdorCtrl+Alt+G',
           click() {
             const gpuWindow = new BrowserWindow({width: 900, height: 700, title: "GPU Internals"});
-            electronLog.info('Opening chrome://gpu');
             gpuWindow.loadURL('chrome://gpu');
+            electronLog.info('Opened chrome://gpu');
           }
         },
         {
-          label: 'Relaunch App',
+          label: 'Open chrome://process-internals',
+          accelerator: 'CmdorCtrl+Alt+P',
+          click() {
+            const procsWindow = new BrowserWindow({width: 900, height: 700, title: "Process Model Internals"});
+            procsWindow.loadURL('chrome://process-internals');
+            electronLog.info('Opened chrome://process-internals');
+          }
+        },
+        {
+          label: 'Open chrome://media-internals',
+          accelerator: 'CmdorCtrl+Alt+M',
+          click() {
+            const mediaWindow = new BrowserWindow({width: 900, height: 700, title: "Media Internals"});
+            mediaWindow.loadURL('chrome://media-internals');
+            electronLog.info('Opened chrome://media-internals');
+          }
+        },
+        {
+          label: 'Open Test Image',
+          visible: process.env.QUARK_TEST === '1',
+          accelerator: 'CmdorCtrl+Alt+T',
+          click() {
+            const yiffWindow = new BrowserWindow({width: 700, height: 932, title: "Juno's Ass"});
+            electronLog.info('Opening test image')
+            //yiffWindow.loadFile('./ui/imgs/juno-ass.png');
+            yiffWindow.loadFile('./ui/yiff.html');
+          }
+        },
+        {
+          label: 'Restart App',
           click() {
             electronLog.warn('Restarting Electron...');
-            app.relaunch();
-            app.quit();
-            app.emit('relaunch');
+            app.emit('restart');
           }
         }
       ]
@@ -478,28 +496,39 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       submenu: [
         { label: 'Quark Player v' + app.getVersion(), enabled: false },
         { label: 'Created by Oscar Beaumont &&',
-            click() {
-            shell.openExternal(
-              'https://github.com/oscartbeaumont/ElectronPlayer#readme'
-            );
-            electronLog.info('Opened external browser');
+          click() {
+            //shell.openExternal(
+              //'https://github.com/oscartbeaumont/ElectronPlayer#readme'
+            //);
+            //electronLog.info('Opened external browser');
+            new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
           }
         },
         { label: 'Maintained by Alex313031',
-            click() {
-            shell.openExternal(
-              'https://github.com/Alex313031/quarkplayer#readme'
-            );
-            electronLog.info('Opened external browser');
+          click() {
+            //shell.openExternal(
+              //'https://github.com/Alex313031/quarkplayer#readme'
+            //);
+            //electronLog.info('Opened external browser');
+            new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quarkplayer#readme');
           }
         },
         {
           type: 'separator'
         },
         {
+          label: 'View Humans.txt',
+          accelerator: 'CmdorCtrl+Alt+Shift+H',
+          click() {
+            const humansWindow = new BrowserWindow({width: 532, height: 628, title: "humans.txt"});
+            humansWindow.loadFile('./ui/humans.txt');
+            electronLog.info('Opened humans.txt :)');
+          }
+        },
+        {
           label: 'About App',
           accelerator: 'CmdorCtrl+Alt+Shift+A',
-          click(item) {
+          click() {
             //mainWindow.webContents.loadFile('./ui/about.html');
             const aboutWindow = new BrowserWindow({
               width: 532,
