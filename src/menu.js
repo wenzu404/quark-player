@@ -473,7 +473,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Open Test Image',
           visible: process.env.QUARK_TEST === '1',
-          accelerator: 'CmdorCtrl+Alt+T',
           click() {
             const yiffWindow = new BrowserWindow({width: 700, height: 932, title: "Juno's Ass"});
             electronLog.info('Opening test image')
