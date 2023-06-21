@@ -18,6 +18,7 @@
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
     "build": "cross-env NODE_ENV=production electron-builder --dir",
     "dev": "cross-env QUARK_TEST=1 NODE_ENV=development electron src",
+    "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
     "dist-linux": "cross-env NODE_ENV=production electron-builder -l",
     "dist-win": "cross-env NODE_ENV=production electron-builder -w --pd dist/win-unpacked",
     "dist-mac": "cross-env NODE_ENV=production electron-builder -m --pd dist/mac-unpacked",
