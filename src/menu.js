@@ -134,8 +134,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Ctrl+Shift+O',
           click() {
             dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
-		    electronLog.info('Opened file:' + result.filePaths);
-		    var openURI = result.filePaths
+            electronLog.info('Opened file:' + result.filePaths);
+            var openURI = result.filePaths
             const openWindow = new BrowserWindow({
               webPreferences: {
                 nodeIntegration: false,
@@ -151,8 +151,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 nativeWindowOpen: true
               },
             });
-		    openWindow.loadFile(openURI[0]);
-		    openWindow.setTitle(openURI[0])});
+            openWindow.loadFile(openURI[0]);
+            openWindow.setTitle(openURI[0])});
           }
         },
         {
