@@ -133,13 +133,58 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         { label: 'Open File',
           accelerator: 'Ctrl+Shift+O',
           click() {
-            dialog.showOpenDialogSync(mainWindow, { properties: ['openFile'] }).then(result => {
-				mainWindow.loadFile(result)});
-            //mainWindow.loadFile
+            dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
+		    electronLog.info('Opened file:' + result.filePaths);
+		    var openURI = result.filePaths
+            const openWindow = new BrowserWindow({
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                sandbox: true,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                javascript: true,
+                plugins: true,
+                enableRemoteModule: false,
+                nativeWindowOpen: true
+              },
+            });
+		    openWindow.loadFile(openURI[0]);
+		    openWindow.setTitle(openURI[0])});
           }
         },
         {
           type: 'separator'
+        },
+        {
+          label: 'Shortcut Table',
+          accelerator: 'CmdorCtrl+Alt+H',
+          click() {
+            const helpWindow = new BrowserWindow({
+              width: 632,
+              height: 600,
+              title: "Quark Player Help",
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                sandbox: false,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                javascript: true,
+                plugins: true,
+                enableRemoteModule: true,
+                preload: path.join(__dirname, 'client-preload.js'),
+                nativeWindowOpen: true
+              },
+            });
+            require("@electron/remote/main").enable(helpWindow.webContents);
+            helpWindow.loadFile('./ui/help.html');
+            electronLog.info('Opened help.html');
+          }
         },
         {
           label: 'Quit Quark Player',
@@ -527,12 +572,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About App',
-          accelerator: 'CmdorCtrl+Alt+Shift+A',
+          accelerator: 'CmdorCtrl+Alt+A',
           click() {
-            //mainWindow.webContents.loadFile('./ui/about.html');
             const aboutWindow = new BrowserWindow({
               width: 532,
               height: 532,
+              title: "About Quark Player",
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
@@ -551,7 +596,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             require("@electron/remote/main").enable(aboutWindow.webContents);
             aboutWindow.loadFile('./ui/about.html');
             electronLog.info('Opened about.html');
-            electronLog.info(`App Version: ` + appVersion);
           }
         }
       ]

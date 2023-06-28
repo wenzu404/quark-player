@@ -3,6 +3,7 @@
 ## Table of contents
 
 1. [Development](development.md)
+2. [Keyboard Shortcuts](keyboard_shortcuts.md)
 2. [Usage](using.md)
 3. [Pain of Widevine](pain_of_widevine.md)
 
