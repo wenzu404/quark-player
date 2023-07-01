@@ -104,32 +104,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           type: 'separator'
         },
-        {
-          label: 'Open Custom URL',
-          accelerator: 'CmdOrCtrl+O',
-          click() {
-            prompt({
-              title: 'Open Custom URL (add https:// before URL)',
-              label: 'URL:',
-              inputAttrs: {
-                  type: 'url',
-                  placeholder: 'https://example.org'
-              },
-              alwaysOnTop: true
-          })
-          .then(inputtedURL => {
-            if (inputtedURL != null) {
-              if(inputtedURL == '') {
-                inputtedURL = 'https://example.org';
-              }
-
-              electronLog.info('Opening Custom URL: ' + inputtedURL);
-              mainWindow.loadURL(inputtedURL);
-            }
-          })
-          .catch(console.error);
-          }
-        },
         { label: 'Open File',
           accelerator: 'Ctrl+Shift+O',
           click() {
@@ -147,8 +121,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 devTools: true,
                 javascript: true,
                 plugins: true,
-                enableRemoteModule: false,
-                nativeWindowOpen: true
+                enableRemoteModule: true,
               },
             });
             openWindow.loadFile(openURI[0]);
@@ -178,7 +151,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 plugins: true,
                 enableRemoteModule: true,
                 preload: path.join(__dirname, 'client-preload.js'),
-                nativeWindowOpen: true
               },
             });
             require("@electron/remote/main").enable(helpWindow.webContents);
@@ -213,24 +185,25 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Open Custom URL',
           accelerator: 'CmdOrCtrl+O',
-          click() {
+          click(focusedWindow) {
             prompt({
-              title: 'Open Custom URL (add https:// before URL)',
+              title: 'Open Custom URL',
               label: 'URL:',
+              alwaysOnTop: true,
+              showWhenReady: true,
+              resizable: true,
+              menuBarVisible: true,
               inputAttrs: {
-                  type: 'url',
                   placeholder: 'https://example.org'
-              },
-              alwaysOnTop: true
+              }
           })
           .then(inputtedURL => {
             if (inputtedURL != null) {
               if(inputtedURL == '') {
                 inputtedURL = 'https://example.org';
               }
-
               electronLog.info('Opening Custom URL: ' + inputtedURL);
-              mainWindow.loadURL(inputtedURL);
+              focusedWindow.loadURL('https://' + inputtedURL);
             }
           })
           .catch(console.error);
@@ -289,7 +262,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Remember Window Details',
           type: 'checkbox',
-          click(e) {
+          click() {
             if (store.get('options.windowDetails')) {
               store.delete('options.windowDetails');
             } else {
@@ -590,7 +563,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 plugins: true,
                 enableRemoteModule: true,
                 preload: path.join(__dirname, 'client-preload.js'),
-                nativeWindowOpen: true
               },
             });
             require("@electron/remote/main").enable(aboutWindow.webContents);

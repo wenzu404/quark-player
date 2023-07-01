@@ -61,7 +61,7 @@ async function createWindow() {
       javascript: true,
       plugins: true,
       enableRemoteModule: true,
-      preload: path.join(__dirname, 'client-preload.js')
+      preload: path.join(__dirname, 'client-preload.js'),
     },
     trafficLightPosition: {
       x: 16,
@@ -296,7 +296,7 @@ contextMenu({
               devTools: true,
               javascript: true,
               plugins: true,
-              enableRemoteModule: true
+              enableRemoteModule: true,
             },
             darkTheme: true,
             vibrancy: 'ultra-dark'
@@ -323,7 +323,7 @@ contextMenu({
               devTools: true,
               javascript: true,
               plugins: true,
-              enableRemoteModule: true
+              enableRemoteModule: true,
             },
             darkTheme: true,
             vibrancy: 'ultra-dark'
