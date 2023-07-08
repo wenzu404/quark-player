@@ -10,6 +10,7 @@
 	Twitter: @alex313031
 	GitHub: @Alex313031
 	Email: alex313031@gmail.com
+	Website: https://thorium.rocks/
 	From: Oklahoma, US
 
 	Developer: Oscar Beaumont
@@ -17,6 +18,7 @@
 	Twitter: @oscartbeaumont
 	GitHub: @oscartbeaumont
 	Email: oscar@otbeaumont.me
+	Website: https://otbeaumont.me/
 	From: Australia
 
 /* THANKS */
@@ -29,7 +31,7 @@
 
 /* WEBUI */
 
-	Last update: 2023/07/01
+	Last update: 2023/07/07
 	Language: English
 	Doctype: HTML5, CSS, JSON
 	IDE: Geany

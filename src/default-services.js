@@ -38,13 +38,12 @@ module.exports = [
     permissions: []
   },
   {
-    name: 'Floatplane',
-    title: 'Floatplane',
-    logo: 'imgs/floatplane.svg',
-    url: 'https://floatplane.com/',
-    color: '#00AEEF',
+    name: 'Paramount Plus',
+    title: 'Paramount Plus',
+    logo: 'imgs/paramount_plus.png',
+    url: 'https://www.paramountplus.com/',
+    color: '#0264FF',
     style: {},
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
   },
   {
@@ -54,6 +53,16 @@ module.exports = [
     url: 'https://www.hulu.com/',
     color: '#1CE783',
     style: {},
+    permissions: []
+  },
+  {
+    name: 'Floatplane',
+    title: 'Floatplane',
+    logo: 'imgs/floatplane.svg',
+    url: 'https://floatplane.com/',
+    color: '#00AEEF',
+    style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
     permissions: []
   },
   {
@@ -68,7 +77,7 @@ module.exports = [
   {
     name: 'Amazon Prime Video',
     title: 'Amazon Prime Video',
-    logo: 'imgs/amazon-prime-video.svg',
+    logo: 'imgs/amazon_prime_video.svg',
     url: 'https://www.primevideo.com/',
     color: '#46ABE2',
     style: {},
@@ -87,7 +96,7 @@ module.exports = [
     name: 'CBS All Access',
     title: 'CBS All Access',
     hidden: true,
-    logo: 'imgs/cbs-all-access.png',
+    logo: 'imgs/cbs_all_access.png',
     url: 'https://www.cbs.com/all-access/',
     color: '#4CA3DD',
     style: {},
@@ -117,7 +126,7 @@ module.exports = [
     name: 'Apple Music',
     title: 'Apple Music',
     hidden: true,
-    logo: 'imgs/apple-music.svg',
+    logo: 'imgs/apple_music.svg',
     url: 'https://music.apple.com',
     color: '#AB0012',
     style: {},

@@ -1,11 +1,11 @@
 ----TODO----
 
 update service logos
+add paramount plus
 
 ------------Notes-----------------
-main accent color: TBD
+main accent color: #AE5EE0
 
-- Add Tests - once Electron versions are the same between Mac and Linux (They are now the same, now what?)
 - Add Dependency Updates Alerter Bot
 
 python3 -m castlabs_evs.vmp sign-pkg dist\win-unpacked
