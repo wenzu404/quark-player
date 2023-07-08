@@ -1,7 +1,6 @@
 ----TODO----
 
 update service logos
-add paramount plus
 
 ------------Notes-----------------
 main accent color: #AE5EE0
