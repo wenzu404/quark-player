@@ -1,13 +1,13 @@
 {
-  "electronVersion": "22.3.16",
+  "electronVersion": "22.3.17",
   "electronDownload": {
-    "version": "22.3.16+wvcus",
+    "version": "22.3.17+wvcus",
     "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
   },
   "asar": true,
   "productName": "Quark Player",
-  "generateUpdatesFilesForAllChannels": false,
   "appId": "com.alex313031.quarkplayer",
+  "generateUpdatesFilesForAllChannels": false,
   "directories": {
       "app": "./src",
       "buildResources": "build",
