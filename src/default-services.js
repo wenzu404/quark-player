@@ -58,6 +58,7 @@ module.exports = [
   {
     name: 'Floatplane',
     title: 'Floatplane',
+    hidden: true,
     logo: 'imgs/floatplane.svg',
     url: 'https://floatplane.com/',
     color: '#00AEEF',
@@ -123,11 +124,20 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Apple TV+',
+    title: 'Apple TV',
+    logo: 'imgs/apple_tv.svg',
+    url: 'https://tv.apple.com/',
+    color: '#DDDDDD',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Apple Music',
     title: 'Apple Music',
     hidden: true,
     logo: 'imgs/apple_music.svg',
-    url: 'https://music.apple.com',
+    url: 'https://music.apple.com/',
     color: '#AB0012',
     style: {},
     permissions: []
