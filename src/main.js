@@ -48,7 +48,7 @@ async function createWindow() {
     maximizable: true,
     width: 1024,
     height: 768,
-    icon: path.join(__dirname, 'icon64.png'),
+    icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,

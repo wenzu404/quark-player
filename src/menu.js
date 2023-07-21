@@ -549,7 +549,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click() {
             const aboutWindow = new BrowserWindow({
               width: 532,
-              height: 532,
+              height: 528,
               title: "About Quark Player",
               webPreferences: {
                 nodeIntegration: false,
