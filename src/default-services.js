@@ -40,6 +40,7 @@ module.exports = [
   {
     name: 'Paramount Plus',
     title: 'Paramount Plus',
+    hidden: true,
     logo: 'imgs/paramount_plus.png',
     url: 'https://www.paramountplus.com/',
     color: '#0264FF',
@@ -165,6 +166,7 @@ module.exports = [
   {
     name: 'Pluto TV',
     title: 'Pluto TV',
+    hidden: true,
     logo: 'imgs/pluto_tv.png',
     url: 'https://pluto.tv',
     color: '#FFFFFF',

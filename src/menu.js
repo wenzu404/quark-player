@@ -260,6 +260,20 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             : false
         },
         {
+          label: store.get('options.useLightMode') ? 'Use Dark Mode' : 'Use Light Mode',
+          type: 'checkbox',
+          accelerator: 'CmdorCtrl+Shift+D',
+          click(e) {
+            if (store.get('options.useLightMode')) {
+              store.set('options.useLightMode', false);
+            } else {
+              store.set('options.useLightMode', true);
+            }
+            app.emit('relaunch-confirm');
+          },
+          checked: false
+        },
+        {
           label: 'Remember Window Details',
           type: 'checkbox',
           click() {
@@ -538,7 +552,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: 532, height: 628, title: "humans.txt"});
+            const humansWindow = new BrowserWindow({width: 532, height: 632, title: "humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }

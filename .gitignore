@@ -1,5 +1,6 @@
 .DS_Store
 /dist/
+/test/
 node_modules
 thumbs.db
 

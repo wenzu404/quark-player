@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 const fs = require('fs'),
   path = require('path'),
-  { app, session, components, BrowserWindow, Menu, ipcMain, dialog } = require('electron'),
+  { app, session, components, BrowserWindow, nativeTheme, Menu, ipcMain, dialog } = require('electron'),
   contextMenu = require('electron-context-menu'),
   electronLog = require('electron-log'),
   Store = require('electron-store'),
@@ -70,8 +70,8 @@ async function createWindow() {
     // Window Styling
     transparent: process.platform === 'win32' ? false : true,
     autoHideMenuBar: false,
-    darkTheme: true,
-    vibrancy: 'ultra-dark',
+    darkTheme: store.get('options.useLightMode') ? false : true,
+    vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
     frame: store.get('options.pictureInPicture')
       ? false
       : !store.get('options.hideWindowFrame'),
@@ -175,6 +175,12 @@ async function createWindow() {
 
   // Create The Menubar
   Menu.setApplicationMenu(menu(store, global.services, mainWindow, app, defaultUserAgent));
+
+  if (store.get('options.useLightMode')) {
+    nativeTheme.themeSource = 'light';
+  } else {
+    nativeTheme.themeSource = 'dark';
+  }
 
   // Load the UI or the Default Service
   let defaultService = store.get('options.defaultService'),
@@ -298,8 +304,8 @@ contextMenu({
               plugins: true,
               enableRemoteModule: true,
             },
-            darkTheme: true,
-            vibrancy: 'ultra-dark'
+            darkTheme: store.get('options.useLightMode') ? false : true,
+            vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
           });
           const vidURL = parameters.srcURL;
        newWin.loadURL(vidURL);
@@ -325,8 +331,8 @@ contextMenu({
               plugins: true,
               enableRemoteModule: true,
             },
-            darkTheme: true,
-            vibrancy: 'ultra-dark'
+            darkTheme: store.get('options.useLightMode') ? false : true,
+            vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
           });
           const toURL = parameters.linkURL;
        newWin.loadURL(toURL);
@@ -358,7 +364,7 @@ function mainWindowClosed() {
 app.whenReady().then(async () => {
   // Initialize Widevine
   await components.whenReady();
-  console.log('WidevineCDM component ready!\n Info:', components.status());
+  console.log('WidevineCDM component ready.\n Info:', components.status(), '\n');
 
   // Show version
   electronLog.info(`Quark Player v` + appVersion);

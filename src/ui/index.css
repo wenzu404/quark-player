@@ -1,3 +1,44 @@
+@media (prefers-color-scheme: light) {
+  :root {
+    --bgcolor: rgba(232, 232, 232, 0.96);
+    --textcolor: #000;
+    --border: rgba(52, 52, 52, 0.96);
+    --service-hover: rgba(0, 0, 0, 0.1);
+    --service-active: rgba(32, 32, 32, 0.2);
+    --service-shadow: rgba(0, 0, 0, 0.3);
+    --h3-select: rgba(174, 94, 224, 1.00);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bgcolor: rgba(52, 52, 52, 0.96);
+    --textcolor: #fff;
+    --border: rgba(128, 128, 128, 0.96);
+    --service-hover: rgba(100, 100, 100, 0.1);
+    --service-active: rgba(132, 132, 132, 0.1);
+    --service-shadow: rgba(0, 0, 0, 0.4);
+    --h3-select: #AE5EE0;
+  }
+}
+:root.light {
+  --bgcolor: rgba(232, 232, 232, 0.96);
+  --textcolor: #000;
+  --border: rgba(52, 52, 52, 0.96);
+  --service-hover: rgba(0, 0, 0, 0.1);
+  --service-active: rgba(32, 32, 32, 0.2);
+  --service-shadow: rgba(0, 0, 0, 0.3);
+  --h3-select: rgba(174, 94, 224, 1.00);
+}
+:root.dark {
+  --bgcolor: rgba(52, 52, 52, 0.96);
+  --textcolor: #fff;
+  --border: rgba(128, 128, 128, 0.96);
+  --service-hover: rgba(100, 100, 100, 0.1);
+  --service-active: rgba(132, 132, 132, 0.1);
+  --service-shadow: rgba(0, 0, 0, 0.4);
+  --h3-select: #AE5EE0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -9,7 +50,7 @@ html {
 body {
   -webkit-app-region: drag;
   margin: 0;
-  background-color: rgba(52, 52, 52, 0.96);
+  background-color: var(--bgcolor);
   display: grid;
   height: 100vh;
   font-family: 'Roboto', sans-serif;
@@ -30,8 +71,8 @@ h3 {
   min-height: 200px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  border: 1px solid #222222;
-  box-shadow: 1px 30px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  box-shadow: 1px 30px 30px var(--service-shadow);
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
@@ -58,11 +99,11 @@ h3 {
 }
 
 .services > .service:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--service-hover);
 }
 
 .services > .service:active {
-  background-color: rgba(128, 128, 128, 0.1);
+  background-color: var(--service-active);
 }
 
 .services > .service > img,
@@ -82,13 +123,13 @@ h3 {
   margin: 0;
   padding-top: 5px;
   text-align: center;
-  color: white;
+  color: var(--textcolor);
   -webkit-user-drag: none;
   -webkit-app-region: no-drag;
 }
 
 .services > .service:active > .h3select {
-  color: #AE5EE0
+  color: #6c00b0;
 }
 
 .loader {
