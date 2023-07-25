@@ -509,7 +509,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           visible: process.env.QUARK_TEST === '1',
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           click() {
-            const yiffWindow = new BrowserWindow({width: isWin ? 700 : 700, height: isWin ? 946 : 932, title: "Juno's Ass"});
+            const yiffWindow = new BrowserWindow({width: isWin ? 700 : 700, height: isWin ? 950 : 932, title: "Juno's Ass"});
             electronLog.info('Opening test image')
             //yiffWindow.loadFile('./ui/imgs/juno-ass.png');
             yiffWindow.loadFile('./ui/yiff.html');
