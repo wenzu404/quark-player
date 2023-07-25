@@ -8,8 +8,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var servicesMenuItems = [];
   var defaultServiceMenuItems = [];
   var enabledServicesMenuItems = [];
-  // Get app version from package.json
-  var appVersion = app.getVersion();
   // Enable remote module on sub-windows
   require("@electron/remote/main").enable(mainWindow.webContents);
 
@@ -139,6 +137,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 632,
               height: 600,
               title: "Quark Player Help",
+              icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
@@ -542,7 +541,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               //'https://github.com/Alex313031/quarkplayer#readme'
             //);
             //electronLog.info('Opened external browser');
-            new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quarkplayer#readme');
+            new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quark-player#readme');
           }
         },
         {
@@ -552,7 +551,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: 532, height: 628, title: "humans.txt"});
+            const humansWindow = new BrowserWindow({width: 532, height: 632, title: "humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
@@ -563,8 +562,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click() {
             const aboutWindow = new BrowserWindow({
               width: 532,
-              height: 528,
+              height: 532,
               title: "About Quark Player",
+              icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
