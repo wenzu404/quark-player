@@ -26,6 +26,7 @@ require('@electron/remote/main').initialize();
 // Create Global Varibles
 let mainWindow; // Global Windows Object
 let mainActivated; // Global activate? Object
+let argsCmd = process.argv[2]; // Global cmdline object.
 const menu = require('./menu');
 const store = new Store();
 
@@ -39,6 +40,11 @@ try {
 
 // Export app version from package.json
 var appVersion = app.getVersion();
+// Export Electron versions
+const electronVer = process.versions.electron;
+const chromeVer = process.versions.chrome;
+const nodeVer = process.versions.node;
+const v8Ver = process.versions.v8;
 
 // Globally export whether we are on Windows or not
 const isWin = process.platform === 'win32';
@@ -365,6 +371,16 @@ function mainWindowClosed() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.whenReady().then(async () => {
+  // Show versions
+  if (process.argv.includes('--version') || process.argv.includes('-v')) {
+    console.log(`\n  Quark Player Version: ` + appVersion);
+    console.log(`  Electron Version: ` + electronVer);
+    console.log(`  Chrome Version: ` + chromeVer);
+    console.log(`  NodeJS Version: ` + nodeVer);
+    console.log(`  V8 Version: ` + v8Ver + '\n');
+    app.quit();
+  } else {
+
   // Initialize Widevine
   await components.whenReady();
   console.log('WidevineCDM component ready.\n Info:', components.status(), '\n');
@@ -374,6 +390,7 @@ app.whenReady().then(async () => {
   // The timeout fixes the trasparent background on Linux ???? why
   //setTimeout(createWindow, 500);
   createWindow();
+  }
 });
 
 //app.commandLine.appendSwitch('no-sandbox');

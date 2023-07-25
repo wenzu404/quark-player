@@ -202,6 +202,16 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Dailymotion',
+    title: 'Dailymotion',
+    hidden: true,
+    logo: 'imgs/dailymotion.svg',
+    url: 'https://www.dailymotion.com/',
+    color: '#FFFFFF',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Bitmovin',
     title: 'Bitmovin (for testing Widevine)',
     hidden: true,
