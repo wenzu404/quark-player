@@ -509,7 +509,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           visible: process.env.QUARK_TEST === '1',
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           click() {
-            const yiffWindow = new BrowserWindow({width: 700, height: 932, title: "Juno's Ass"});
+            const yiffWindow = new BrowserWindow({width: isWin ? 702 : 700, height: isWin ? 938 : 932, title: "Juno's Ass"});
             electronLog.info('Opening test image')
             //yiffWindow.loadFile('./ui/imgs/juno-ass.png');
             yiffWindow.loadFile('./ui/yiff.html');
@@ -554,7 +554,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 632 : 618, title: "humans.txt"});
+            const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 634 : 618, title: "humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
