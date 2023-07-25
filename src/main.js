@@ -40,15 +40,18 @@ try {
 // Export app version from package.json
 var appVersion = app.getVersion();
 
+// Globally export whether we are on Windows or not
+const isWin = process.platform === 'win32';
+
 async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     title: 'Quark Player',
     resizable: true,
     maximizable: true,
-    width: 1024,
-    height: 768,
-    icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+    width: isWin ? 1032 : 1024,
+    height: isWin ? 776 : 768,
+    icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
@@ -68,7 +71,7 @@ async function createWindow() {
       y: 16,
     },
     // Window Styling
-    transparent: process.platform === 'win32' ? false : true,
+    transparent: isWin ? false : true,
     autoHideMenuBar: false,
     darkTheme: store.get('options.useLightMode') ? false : true,
     vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',

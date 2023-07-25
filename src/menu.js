@@ -8,6 +8,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var servicesMenuItems = [];
   var defaultServiceMenuItems = [];
   var enabledServicesMenuItems = [];
+  
+  // Globally export whether we are on Windows or not
+  const isWin = process.platform === 'win32';
   // Enable remote module on sub-windows
   require("@electron/remote/main").enable(mainWindow.webContents);
 
@@ -551,7 +554,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: 532, height: 632, title: "humans.txt"});
+            const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 632 : 618, title: "humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
@@ -561,8 +564,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+A',
           click() {
             const aboutWindow = new BrowserWindow({
-              width: 532,
-              height: 532,
+              width: isWin ? 532 : 532,
+              height: isWin ? 528 : 508,
               title: "About Quark Player",
               icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
