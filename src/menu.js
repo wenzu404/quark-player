@@ -245,6 +245,48 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           submenu: enabledServicesMenuItems
         },
         {
+          label: 'Default Service',
+          submenu: [
+            {
+              label: 'Menu',
+              type: 'checkbox',
+              click(e) {
+                e.menu.items.forEach(e => {
+                  if (!(e.label === 'Menu')) e.checked = false;
+                });
+                store.delete('options.defaultService');
+              },
+              checked: store.get('options.defaultService') === undefined
+            },
+            {
+              label: 'Last Opened Page',
+              type: 'checkbox',
+              click(e) {
+                e.menu.items.forEach(e => {
+                  if (!(e.label === 'Last Opened Page')) e.checked = false;
+                });
+                store.set('options.defaultService', 'lastOpenedPage');
+              },
+              checked: store.get('options.defaultService') === 'lastOpenedPage'
+            },
+            { type: 'separator' }
+          ].concat(defaultServiceMenuItems)
+        },
+        {
+          label: store.get('options.useLightMode') ? 'Use Dark Mode' : 'Use Light Mode',
+          type: 'checkbox',
+          accelerator: 'CmdorCtrl+Shift+D',
+          click(e) {
+            if (store.get('options.useLightMode')) {
+              store.set('options.useLightMode', false);
+            } else {
+              store.set('options.useLightMode', true);
+            }
+            app.emit('relaunch-confirm');
+          },
+          checked: false
+        },
+        {
           label: 'Always On Top',
           type: 'checkbox',
           click(e) {
@@ -264,20 +306,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           checked: store.get('options.hideWindowFrame')
             ? store.get('options.hideWindowFrame')
             : false
-        },
-        {
-          label: store.get('options.useLightMode') ? 'Use Dark Mode' : 'Use Light Mode',
-          type: 'checkbox',
-          accelerator: 'CmdorCtrl+Shift+D',
-          click(e) {
-            if (store.get('options.useLightMode')) {
-              store.set('options.useLightMode', false);
-            } else {
-              store.set('options.useLightMode', true);
-            }
-            app.emit('relaunch-confirm');
-          },
-          checked: false
         },
         {
           label: 'Remember Window Details',
@@ -312,34 +340,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           checked: store.get('options.launchFullscreen')
             ? store.get('options.launchFullscreen')
             : false
-        },
-        {
-          label: 'Default Service',
-          submenu: [
-            {
-              label: 'Menu',
-              type: 'checkbox',
-              click(e) {
-                e.menu.items.forEach(e => {
-                  if (!(e.label === 'Menu')) e.checked = false;
-                });
-                store.delete('options.defaultService');
-              },
-              checked: store.get('options.defaultService') === undefined
-            },
-            {
-              label: 'Last Opened Page',
-              type: 'checkbox',
-              click(e) {
-                e.menu.items.forEach(e => {
-                  if (!(e.label === 'Last Opened Page')) e.checked = false;
-                });
-                store.set('options.defaultService', 'lastOpenedPage');
-              },
-              checked: store.get('options.defaultService') === 'lastOpenedPage'
-            },
-            { type: 'separator' }
-          ].concat(defaultServiceMenuItems)
         },
         {
           label: 'Edit Config File',
