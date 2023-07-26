@@ -41,9 +41,11 @@
       "Icon": "quark-player"
     }
   },
+  "afterPack": "./build/afterPack.js",
   "win": {
     "target": [
       "zip",
+      "portable",
       "nsis"
     ],
     "publisherName": "Alex313031",

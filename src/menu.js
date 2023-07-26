@@ -452,6 +452,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'Reload F5',
+          accelerator:  'F5',
+          visible: false,
+          acceleratorWorksWhenHidden: true,
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.reload();
+          }
+        },
+        {
           label: 'Force Reload',
           accelerator: 'CmdOrCtrl+Shift+R',
           click(item, focusedWindow) {
@@ -472,7 +481,16 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Open Electron DevTools',
           accelerator:
-            process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12' || 'Ctrl+Shift+F12',
+            process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12',
+          click(item, focusedWindow) {
+            focusedWindow.openDevTools({ mode: 'detach' });
+          }
+        },
+        {
+          label: 'Open Electron DevTools Extra',
+          accelerator: 'Ctrl+Shift+F12',
+          visible: false,
+          acceleratorWorksWhenHidden: true,
           click(item, focusedWindow) {
             focusedWindow.openDevTools({ mode: 'detach' });
           }
@@ -508,6 +526,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open Test Image',
           visible: process.env.QUARK_TEST === '1',
           accelerator: 'CmdorCtrl+Alt+Shift+T',
+          acceleratorWorksWhenHidden: false,
           click() {
             const yiffWindow = new BrowserWindow({width: isWin ? 600 : 600, height: isWin ? 848 : 818, title: "Juno's Ass"});
             electronLog.info('Opening test image')
