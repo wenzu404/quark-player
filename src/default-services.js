@@ -54,6 +54,7 @@ module.exports = [
     url: 'https://www.hulu.com/',
     color: '#1CE783',
     style: {},
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
     permissions: []
   },
   {
@@ -64,7 +65,7 @@ module.exports = [
     url: 'https://floatplane.com/',
     color: '#00AEEF',
     style: {},
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.167 Safari/537.36",
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
     permissions: []
   },
   {
