@@ -9,7 +9,7 @@ exports.default = function (context) {
   } else if (process.platform == 'win32') {
     // Sign for VMP via EVS
     console.log('  • VMP signing start...')
-      execSync('python3 -m castlabs_evs.vmp sign-pkg ./win-unpacked')
+      execSync('python3 -m castlabs_evs.vmp sign-pkg ./dist/win-unpacked')
     console.log('  • VMP signing complete')
   } else {
     // Sign for VMP via EVS
