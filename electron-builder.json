@@ -41,7 +41,6 @@
       "Icon": "quark-player"
     }
   },
-  "afterPack": "./build/afterPack.js",
   "win": {
     "target": [
       "zip",
