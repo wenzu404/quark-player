@@ -2,11 +2,11 @@
   "name": "quark-player",
   "appName": "quark-player",
   "productName": "Quark Player",
-  "version": "3.1.10",
+  "version": "3.1.11",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./main.js",
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "scripts": {
     "start": "electron .",
@@ -34,7 +34,7 @@
     "eslint-plugin-css": "0.8.1",
     "patch-package": "6.5.1",
     "postinstall-postinstall": "2.1.0",
-    "rimraf": "4.4.1"
+    "rimraf": "3.0.2"
   },
   "dependencies": {
     "@cliqz/adblocker": "1.26.6",
