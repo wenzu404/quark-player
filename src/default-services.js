@@ -69,6 +69,16 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Plex',
+    title: 'Plex',
+    hidden: true,
+    logo: 'imgs/plex.svg',
+    url: 'https://app.plex.tv/desktop/',
+    color: '#EBAF00',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'HBO Max',
     title: 'HBO Max',
     logo: 'imgs/hbo_max.svg',
