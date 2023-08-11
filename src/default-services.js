@@ -48,6 +48,16 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Curiosity Stream',
+    title: 'Curiosity Stream',
+    hidden: true,
+    logo: 'imgs/curiosity.svg',
+    url: 'https://curiositystream.com/',
+    color: '#EEA83D',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Hulu',
     title: 'Hulu',
     logo: 'imgs/hulu.svg',
