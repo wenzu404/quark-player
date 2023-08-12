@@ -57,6 +57,9 @@
     "deleteAppDataOnUninstall": false,
     "uninstallDisplayName": "Quark Player ${version}"
   },
+  "portable": {
+    "artifactName": "quark_player_portable_${version}_${arch}.${ext}",
+  },
   "mac": {
     "category": "public.app-category.navigation"
   }
