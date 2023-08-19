@@ -1,0 +1,2 @@
+codesign --sign - --force --deep dist/mac/Quark\ Player.app &&
+codesign --sign - --force --deep dist/mac-arm64/Quark\ Player.app
