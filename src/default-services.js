@@ -233,6 +233,16 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Starz',
+    title: 'Starz',
+    hidden: true,
+    logo: 'imgs/starz.svg',
+    url: 'https://www.starz.com/',
+    color: '#006576',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Bitmovin',
     title: 'Bitmovin (for testing Widevine)',
     hidden: true,

@@ -271,6 +271,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           type: 'separator'
+        },
+        {
+          label: 'Enable/Disable Services *',
+          submenu: enabledServicesMenuItems
+        },
+        {
+          type: 'separator'
         }
       ].concat(servicesMenuItems)
     },
@@ -300,10 +307,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           checked: store.get('options.adblock')
             ? store.get('options.adblock')
             : false
-        },
-        {
-          label: 'Enable/Disable Services *',
-          submenu: enabledServicesMenuItems
         },
         {
           label: 'Default Service',
@@ -590,7 +593,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           acceleratorWorksWhenHidden: false,
           click() {
-            const yiffWindow = new BrowserWindow({width: isWin ? 600 : 600, height: isWin ? 848 : 818, title: "Juno's Ass"});
+            const yiffWindow = new BrowserWindow({width: isWin ? 600 : 600, height: isWin ? 848 : 818, title: "Catgirl Fridge"});
             electronLog.info('Opening test image')
             //yiffWindow.loadFile('./ui/imgs/juno-ass.png');
             yiffWindow.loadFile('./ui/yiff.html');

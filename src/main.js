@@ -26,6 +26,7 @@ require('@electron/remote/main').initialize();
 // Create Global Varibles
 let mainWindow; // Global Windows Object
 let mainActivated; // Global activate? Object
+let mainNewActivated; // Global new window activate? Object
 let argsCmd = process.argv[2]; // Global cmdline object.
 const menu = require('./menu');
 const store = new Store();
@@ -479,7 +480,7 @@ async function createNewWindow() {
   mainWindow.webContents.on('dom-ready', browserWindowDomReady);
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', mainWindowClosed);
+  mainWindow.on('closed', mainNewWindowClosed);
 
   // Emitted when website requests permissions - Electron default allows any permission this restricts websites
   mainWindow.webContents.session.setPermissionRequestHandler(
@@ -507,6 +508,136 @@ async function createNewWindow() {
       return callback(false);
     }
   );
+}
+
+async function openHelpWindow() {
+  helpWindow = new BrowserWindow({
+    width: 632,
+    height: 600,
+    title: "Quark Player Help",
+    icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+    webPreferences: {
+      nodeIntegration: false,
+      nodeIntegrationInWorker: false,
+      contextIsolation: false,
+      sandbox: false,
+      experimentalFeatures: true,
+      webviewTag: true,
+      devTools: true,
+      javascript: true,
+      plugins: true,
+      enableRemoteModule: true,
+      preload: path.join(__dirname, 'client-preload.js'),
+    },
+  });
+  defaultUserAgent = helpWindow.webContents.userAgent;
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+  {
+  label: 'Quark Player',
+  submenu: [
+    {
+      label: 'Go Back',
+      accelerator: 'Alt+Left',
+      click(item) {
+        helpWindow.webContents.goBack();
+        electronLog.info('Navigated back');
+      }
+    },
+    {
+      label: 'Go Forward',
+      accelerator: 'Alt+Right',
+      click(item) {
+        helpWindow.webContents.goForward();
+        electronLog.info('Navigated forward');
+      }
+    },
+    {
+      label: 'Close Window',
+      accelerator: 'CmdorCtrl+W',
+      click(item) {
+        helpWindow.close();
+        electronLog.info('Closed help window');
+      }
+    },
+    {
+      type: 'separator',
+    },
+    {
+      label: 'Quit Quark Player',
+      accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
+      click() {
+        app.quit();
+      }
+    }]
+  },
+  {
+  role: 'help',
+  label: 'About',
+  submenu: [
+    { label: 'Quark Player v' + app.getVersion(), enabled: false },
+    { label: 'Created by Oscar Beaumont &&',
+      click() {
+        new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+      }
+    },
+    { label: 'Maintained by Alex313031',
+      click() {
+        new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quark-player#readme');
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'View Humans.txt',
+      accelerator: 'CmdorCtrl+Alt+Shift+H',
+      click() {
+        const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 642 : 624, title: "humans.txt"});
+        humansWindow.loadFile('./ui/humans.txt');
+        electronLog.info('Opened humans.txt :)');
+      }
+    },
+    {
+      label: 'View License',
+      accelerator: 'CmdorCtrl+Alt+Shift+L',
+      click() {
+        const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 632 : 614, title: "License"});
+        humansWindow.loadFile('./ui/license.md');
+        electronLog.info('Opened license.md');
+      }
+    },
+    {
+      label: 'About App',
+      accelerator: 'CmdorCtrl+Alt+A',
+      click() {
+        const aboutWindow = new BrowserWindow({
+          width: isWin ? 532 : 532,
+          height: isWin ? 528 : 508,
+          title: "About Quark Player",
+          icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+          webPreferences: {
+            nodeIntegration: false,
+            nodeIntegrationInWorker: false,
+            contextIsolation: false,
+            sandbox: false,
+            experimentalFeatures: true,
+            webviewTag: true,
+            devTools: true,
+            javascript: true,
+            plugins: true,
+            enableRemoteModule: true,
+            preload: path.join(__dirname, 'client-preload.js'),
+          },
+        });
+        require("@electron/remote/main").enable(aboutWindow.webContents);
+        aboutWindow.loadFile('./ui/about.html');
+        electronLog.info('Opened about.html');
+      }
+    }]}
+  ]));
+  require("@electron/remote/main").enable(helpWindow.webContents);
+  helpWindow.loadFile('./ui/help.html');
+  electronLog.info('Opened help.html');
 }
 
 contextMenu({
@@ -598,6 +729,10 @@ function mainWindowClosed() {
   mainActivated = null;
 }
 
+function mainNewWindowClosed() {
+  mainNewActivated = null;
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.whenReady().then(async () => {
@@ -605,10 +740,13 @@ app.whenReady().then(async () => {
   if (process.argv.includes('--version') || process.argv.includes('-v')) {
     console.log(`\n  Quark Player Version: ` + appVersion);
     console.log(`  Electron Version: ` + electronVer);
-    console.log(`  Chrome Version: ` + chromeVer);
+    console.log(`  Chromium Version: ` + chromeVer);
     console.log(`  NodeJS Version: ` + nodeVer);
     console.log(`  V8 Version: ` + v8Ver + '\n');
     app.quit();
+  } else if (process.argv.includes('--help') || process.argv.includes('-h')) {
+    electronLog.info('Opening Help');
+    openHelpWindow();
   } else {
 
   // Initialize Widevine
