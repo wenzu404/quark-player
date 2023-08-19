@@ -63,13 +63,6 @@
   "mac": {
     "category": "public.app-category.entertainment",
     "icon": "build/icon.icns",
-    "darkModeSupport": true,
-    "target": {
-      "target": "default",
-      "arch": [
-        "x64",
-        "arm64"
-      ]
-    }
+    "darkModeSupport": true
   }
 }
