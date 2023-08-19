@@ -63,6 +63,12 @@
   "mac": {
     "category": "public.app-category.entertainment",
     "icon": "build/icon.icns",
-    "darkModeSupport": true
+    "darkModeSupport": true,
+    "artifactName": "quark_player_${version}_macos_${arch}.${ext}",
+    "target": [
+      "dmg",
+      "pkg",
+      "zip"
+    ]
   }
 }
