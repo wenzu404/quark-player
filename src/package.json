@@ -28,7 +28,7 @@
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
-    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.20+wvcus",
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.21+wvcus",
     "electron-builder": "23.6.0",
     "eslint": "8.42.0",
     "eslint-plugin-css": "0.8.1",
@@ -52,6 +52,6 @@
     "node-fetch": "2.6.12"
   },
   "resolutions": {
-    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.20+wvcus"
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.21+wvcus"
   }
 }
