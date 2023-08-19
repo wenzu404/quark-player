@@ -67,7 +67,6 @@
     "artifactName": "quark_player_${version}_macos_${arch}.${ext}",
     "target": [
       "dmg",
-      "pkg",
       "zip"
     ]
   }
