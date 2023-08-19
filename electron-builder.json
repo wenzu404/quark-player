@@ -61,6 +61,14 @@
     "artifactName": "quark_player_portable_${version}_${arch}.${ext}",
   },
   "mac": {
-    "category": "public.app-category.navigation"
+    "category": "public.app-category.entertainment",
+    "darkModeSupport": true,
+    "target": {
+      "target": "default",
+      "arch": [
+        "x64",
+        "arm64"
+      ]
+    }
   }
 }

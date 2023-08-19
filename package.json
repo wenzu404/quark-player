@@ -18,8 +18,6 @@
     "distclean": "rimraf dist",
     "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
     "build": "cross-env NODE_ENV=production electron-builder --dir",
-    "buildMac": "cross-env NODE_ENV=production electron-builder -m --x64 --dir",
-    "buildMacArm": "cross-env NODE_ENV=production electron-builder -m --arm64 --dir",
     "dev": "cross-env QUARK_TEST=1 NODE_ENV=development electron --user-data-dir=./test src",
     "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
     "distLinux": "cross-env NODE_ENV=production electron-builder -l",
