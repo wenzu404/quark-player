@@ -198,7 +198,7 @@ module.exports = [
     name: 'Runtime TV',
     title: 'Runtime TV',
     hidden: true,
-    logo: 'imgs/runtime_tv.webp',
+    logo: 'imgs/runtime_tv.png',
     url: 'https://www.runtime.tv',
     color: '#FFDD00',
     style: {},

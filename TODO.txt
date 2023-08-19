@@ -1,6 +1,6 @@
 ----TODO----
 
-update service logos
+update service logos : partially completed
 
 ------------Notes-----------------
 main accent color: #AE5EE0

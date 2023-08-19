@@ -10,7 +10,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var enabledServicesMenuItems = [];
   
   // Globally export whether we are on Windows or not
+  const isLinux = process.platform === 'linux';
   const isWin = process.platform === 'win32';
+  const isMac = process.platform === 'darwin';
   // Enable remote module on sub-windows
   require("@electron/remote/main").enable(mainWindow.webContents);
 
@@ -130,6 +132,33 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'Open Custom URL',
+          accelerator: 'CmdOrCtrl+O',
+          click(item, focusedWindow) {
+            prompt({
+              title: 'Open Custom URL',
+              label: 'URL:',
+              alwaysOnTop: true,
+              showWhenReady: true,
+              resizable: true,
+              menuBarVisible: true,
+              inputAttrs: {
+                  placeholder: 'https://example.org'
+              }
+          })
+          .then(inputtedURL => {
+            if (inputtedURL != null) {
+              if(inputtedURL == '') {
+                inputtedURL = 'https://example.org';
+              }
+              electronLog.info('Opening Custom URL: ' + inputtedURL);
+              focusedWindow.loadURL('https://' + inputtedURL);
+            }
+          })
+          .catch(console.error);
+          }
+        },
+        {
           type: 'separator'
         },
         {
@@ -161,6 +190,38 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'About Quark Player',
+          accelerator: 'CmdorCtrl+Alt+A',
+          visible: isMac ? true : false,
+          click() {
+            const aboutWindow = new BrowserWindow({
+              width: isWin ? 532 : 532,
+              height: isWin ? 528 : 508,
+              title: "About Quark Player",
+              icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                sandbox: false,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                javascript: true,
+                plugins: true,
+                enableRemoteModule: true,
+                preload: path.join(__dirname, 'client-preload.js'),
+              },
+            });
+            require("@electron/remote/main").enable(aboutWindow.webContents);
+            aboutWindow.loadFile('./ui/about.html');
+            electronLog.info('Opened about.html');
+          }
+        },
+        {
+          type: 'separator',
+        },
+        {
           label: 'Quit Quark Player',
           accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
           click() {
@@ -182,12 +243,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
-          type: 'separator'
-        },
-        {
           label: 'Open Custom URL',
           accelerator: 'CmdOrCtrl+O',
-          click(focusedWindow) {
+          click(item, focusedWindow) {
             prompt({
               title: 'Open Custom URL',
               label: 'URL:',
@@ -210,6 +268,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           })
           .catch(console.error);
           }
+        },
+        {
+          type: 'separator'
         }
       ].concat(servicesMenuItems)
     },
@@ -342,12 +403,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             : false
         },
         {
-          label: 'Edit Config File',
-          click() {
-            store.openInEditor();
-          }
-        },
-        {
           label: 'Reset all Settings *',
           click() {
             // Reset Config
@@ -468,6 +523,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'Edit Config File',
+          click() {
+            store.openInEditor();
+            electronLog.info('Editing Config File');
+          }
+        },
+        {
           label: 'Toggle Developer Tools',
           accelerator:
             process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
@@ -576,6 +638,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 642 : 624, title: "humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
+          }
+        },
+        {
+          label: 'View License',
+          accelerator: 'CmdorCtrl+Alt+Shift+L',
+          click() {
+            const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 632 : 614, title: "License"});
+            humansWindow.loadFile('./ui/license.md');
+            electronLog.info('Opened license.md');
           }
         },
         {
