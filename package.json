@@ -23,8 +23,7 @@
     "dev": "cross-env QUARK_TEST=1 NODE_ENV=development electron --user-data-dir=./test src",
     "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
     "distLinux": "cross-env NODE_ENV=production electron-builder -l",
-    "distWin": "cross-env NODE_ENV=production electron-builder -w --pd dist/win-unpacked",
-    "distWin-32": "cross-env NODE_ENV=production electron-builder -w --pd dist/win-ia32-unpacked",
+    "distWin": "cross-env NODE_ENV=production electron-builder -w --x64 --pd dist/win-unpacked && cross-env NODE_ENV=production electron-builder -w --ia32 --pd dist/win-ia32-unpacked",
     "distMac": "cross-env NODE_ENV=production electron-builder -m --x64 --pd dist/mac && cross-env NODE_ENV=production electron-builder -m --arm64 --pd dist/mac-arm64",
     "sign": "python3 -m castlabs_evs.vmp sign-pkg dist/win-unpacked",
     "postinstall": "patch-package && electron-builder install-app-deps"
