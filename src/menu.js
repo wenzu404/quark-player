@@ -9,7 +9,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var defaultServiceMenuItems = [];
   var enabledServicesMenuItems = [];
   
-  // Globally export whether we are on Windows or not
+  // Globally export what OS we are on
   const isLinux = process.platform === 'linux';
   const isWin = process.platform === 'win32';
   const isMac = process.platform === 'darwin';
@@ -135,6 +135,11 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open Custom URL',
           accelerator: 'CmdOrCtrl+O',
           click(item, focusedWindow) {
+            if (store.get('options.customOmitHttps')) {
+              examplePlaceholder = 'https://example.org';
+            } else {
+              examplePlaceholder = 'example.org';
+            }
             prompt({
               title: 'Open Custom URL',
               label: 'URL:',
@@ -143,16 +148,28 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               resizable: true,
               menuBarVisible: true,
               inputAttrs: {
-                  placeholder: 'https://example.org'
+                  placeholder: examplePlaceholder
               }
           })
           .then(inputtedURL => {
             if (inputtedURL != null) {
               if(inputtedURL == '') {
-                inputtedURL = 'https://example.org';
+                if (store.get('options.customOmitHttps')) {
+                  inputtedURL = 'https://example.org';
+                } else {
+                  inputtedURL = 'example.org';
+                }
               }
-              electronLog.info('Opening Custom URL: ' + inputtedURL);
-              focusedWindow.loadURL('https://' + inputtedURL);
+              if (store.get('options.customOmitHttps')) {
+                electronLog.info('Opening Custom URL: ' + inputtedURL);
+              } else {
+                electronLog.info('Opening Custom URL: ' + 'https://' + inputtedURL);
+              }
+              if (store.get('options.customOmitHttps')) {
+                focusedWindow.loadURL(inputtedURL);
+              } else {
+                focusedWindow.loadURL('https://' + inputtedURL);
+              }
             }
           })
           .catch(console.error);
@@ -246,6 +263,11 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open Custom URL',
           accelerator: 'CmdOrCtrl+O',
           click(item, focusedWindow) {
+            if (store.get('options.customOmitHttps')) {
+              examplePlaceholder = 'https://example.org';
+            } else {
+              examplePlaceholder = 'example.org';
+            }
             prompt({
               title: 'Open Custom URL',
               label: 'URL:',
@@ -254,16 +276,28 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               resizable: true,
               menuBarVisible: true,
               inputAttrs: {
-                  placeholder: 'https://example.org'
+                  placeholder: examplePlaceholder
               }
           })
           .then(inputtedURL => {
             if (inputtedURL != null) {
               if(inputtedURL == '') {
-                inputtedURL = 'https://example.org';
+                if (store.get('options.customOmitHttps')) {
+                  inputtedURL = 'https://example.org';
+                } else {
+                  inputtedURL = 'example.org';
+                }
               }
-              electronLog.info('Opening Custom URL: ' + inputtedURL);
-              focusedWindow.loadURL('https://' + inputtedURL);
+              if (store.get('options.customOmitHttps')) {
+                electronLog.info('Opening Custom URL: ' + inputtedURL);
+              } else {
+                electronLog.info('Opening Custom URL: ' + 'https://' + inputtedURL);
+              }
+              if (store.get('options.customOmitHttps')) {
+                focusedWindow.loadURL(inputtedURL);
+              } else {
+                focusedWindow.loadURL('https://' + inputtedURL);
+              }
             }
           })
           .catch(console.error);
@@ -335,6 +369,19 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             },
             { type: 'separator' }
           ].concat(defaultServiceMenuItems)
+        },
+        {
+          label: 'Omit https:// from Custom URL',
+          type: 'checkbox',
+          click(e) {
+            if (store.get('options.customOmitHttps')) {
+              store.set('options.customOmitHttps', false);
+            } else {
+              store.set('options.customOmitHttps', true);
+            }
+            // app.emit('relaunch-confirm');
+          },
+          checked: store.get('options.customOmitHttps')
         },
         {
           label: store.get('options.useLightMode') ? 'Use Dark Mode' : 'Use Light Mode',

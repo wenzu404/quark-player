@@ -47,8 +47,10 @@ const chromeVer = process.versions.chrome;
 const nodeVer = process.versions.node;
 const v8Ver = process.versions.v8;
 
-// Globally export whether we are on Windows or not
+// Globally export what OS we are on
+const isLinux = process.platform === 'linux';
 const isWin = process.platform === 'win32';
+const isMac = process.platform === 'darwin';
 
 async function createWindow() {
   // Create the browser window.
@@ -78,7 +80,7 @@ async function createWindow() {
       y: 16,
     },
     // Window Styling
-    transparent: isWin ? false : true,
+    transparent: isLinux ? true : false,
     autoHideMenuBar: false,
     darkTheme: store.get('options.useLightMode') ? false : true,
     vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
@@ -308,7 +310,7 @@ async function createNewWindow() {
       y: 16,
     },
     // Window Styling
-    transparent: isWin ? false : true,
+    transparent: isLinux ? true : false,
     autoHideMenuBar: false,
     darkTheme: store.get('options.useLightMode') ? false : true,
     vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
@@ -786,7 +788,7 @@ app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('gpu-no-context-lost');
 // Enable all WebGL Features
 app.commandLine.appendSwitch('enable-webgl-draft-extensions');
-// Transparent overlays for Promethium UI
+// Enable transparent overlays
 app.commandLine.appendSwitch('enable-transparent-visuals');
 
 // Enable native CPU-mappable GPU memory buffer support on Linux
