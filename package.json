@@ -2,7 +2,7 @@
   "name": "quark-player",
   "appName": "quark-player",
   "productName": "Quark Player",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
   "engines": {
@@ -20,7 +20,7 @@
     "build": "cross-env NODE_ENV=production electron-builder --dir",
     "buildWin": "cross-env NODE_ENV=production electron-builder -w --x64 --dir && cross-env NODE_ENV=production electron-builder -w --ia32 --dir",
     "buildMac": "cross-env NODE_ENV=production electron-builder -m --x64 --dir && cross-env NODE_ENV=production electron-builder -m --arm64 --dir",
-    "dev": "cross-env QUARK_TEST=1 NODE_ENV=development electron --user-data-dir=./test src",
+    "dev": "cross-env QUARK_TEST=1 NODE_ENV=development ELECTRON_ENABLE_LOGGING=1 electron --enable-logging=file --user-data-dir=./test src",
     "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
     "distLinux": "cross-env NODE_ENV=production electron-builder -l",
     "distWin": "cross-env NODE_ENV=production electron-builder -w --x64 --pd dist/win-unpacked && cross-env NODE_ENV=production electron-builder -w --ia32 --pd dist/win-ia32-unpacked",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
-    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.21+wvcus",
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.22+wvcus",
     "electron-builder": "23.6.0",
     "eslint": "8.42.0",
     "eslint-plugin-css": "0.8.1",
@@ -58,10 +58,9 @@
     "electron-log": "4.4.8",
     "electron-prompt": "1.7.0",
     "electron-store": "7.0.3",
-    "electron-tabs": "1.0.1",
     "node-fetch": "2.6.12"
   },
   "resolutions": {
-    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.21+wvcus"
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.22+wvcus"
   }
 }

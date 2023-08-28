@@ -647,10 +647,35 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'Disable Acceleration',
+          type: 'checkbox',
+          click(e) {
+            if (store.get('options.disableAcceleration')) {
+              store.set('options.disableAcceleration', false);
+            } else {
+              store.set('options.disableAcceleration', true);
+            }
+            app.emit('restart-confirm');
+          },
+          checked: store.get('options.disableAcceleration')
+        },
+        {
+          label: 'Enable Vulkan',
+          type: 'checkbox',
+          click(e) {
+            if (store.get('options.enableVulkan')) {
+              store.set('options.enableVulkan', false);
+            } else {
+              store.set('options.enableVulkan', true);
+            }
+            app.emit('restart-confirm');
+          },
+          checked: store.get('options.enableVulkan')
+        },
+        {
           label: 'Restart App',
           click() {
-            electronLog.warn('Restarting Electron...');
-            app.emit('restart');
+            app.emit('restart-confirm');
           }
         }
       ]

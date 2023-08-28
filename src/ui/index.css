@@ -1,3 +1,6 @@
+html {
+  font-family: 'Roboto', sans-serif;
+}
 @media (prefers-color-scheme: light) {
   :root {
     --bgcolor: rgba(232, 232, 232, 0.96);
@@ -38,15 +41,9 @@
   --service-shadow: rgba(0, 0, 0, 0.4);
   --h3-select: #8AB4F8;
 }
-
 * {
   box-sizing: border-box;
 }
-
-html {
-  font-family: 'Roboto', sans-serif;
-}
-
 body {
   -webkit-app-region: drag;
   margin: 0;
@@ -55,17 +52,14 @@ body {
   height: 100vh;
   font-family: 'Roboto', sans-serif;
 }
-
 body.loading .services {
   transform: scale(0);
   opacity: 0;
 }
-
 h3 {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
 }
-
 .services {
   width: 90%;
   min-height: 200px;
@@ -82,11 +76,9 @@ h3 {
   justify-content: space-around;
   transition: opacity 0.3s cubic-bezier(0.86, 0, 0.07, 1); /* easeInOutQuint */
 }
-
 .services.loading {
   opacity: 0;
 }
-
 .services > .service {
   flex: 1;
   padding: 30px 20px;
@@ -97,15 +89,12 @@ h3 {
   -webkit-user-drag: none;
   -webkit-app-region: no-drag;
 }
-
 .services > .service:hover {
   background-color: var(--service-hover);
 }
-
 .services > .service:active {
   background-color: var(--service-active);
 }
-
 .services > .service > img,
 .loader > img {
   margin: 0 auto;
@@ -118,7 +107,6 @@ h3 {
   -webkit-user-drag: none;
   -webkit-app-region: no-drag;
 }
-
 .services > .service > h3 {
   margin: 0;
   padding-top: 5px;
@@ -127,17 +115,14 @@ h3 {
   -webkit-user-drag: none;
   -webkit-app-region: no-drag;
 }
-
 .services > .service:active > .h3select {
   color: var(--h3-select);
 }
-
 .loader {
   position: fixed;
   transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1); /* easeOutQuint */
   z-index: 100;
 }
-
 .loader > .ripple {
   position: fixed;
   top: 50%;
@@ -151,7 +136,6 @@ h3 {
   transform-origin: top left;
   transform: scale(0) translate(-50%, -50%);
 }
-
 @keyframes ripple {
   from {
     opacity: 1;

@@ -731,6 +731,7 @@ function mainWindowClosed() {
   mainActivated = null;
 }
 
+// Run when a secondary window is closed. This cleans up the mainNewWindow object to save resources.
 function mainNewWindowClosed() {
   mainNewActivated = null;
 }
@@ -755,64 +756,130 @@ app.whenReady().then(async () => {
   await components.whenReady();
   console.log('WidevineCDM component ready.\n Info:', components.status(), '\n');
 
-  // Show version
-  electronLog.info(`Quark Player v` + appVersion);
+  // Show version info and acceleration/vulkan warnings if applicable
+  if (store.get('options.disableAcceleration')) {
+    electronLog.info(`Quark Player v` + appVersion);
+    electronLog.warn('NOTE: Running with acceleration disabled!');
+    if (store.get('options.enableVulkan')) {
+      electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+    }
+  } else {
+    electronLog.info(`Quark Player v` + appVersion);
+    if (store.get('options.enableVulkan')) {
+      electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+    }
+  }
+
   // The timeout fixes the trasparent background on Linux ???? why
   //setTimeout(createWindow, 500);
   createWindow();
   }
 });
 
-//app.commandLine.appendSwitch('no-sandbox');
-// Enable experimental web features
-//app.commandLine.appendSwitch('enable-experimental-web-platform-features');
-// Including new Canvas2D APIs
-app.commandLine.appendSwitch('new-canvas-2d-api');
-// These two allow easier local web development
-// Allow file:// URIs to read other file:// URIs
-app.commandLine.appendSwitch('allow-file-access-from-files');
-// Enable local DOM to access all resources in a tree
-app.commandLine.appendSwitch('enable-local-file-accesses');
-// Enable QUIC for faster handshakes
-app.commandLine.appendSwitch('enable-quic');
-// Enable inspecting ALL layers
-app.commandLine.appendSwitch('enable-ui-devtools');
-// Force enable GPU acceleration
-app.commandLine.appendSwitch('ignore-gpu-blocklist');
-// Force enable GPU rasterization
-app.commandLine.appendSwitch('enable-gpu-rasterization');
-// Enable Zero Copy for GPU memory associated with Tiles
-app.commandLine.appendSwitch('enable-zero-copy');
-// Inform GPU process that GPU context will not be lost in power saving modes
-// Useful for fixing blank or pink screens/videos upon system resume, etc
-app.commandLine.appendSwitch('gpu-no-context-lost');
-// Enable all WebGL Features
-app.commandLine.appendSwitch('enable-webgl-draft-extensions');
-// Enable transparent overlays
-app.commandLine.appendSwitch('enable-transparent-visuals');
+if (store.get('options.disableAcceleration')) {
+  // Enable new Canvas2D APIs
+  app.commandLine.appendSwitch('new-canvas-2d-api');
+  // These two allow easier local web development
+  // Allow file:// URIs to read other file:// URIs
+  app.commandLine.appendSwitch('allow-file-access-from-files');
+  // Enable local DOM to access all resources in a tree
+  app.commandLine.appendSwitch('enable-local-file-accesses');
+  // Enable QUIC for faster handshakes
+  app.commandLine.appendSwitch('enable-quic');
+  // Enable inspecting ALL layers
+  app.commandLine.appendSwitch('enable-ui-devtools');
+  // app.commandLine.appendSwitch('use-gl','desktop');
 
-// Enable native CPU-mappable GPU memory buffer support on Linux
-if (process.platform === 'linux') {
-  app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
-}
+  // Enable useful features
+  if (process.platform === 'linux') {
+    if (store.get('options.enableVulkan')) {
+      app.commandLine.appendSwitch(
+      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
+      );
+      app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
+    } else {
+      app.commandLine.appendSwitch(
+      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+      );
+      app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
+    }
+  } else {
+    // VAAPI is only applicable on linux so copy the above without the VAAPI flags
+    if (store.get('options.enableVulkan')) {
+      app.commandLine.appendSwitch(
+      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
+      );
+    } else {
+      app.commandLine.appendSwitch(
+      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+      );
+    }
+  }
+  // Enable remote debugging only if we in development mode
+  if (process.env.NODE_ENV === 'development') {
+    app.commandLine.appendSwitch('remote-debugging-port', '9222');
+  }
+} else {
+  // Force enable GPU acceleration
+  app.commandLine.appendSwitch('ignore-gpu-blocklist');
+  // Force enable GPU rasterization
+  app.commandLine.appendSwitch('enable-gpu-rasterization');
+  // Enable Zero Copy for GPU memory associated with Tiles
+  app.commandLine.appendSwitch('enable-zero-copy');
+  // Inform GPU process that GPU context will not be lost in power saving modes
+  // Useful for fixing blank or pink screens/videos upon system resume, etc
+  app.commandLine.appendSwitch('gpu-no-context-lost');
+  // Enable native CPU-mappable GPU memory buffer support on Linux
+  if (process.platform === 'linux') {
+    app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
+  }
+  // Enable transparent overlays
+  app.commandLine.appendSwitch('enable-transparent-visuals');
+  // Enable new Canvas2D APIs
+  app.commandLine.appendSwitch('new-canvas-2d-api');
+  // These two allow easier local web development
+  // Allow file:// URIs to read other file:// URIs
+  app.commandLine.appendSwitch('allow-file-access-from-files');
+  // Enable local DOM to access all resources in a tree
+  app.commandLine.appendSwitch('enable-local-file-accesses');
+  // Enable QUIC for faster handshakes
+  app.commandLine.appendSwitch('enable-quic');
+  // Enable inspecting ALL layers
+  app.commandLine.appendSwitch('enable-ui-devtools');
+  // Enable all WebGL Features
+  app.commandLine.appendSwitch('enable-webgl-draft-extensions');
+  // Enable WebGPU
+  app.commandLine.appendSwitch('enable-unsafe-webgpu');
+  // app.commandLine.appendSwitch('use-gl','desktop');
 
-// Enable useful features
-if (process.platform === 'linux') {
-  app.commandLine.appendSwitch(
-  'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks',
-  );
-  app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
-  //app.commandLine.appendSwitch('use-gl','desktop');
-}
-// VAAPI is only applicable on linux so copy above without vaapi flags
-if (process.platform === 'win32' || process.platform === 'darwin') {
-  app.commandLine.appendSwitch(
-  'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
-  );
-}
-
-if (process.env.NODE_ENV === 'development') {
-  app.commandLine.appendSwitch('remote-debugging-port', '9222');
+  // Enable useful features
+  if (process.platform === 'linux') {
+    if (store.get('options.enableVulkan')) {
+      app.commandLine.appendSwitch(
+      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,Vulkan',
+      );
+    } else {
+      app.commandLine.appendSwitch(
+      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks',
+      );
+    }
+    app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
+  } else {
+    // VAAPI is only applicable on linux so copy the above without the VAAPI flags
+    if (store.get('options.enableVulkan')) {
+      app.commandLine.appendSwitch(
+      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
+      );
+    } else {
+      app.commandLine.appendSwitch(
+      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+      );
+    }
+  }
+  // Enable remote debugging only if we in development mode
+  if (process.env.NODE_ENV === 'development') {
+    app.commandLine.appendSwitch('remote-debugging-port', '9222');
+  }
 }
 
 // This is a custom event that is used to relaunch the application.
@@ -830,12 +897,10 @@ app.on('relaunch', () => {
     size: mainWindow.getSize()
   });
 
-  // Destory the BrowserWindow
+  // Destroy the BrowserWindow
   mainWindow.webContents.removeListener('dom-ready', browserWindowDomReady);
-
   // Remove app Close listener
   mainWindow.removeListener('closed', mainWindowClosed);
-
   // Close App
   mainWindow.close();
   mainWindow = undefined;
@@ -845,14 +910,9 @@ app.on('relaunch', () => {
   createWindow();
 });
 
-// Full restart, quitting Electron. Triggered by developer menu
+// Full restart, quitting Electron. Triggered by developer menu and disabling acceleration
 app.on('restart', () => {
-  // Tell app we are going to relaunch
-  app.relaunch();
-  // Kill Electron to initiate the relaunch
-  app.quit();
-
-  // Ensure new BrowserWindow is created
+  electronLog.warn('Restarting Electron...');
   // Store details to remeber when relaunched
   if (mainWindow.getURL() != '') {
     store.set('relaunch.toPage', mainWindow.getURL());
@@ -862,19 +922,18 @@ app.on('restart', () => {
     size: mainWindow.getSize()
   });
 
-  // Destory the BrowserWindow
+  // Destroy the BrowserWindow
   mainWindow.webContents.removeListener('dom-ready', browserWindowDomReady);
-
   // Remove app Close listener
   mainWindow.removeListener('closed', mainWindowClosed);
-
   // Close App
   mainWindow.close();
-  mainWindow = undefined;
+  mainWindow = null;
 
-  // Create a New BrowserWindow
-  electronLog.info('Electron restarted! [ Loading main.js ]');
-  createWindow();
+  // Tell app we are going to relaunch
+  app.relaunch();
+  // Kill Electron to initiate the relaunch
+  app.quit();
 });
 
 // Fix bug in quitting after restarting
@@ -887,7 +946,7 @@ app.on('exit', () => {
 });
 
 // Dialog box asking if user really wants to relaunch app
-// Emitted from certain menu items that require an Electron restart
+// Emitted from certain menu items that require an BrowserWindow reload
 app.on('relaunch-confirm', () => {
     dialog.showMessageBox(mainWindow, {
         'type': 'question',
@@ -908,6 +967,32 @@ app.on('relaunch-confirm', () => {
               //app.relaunch();
               //app.quit();
               app.emit('relaunch');
+          }
+      })
+});
+
+// Dialog box asking if user really wants to restart app
+// Emitted from certain menu items that require an Electron restart
+app.on('restart-confirm', () => {
+    dialog.showMessageBox(mainWindow, {
+        'type': 'question',
+        'title': 'Restart Confirmation',
+        'message': "Are you sure you want to restart Quark Player?",
+        'buttons': [
+            'Yes',
+            'No'
+        ]
+    })
+      // Dialog returns a promise so let's handle it correctly
+      .then((result) => {
+          // Bail if the user pressed "No" or escaped (ESC) from the dialog box
+          if (result.response !== 0) { return; }
+          // Testing.
+          if (result.response === 0) {
+              //console.log('The "Yes" button was pressed (main process)');
+              //app.relaunch();
+              //app.quit();
+              app.emit('restart');
           }
       })
 });
