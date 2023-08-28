@@ -1,11 +1,11 @@
 html {
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --bgcolor: rgba(232, 232, 232, 0.96);
+    --bgcolor: rgba(232, 232, 232, 96%);
     --textcolor: #000;
-    --border: rgba(52, 52, 52, 0.96);
+    --border: rgba(52, 52, 52, 96%);
     --service-hover: rgba(0, 0, 0, 0.1);
     --service-active: rgba(32, 32, 32, 0.2);
     --service-shadow: rgba(0, 0, 0, 0.3);
@@ -14,9 +14,9 @@ html {
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bgcolor: rgba(52, 52, 52, 0.96);
+    --bgcolor: rgba(52, 52, 52, 96%);
     --textcolor: #fff;
-    --border: rgba(128, 128, 128, 0.96);
+    --border: rgba(128, 128, 128, 96%);
     --service-hover: rgba(100, 100, 100, 0.1);
     --service-active: rgba(132, 132, 132, 0.1);
     --service-shadow: rgba(0, 0, 0, 0.4);
@@ -24,18 +24,18 @@ html {
   }
 }
 :root.light {
-  --bgcolor: rgba(232, 232, 232, 0.96);
+  --bgcolor: rgba(232, 232, 232, 96%);
   --textcolor: #000;
-  --border: rgba(52, 52, 52, 0.96);
+  --border: rgba(52, 52, 52, 96%);
   --service-hover: rgba(0, 0, 0, 0.1);
   --service-active: rgba(32, 32, 32, 0.2);
   --service-shadow: rgba(0, 0, 0, 0.3);
   --h3-select: #0E7EEA;
 }
 :root.dark {
-  --bgcolor: rgba(52, 52, 52, 0.96);
+  --bgcolor: rgba(52, 52, 52, 96%);
   --textcolor: #fff;
-  --border: rgba(128, 128, 128, 0.96);
+  --border: rgba(128, 128, 128, 96%);
   --service-hover: rgba(100, 100, 100, 0.1);
   --service-active: rgba(132, 132, 132, 0.1);
   --service-shadow: rgba(0, 0, 0, 0.4);
@@ -50,14 +50,10 @@ body {
   background-color: var(--bgcolor);
   display: grid;
   height: 100vh;
-  font-family: 'Roboto', sans-serif;
-}
-body.loading .services {
-  transform: scale(0);
-  opacity: 0;
+  font-family: Roboto, sans-serif;
 }
 h3 {
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
   font-weight: 600;
 }
 .services {
@@ -67,14 +63,15 @@ h3 {
   border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: 1px 30px 30px var(--service-shadow);
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   transition: opacity 0.3s cubic-bezier(0.86, 0, 0.07, 1); /* easeInOutQuint */
+}
+body.loading .services {
+  transform: scale(0);
+  opacity: 0;
 }
 .services.loading {
   opacity: 0;
@@ -95,8 +92,9 @@ h3 {
 .services > .service:active {
   background-color: var(--service-active);
 }
-.services > .service > img,
-.loader > img {
+.loader > img,
+.services > .service > img
+ {
   margin: 0 auto;
   display: block;
   max-height: 128px;

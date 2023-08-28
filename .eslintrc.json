@@ -5,8 +5,7 @@
         "es2020": true,
         "node": true
     },
-    "plugins": [ "css" ],
-    "extends": [ "eslint:recommended", "plugin:css/recommended" ],
+    "extends": [ "eslint:recommended" ],
     "parserOptions": {
         "ecmaVersion": "2020"
     },

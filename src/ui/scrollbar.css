@@ -1,35 +1,35 @@
 /* Scrolling settings */
 @media (prefers-color-scheme: light) {
   :root {
-    --scroll-bgcolor: rgba(192, 192, 192, 0.96);
-    --scroll-border: rgba(52, 52, 52, 0.96);
-    --scroll-bg-hover: rgba(232, 232, 232, 0.96);
-    --scroll-border-hover: rgba(42, 42, 42, 0.96);
-    --track-bgcolor: rgba(232, 232, 232, 0.96);
+    --scroll-bgcolor: rgba(192, 192, 192, 96%);
+    --scroll-border: rgba(52, 52, 52, 96%);
+    --scroll-bg-hover: rgba(232, 232, 232, 96%);
+    --scroll-border-hover: rgba(42, 42, 42, 96%);
+    --track-bgcolor: rgba(232, 232, 232, 96%);
   }
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --scroll-bgcolor: rgba(52, 52, 52, 0.96);
-    --scroll-border: rgba(168, 168, 168, 0.96);
-    --scroll-bg-hover: rgba(62, 62, 62, 0.96);
-    --scroll-border-hover: rgba(200, 200, 200, 0.96);
-    --track-bgcolor: rgba(52, 52, 52, 0.96);
+    --scroll-bgcolor: rgba(52, 52, 52, 96%);
+    --scroll-border: rgba(168, 168, 168, 96%);
+    --scroll-bg-hover: rgba(62, 62, 62, 96%);
+    --scroll-border-hover: rgba(200, 200, 200, 96%);
+    --track-bgcolor: rgba(52, 52, 52, 96%);
   }
 }
 :root.light {
-  --scroll-bgcolor: rgba(192, 192, 192, 0.96);
-  --scroll-border: rgba(52, 52, 52, 0.96);
-  --scroll-bg-hover: rgba(232, 232, 232, 0.96);
-  --scroll-border-hover: rgba(42, 42, 42, 0.96);
-  --track-bgcolor: rgba(232, 232, 232, 0.96);
+  --scroll-bgcolor: rgba(192, 192, 192, 96%);
+  --scroll-border: rgba(52, 52, 52, 96%);
+  --scroll-bg-hover: rgba(232, 232, 232, 96%);
+  --scroll-border-hover: rgba(42, 42, 42, 96%);
+  --track-bgcolor: rgba(232, 232, 232, 96%);
 }
 :root.dark {
-  --scroll-bgcolor: rgba(52, 52, 52, 0.96);
-  --scroll-border: rgba(168, 168, 168, 0.96);
-  --scroll-bg-hover: rgba(62, 62, 62, 0.96);
-  --scroll-border-hover: rgba(200, 200, 200, 0.96);
-  --track-bgcolor: rgba(52, 52, 52, 0.96);
+  --scroll-bgcolor: rgba(52, 52, 52, 96%);
+  --scroll-border: rgba(168, 168, 168, 96%);
+  --scroll-bg-hover: rgba(62, 62, 62, 96%);
+  --scroll-border-hover: rgba(200, 200, 200, 96%);
+  --track-bgcolor: rgba(52, 52, 52, 96%);
 }
 /* Width & Height */
 ::-webkit-scrollbar {

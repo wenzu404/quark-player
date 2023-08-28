@@ -32,10 +32,11 @@
     "electron": "git+https://github.com/castlabs/electron-releases#v22.3.22+wvcus",
     "electron-builder": "23.6.0",
     "eslint": "8.42.0",
-    "eslint-plugin-css": "0.8.1",
     "patch-package": "6.5.1",
     "postinstall-postinstall": "2.1.0",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "stylelint": "14.16.1",
+    "stylelint-config-standard": "30.0.1"
   },
   "dependencies": {
     "@cliqz/adblocker": "1.26.6",
