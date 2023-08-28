@@ -50,14 +50,15 @@ body::-webkit-scrollbar-corner {
   background-color: var(--track-bgcolor);
 }
 /* Handle */
-body::-webkit-scrollbar-thumb { 
+body::-webkit-scrollbar-thumb {
   height: auto;
   background-color: var(--scroll-bgcolor);
   -webkit-border-radius: 5px;
   border: 1px solid var(--scroll-border);
 }
 /* Handle on Hover */
-body::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:active {
+body::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:active {
   height: auto;
   background-color: var(--scroll-bg-hover);
   -webkit-border-radius: 5px;

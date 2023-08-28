@@ -11,12 +11,12 @@
   "scripts": {
     "start": "electron ./src",
     "winstart": "electron src",
-    "test": "npm run lint",
-    "fix": "npm run lint",
+    "test": "npm run eslint ; npm run stylelint",
+    "lint": "npm run eslint ; npm run stylelint",
     "burn": "rimraf package-lock.json && rimraf src/package-lock.json",
     "clean": "rimraf dist && rimraf test/ && rimraf src/node_modules && rimraf node_modules",
     "distclean": "rimraf dist",
-    "lint": "eslint \"src/**/*.js*\"",
+    "eslint": "eslint \"src/**/*.js*\"",
     "stylelint": "stylelint \"src/**/*.css*\"",
     "build": "cross-env NODE_ENV=production electron-builder --dir",
     "buildWin": "cross-env NODE_ENV=production electron-builder -w --x64 --dir && cross-env NODE_ENV=production electron-builder -w --ia32 --dir",
@@ -46,7 +46,7 @@
     "postinstall-postinstall": "2.1.0",
     "rimraf": "3.0.2",
     "stylelint": "14.16.1",
-    "stylelint-config-standard": "30.0.1"
+    "stylelint-config-standard": "29.0.0"
   },
   "dependencies": {
     "@cliqz/adblocker": "1.26.6",

@@ -93,8 +93,7 @@ body.loading .services {
   background-color: var(--service-active);
 }
 .loader > img,
-.services > .service > img
- {
+.services > .service > img {
   margin: 0 auto;
   display: block;
   max-height: 128px;

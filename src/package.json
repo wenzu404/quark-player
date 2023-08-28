@@ -11,12 +11,13 @@
   "scripts": {
     "start": "electron .",
     "winstart": "electron .",
-    "test": "npm run lint",
-    "fix": "npm run lint",
+    "test": "npm run eslint ; npm run stylelint",
+    "lint": "npm run eslint ; npm run stylelint",
     "dev": "cross-env QUARK_TEST=1 NODE_ENV=development ELECTRON_ENABLE_LOGGING=1 electron --enable-logging=file --user-data-dir=../test .",
     "burn": "rimraf package-lock.json",
     "clean": "rimraf node_modules",
-    "lint": "eslint \"./**/*.js*\" \"./**/*.css*\"",
+    "eslint": "eslint \"./**/*.js*\"",
+    "stylelint": "stylelint \"./**/*.css*\"",
     "postinstall": "patch-package"
   },
   "repository": "https://github.com/Alex313031/quarkplayer.git",
@@ -36,7 +37,7 @@
     "postinstall-postinstall": "2.1.0",
     "rimraf": "3.0.2",
     "stylelint": "14.16.1",
-    "stylelint-config-standard": "30.0.1"
+    "stylelint-config-standard": "29.0.0"
   },
   "dependencies": {
     "@cliqz/adblocker": "1.26.6",
