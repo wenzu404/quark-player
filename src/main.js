@@ -1023,7 +1023,7 @@ app.on('reset-confirm', () => {
       })
 })
 
-// Chnage the windows url when told to by the ui
+// Change the windows url when told to by the ui
 ipcMain.on('open-url', (e, service) => {
   electronLog.info('Opening service: ' + service.name);
   mainWindow.webContents.userAgent = service.userAgent ? service.userAgent : defaultUserAgent;
