@@ -240,10 +240,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'Quit Quark Player',
-          accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
-          click() {
-            app.emit('exit');
-          }
+          accelerator: 'CmdOrCtrl+Q',
+          role: 'quit'
         },
       ]
     },

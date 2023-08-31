@@ -27,7 +27,8 @@ require('@electron/remote/main').initialize();
 let mainWindow; // Global Windows Object
 let mainActivated; // Global activate? Object
 let mainNewActivated; // Global new window activate? Object
-let argsCmd = process.argv[2]; // Global cmdline object.
+const argsCmd = process.argv; // Global cmdline object.
+const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
 const menu = require('./menu');
 const store = new Store();
 
@@ -240,9 +241,7 @@ async function createWindow() {
           size: mainWindow.getSize()
         });
       } else {
-        console.error(
-          'Error window was not defined while trying to save windowDetails'
-        );
+        console.error('Error: Window was not defined while trying to save windowDetails.');
         return;
       }
     }
@@ -285,7 +284,7 @@ async function createWindow() {
 async function createNewWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    title: 'Quark Player',
+    title: 'Quark Player (New Instance)',
     resizable: true,
     maximizable: true,
     width: isWin ? 1032 : 1024,
@@ -470,9 +469,7 @@ async function createNewWindow() {
           size: mainWindow.getSize()
         });
       } else {
-        console.error(
-          'Error window was not defined while trying to save windowDetails'
-        );
+        console.error('Error: Window was not defined while trying to save windowDetails.');
         return;
       }
     }
@@ -719,7 +716,7 @@ function browserWindowDomReady() {
   if (
     store.get('options.pictureInPicture') || store.get('options.hideWindowFrame')
   ) {
-    // TODO: This is a temp fix and a propper fix should be developed
+    // TODO: This is a temp fix and a proper fix should be developed
     if (mainWindow != null) {
       mainWindow.webContents.executeJavaScript(headerScript);
     }
@@ -740,31 +737,35 @@ function mainNewWindowClosed() {
 // initialization and is ready to create browser windows.
 app.whenReady().then(async () => {
   // Show versions
-  if (process.argv.includes('--version') || process.argv.includes('-v')) {
+  if (argsCmd.includes('--version') || argsCmd.includes('-v')) {
     console.log(`\n  Quark Player Version: ` + appVersion);
     console.log(`  Electron Version: ` + electronVer);
     console.log(`  Chromium Version: ` + chromeVer);
     console.log(`  NodeJS Version: ` + nodeVer);
     console.log(`  V8 Version: ` + v8Ver + '\n');
     app.quit();
-  } else if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  } else if (argsCmd.includes('--help') || argsCmd.includes('-h')) {
     electronLog.info('Opening Help');
     openHelpWindow();
+  } else if (argsCmd.includes('--widevine-info')) {
+    await components.whenReady();
+    console.log('\nWidevineCDM Component Info:\n', components.status(), '\n');
+    app.quit();
   } else {
 
+  // Log app version to console
+  electronLog.info(`Quark Player v` + appVersion);
   // Initialize Widevine
   await components.whenReady();
-  console.log('WidevineCDM component ready.\n Info:', components.status(), '\n');
+  electronLog.info('WidevineCDM component ready.');
 
   // Show version info and acceleration/vulkan warnings if applicable
   if (store.get('options.disableAcceleration')) {
-    electronLog.info(`Quark Player v` + appVersion);
     electronLog.warn('NOTE: Running with acceleration disabled!');
     if (store.get('options.enableVulkan')) {
       electronLog.warn('NOTE: Running with experimental Vulkan backend!');
     }
   } else {
-    electronLog.info(`Quark Player v` + appVersion);
     if (store.get('options.enableVulkan')) {
       electronLog.warn('NOTE: Running with experimental Vulkan backend!');
     }
@@ -936,15 +937,6 @@ app.on('restart', () => {
   app.quit();
 });
 
-// Fix bug in quitting after restarting
-app.on('exit', () => {
-  // Close App
-  mainWindow.close();
-  mainWindow = null;
-  // Kill Electron
-  app.quit();
-});
-
 // Dialog box asking if user really wants to relaunch app
 // Emitted from certain menu items that require an BrowserWindow reload
 app.on('relaunch-confirm', () => {
@@ -1053,16 +1045,16 @@ app.on('window-all-closed', () => {
 // dock icon is clicked and there are no other windows open.
 app.on('activate', () => {
   if (mainActivated === null) {
-    electronLog.info('Electron restarted! [ Loading main.js ]');
+    electronLog.info('App Re-Activated [ Loading main.js ]');
     createWindow();
   }
 });
 
 // Allow creating new instance with Ctrl+N
 app.on('new-window', () => {
-  createWindow();
+  createNewWindow();
   electronLog.info('Created new BrowserWindow');
-  mainWindow.webContents.on('did-finish-load',() => {
+  mainWindow.webContents.once('dom-ready',() => {
       mainWindow.setTitle(`Quark Player (New Instance)`);
   });
 });
