@@ -9,7 +9,7 @@
   "appId": "com.alex313031.quarkplayer",
   "generateUpdatesFilesForAllChannels": false,
   "directories": {
-      "app": "./src",
+      "app": "src",
       "buildResources": "build",
       "output": "dist"
   },
@@ -59,7 +59,7 @@
     "uninstallDisplayName": "Quark Player ${version}"
   },
   "portable": {
-    "artifactName": "quark_player_portable_${version}_${arch}.${ext}",
+    "artifactName": "quark_player_portable_${version}_${arch}.${ext}"
   },
   "mac": {
     "category": "public.app-category.entertainment",

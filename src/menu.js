@@ -477,6 +477,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       ]
     },
     {
+      role: 'editMenu',
       label: 'Edit',
       submenu: [
         { role: 'undo' },
@@ -487,10 +488,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         { role: 'paste' },
         { role: 'pasteandmatchstyle' },
         { role: 'delete' },
+        { type: 'separator' },
         { role: 'selectall' }
       ]
     },
     {
+      role: 'viewMenu',
       label: 'View',
       submenu: [
         {
