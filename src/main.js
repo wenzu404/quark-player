@@ -640,73 +640,73 @@ async function openHelpWindow() {
 }
 
 contextMenu({
-   // Chromium context menu defaults
-   showSelectAll: true,
-   showCopyImage: true,
-   showCopyImageAddress: true,
-   showSaveImageAs: true,
-   showCopyVideoAddress: true,
-   showSaveVideoAs: true,
-   showCopyLink: true,
-   showSaveLinkAs: true,
-   showInspectElement: true,
-   showLookUpSelection: true,
-   showSearchWithGoogle: true,
-   prepend: (defaultActions, parameters, browserWindow) => [
-   { label: 'Open Video in New Window',
-      // Only show it when right-clicking video
-      visible: parameters.mediaType === 'video',
-      click: (linkURL) => {
-          const newWin = new BrowserWindow({
-            title: 'New Window',
-            width: 1024,
-            height: 768,
-            webPreferences: {
-              nodeIntegration: false,
-              nodeIntegrationInWorker: false,
-              contextIsolation: false,
-              sandbox: false,
-              experimentalFeatures: true,
-              webviewTag: true,
-              devTools: true,
-              javascript: true,
-              plugins: true,
-              enableRemoteModule: true,
-            },
-            darkTheme: store.get('options.useLightMode') ? false : true,
-            vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
-          });
-          const vidURL = parameters.srcURL;
-       newWin.loadURL(vidURL);
-      }
-   },
-   { label: 'Open Link in New Window',
-      // Only show it when right-clicking a link
-      visible: parameters.linkURL.trim().length > 0,
-      click: (linkURL) => {
-          const newWin = new BrowserWindow({
-            title: 'New Window',
-            width: 1024,
-            height: 768,
-            webPreferences: {
-              nodeIntegration: false,
-              nodeIntegrationInWorker: false,
-              contextIsolation: false,
-              sandbox: false,
-              experimentalFeatures: true,
-              webviewTag: true,
-              devTools: true,
-              javascript: true,
-              plugins: true,
-              enableRemoteModule: true,
-            },
-            darkTheme: store.get('options.useLightMode') ? false : true,
-            vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
-          });
-          const toURL = parameters.linkURL;
-       newWin.loadURL(toURL);
-      }
-   }]
+  // Chromium context menu defaults
+  showSelectAll: true,
+  showCopyImage: true,
+  showCopyImageAddress: true,
+  showSaveImageAs: true,
+  showCopyVideoAddress: true,
+  showSaveVideoAs: true,
+  showCopyLink: true,
+  showSaveLinkAs: true,
+  showInspectElement: true,
+  showLookUpSelection: true,
+  showSearchWithGoogle: true,
+  prepend: (defaultActions, parameters, browserWindow) => [
+  { label: 'Open Video in New Window',
+    // Only show it when right-clicking video
+    visible: parameters.mediaType === 'video',
+    click: (linkURL) => {
+      const newWin = new BrowserWindow({
+      title: 'New Window',
+      width: 1024,
+      height: 768,
+      webPreferences: {
+        nodeIntegration: false,
+        nodeIntegrationInWorker: false,
+        contextIsolation: false,
+        sandbox: false,
+        experimentalFeatures: true,
+        webviewTag: true,
+        devTools: true,
+        javascript: true,
+        plugins: true,
+        enableRemoteModule: true,
+      },
+      darkTheme: store.get('options.useLightMode') ? false : true,
+      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
+      });
+      const vidURL = parameters.srcURL;
+      newWin.loadURL(vidURL);
+    }
+  },
+  { label: 'Open Link in New Window',
+    // Only show it when right-clicking a link
+    visible: parameters.linkURL.trim().length > 0,
+    click: (linkURL) => {
+      const newWin = new BrowserWindow({
+      title: 'New Window',
+      width: 1024,
+      height: 768,
+      webPreferences: {
+        nodeIntegration: false,
+        nodeIntegrationInWorker: false,
+        contextIsolation: false,
+        sandbox: false,
+        experimentalFeatures: true,
+        webviewTag: true,
+        devTools: true,
+        javascript: true,
+        plugins: true,
+        enableRemoteModule: true,
+      },
+      darkTheme: store.get('options.useLightMode') ? false : true,
+      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
+      });
+      const toURL = parameters.linkURL;
+      newWin.loadURL(toURL);
+    }
+  }]
 });
 
 // This method is called when the browser window's dom is ready
