@@ -144,7 +144,7 @@ async function createWindow() {
   }
 
   // Configire Picture In Picture
-  if (store.get('options.pictureInPicture') && process.platform === 'darwin') {
+  if (store.get('options.pictureInPicture') && isMac) {
     app.dock.hide();
     mainWindow.setAlwaysOnTop(true, 'floating');
     mainWindow.setVisibleOnAllWorkspaces(true);
@@ -372,7 +372,7 @@ async function createNewWindow() {
   }
 
   // Configire Picture In Picture
-  if (store.get('options.pictureInPicture') && process.platform === 'darwin') {
+  if (store.get('options.pictureInPicture') && isMac) {
     app.dock.hide();
     mainWindow.setAlwaysOnTop(true, 'floating');
     mainWindow.setVisibleOnAllWorkspaces(true);
@@ -514,7 +514,7 @@ async function openHelpWindow() {
     width: 632,
     height: 600,
     title: "Quark Player Help",
-    icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+    icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
@@ -558,9 +558,7 @@ async function openHelpWindow() {
         electronLog.info('Closed help window');
       }
     },
-    {
-      type: 'separator',
-    },
+    { type: 'separator' },
     {
       label: 'Quit Quark Player',
       accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
@@ -584,9 +582,7 @@ async function openHelpWindow() {
         new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quark-player#readme');
       }
     },
-    {
-      type: 'separator'
-    },
+    { type: 'separator' },
     {
       label: 'View Humans.txt',
       accelerator: 'CmdorCtrl+Alt+Shift+H',
@@ -613,7 +609,7 @@ async function openHelpWindow() {
           width: isWin ? 532 : 532,
           height: isWin ? 528 : 508,
           title: "About Quark Player",
-          icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+          icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
           webPreferences: {
             nodeIntegration: false,
             nodeIntegrationInWorker: false,
@@ -792,7 +788,7 @@ if (store.get('options.disableAcceleration')) {
   // app.commandLine.appendSwitch('use-gl','desktop');
 
   // Enable useful features
-  if (process.platform === 'linux') {
+  if (isLinux) {
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
       'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
@@ -831,7 +827,7 @@ if (store.get('options.disableAcceleration')) {
   // Useful for fixing blank or pink screens/videos upon system resume, etc
   app.commandLine.appendSwitch('gpu-no-context-lost');
   // Enable native CPU-mappable GPU memory buffer support on Linux
-  if (process.platform === 'linux') {
+  if (isLinux) {
     app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
   }
   // Enable transparent overlays
@@ -854,7 +850,7 @@ if (store.get('options.disableAcceleration')) {
   // app.commandLine.appendSwitch('use-gl','desktop');
 
   // Enable useful features
-  if (process.platform === 'linux') {
+  if (isLinux) {
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
       'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,Vulkan',

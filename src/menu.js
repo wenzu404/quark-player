@@ -104,9 +104,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             electronLog.info('Closed a window');
           }
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         { label: 'Open File',
           accelerator: 'Ctrl+Shift+O',
           click() {
@@ -175,9 +173,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           .catch(console.error);
           }
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           label: 'Shortcut Table',
           accelerator: 'CmdorCtrl+Alt+H',
@@ -186,7 +182,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 632,
               height: 600,
               title: "Quark Player Help",
-              icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+              icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
@@ -215,7 +211,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: isWin ? 532 : 532,
               height: isWin ? 528 : 508,
               title: "About Quark Player",
-              icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+              icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
@@ -235,9 +231,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             electronLog.info('Opened about.html');
           }
         },
-        {
-          type: 'separator',
-        },
+        { type: 'separator' },
         {
           label: 'Quit Quark Player',
           accelerator: 'CmdOrCtrl+Q',
@@ -301,16 +295,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           .catch(console.error);
           }
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           label: 'Enable/Disable Services *',
           submenu: enabledServicesMenuItems
         },
-        {
-          type: 'separator'
-        }
+        { type: 'separator' }
       ].concat(servicesMenuItems)
     },
     {
@@ -438,7 +428,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           checked: store.get('options.pictureInPicture')
             ? store.get('options.pictureInPicture')
             : false,
-          visible: process.platform === 'darwin' || process.platform === 'linux' || process.platform === 'win32'
+          visible: isMac || isLinux || isWin
         },
         {
           label: 'Start in Fullscreen',
@@ -527,9 +517,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             electronLog.info('Closed a window');
           }
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           role: 'zoomin'
         },
@@ -539,9 +527,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           role: 'resetzoom'
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           role: 'togglefullscreen'
         }
@@ -582,19 +568,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'Toggle Developer Tools',
-          accelerator:
-            process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+          accelerator: isMac ? 'Alt+Command+I' : 'Ctrl+Shift+I',
           click(item, focusedWindow) {
             focusedWindow.webContents.toggleDevTools();
           }
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           label: 'Open Electron DevTools',
-          accelerator:
-            process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12',
+          accelerator: isMac ? 'CmdorCtrl+Shift+F12' : 'F12',
           click(item, focusedWindow) {
             focusedWindow.openDevTools({ mode: 'detach' });
           }
@@ -704,9 +686,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quark-player#readme');
           }
         },
-        {
-          type: 'separator'
-        },
+        { type: 'separator' },
         {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
@@ -733,7 +713,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: isWin ? 532 : 532,
               height: isWin ? 528 : 508,
               title: "About Quark Player",
-              icon: process.platform === 'win32' ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+              icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
