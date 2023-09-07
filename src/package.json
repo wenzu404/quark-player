@@ -2,7 +2,7 @@
   "name": "quark-player",
   "appName": "quark-player",
   "productName": "Quark Player",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./main.js",
   "engines": {
