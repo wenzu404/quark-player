@@ -59,8 +59,9 @@ async function createWindow() {
     title: 'Quark Player',
     resizable: true,
     maximizable: true,
-    width: isWin ? 1032 : 1024,
-    height: isWin ? 776 : 768,
+    width: 1024,
+    height: 768,
+    useContentSize: true,
     icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
@@ -287,8 +288,9 @@ async function createNewWindow() {
     title: 'Quark Player (New Instance)',
     resizable: true,
     maximizable: true,
-    width: isWin ? 1032 : 1024,
-    height: isWin ? 776 : 768,
+    width: 1024,
+    height: 768,
+    useContentSize: true,
     icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
@@ -513,6 +515,7 @@ async function openHelpWindow() {
   helpWindow = new BrowserWindow({
     width: 632,
     height: 600,
+    useContentSize: true,
     title: "Quark Player Help",
     icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
@@ -574,12 +577,12 @@ async function openHelpWindow() {
     { label: 'Quark Player v' + app.getVersion(), enabled: false },
     { label: 'Created by Oscar Beaumont &&',
       click() {
-        new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+        new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
       }
     },
     { label: 'Maintained by Alex313031',
       click() {
-        new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quark-player#readme');
+        new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/Alex313031/quark-player#readme');
       }
     },
     { type: 'separator' },
@@ -587,7 +590,7 @@ async function openHelpWindow() {
       label: 'View Humans.txt',
       accelerator: 'CmdorCtrl+Alt+Shift+H',
       click() {
-        const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 642 : 624, title: "humans.txt"});
+        const humansWindow = new BrowserWindow({width: 532, height: 600, useContentSize: true, title: "humans.txt"});
         humansWindow.loadFile('./ui/humans.txt');
         electronLog.info('Opened humans.txt :)');
       }
@@ -596,8 +599,8 @@ async function openHelpWindow() {
       label: 'View License',
       accelerator: 'CmdorCtrl+Alt+Shift+L',
       click() {
-        const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 632 : 614, title: "License"});
-        humansWindow.loadFile('./ui/license.md');
+        const licenseWindow = new BrowserWindow({width: 532, height: 550, useContentSize: true, title: "License"});
+        licenseWindow.loadFile('./ui/license.md');
         electronLog.info('Opened license.md');
       }
     },
@@ -606,8 +609,9 @@ async function openHelpWindow() {
       accelerator: 'CmdorCtrl+Alt+A',
       click() {
         const aboutWindow = new BrowserWindow({
-          width: isWin ? 532 : 532,
-          height: isWin ? 528 : 508,
+          width: 512,
+          height: 480,
+          useContentSize: true,
           title: "About Quark Player",
           icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
           webPreferences: {
@@ -657,6 +661,7 @@ contextMenu({
       title: 'New Window',
       width: 1024,
       height: 768,
+      useContentSize: true,
       webPreferences: {
         nodeIntegration: false,
         nodeIntegrationInWorker: false,
@@ -684,6 +689,7 @@ contextMenu({
       title: 'New Window',
       width: 1024,
       height: 768,
+      useContentSize: true,
       webPreferences: {
         nodeIntegration: false,
         nodeIntegrationInWorker: false,

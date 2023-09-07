@@ -42,7 +42,7 @@ module.exports = [
     title: 'Paramount Plus',
     hidden: true,
     logo: 'imgs/paramount_plus.png',
-    url: 'https://www.paramountplus.com/',
+    url: 'https://www.paramountplus.com',
     color: '#0264FF',
     style: {},
     permissions: []
@@ -52,7 +52,7 @@ module.exports = [
     title: 'Curiosity Stream',
     hidden: true,
     logo: 'imgs/curiosity.svg',
-    url: 'https://curiositystream.com/',
+    url: 'https://curiositystream.com',
     color: '#EEA83D',
     style: {},
     permissions: []
@@ -61,7 +61,7 @@ module.exports = [
     name: 'Hulu',
     title: 'Hulu',
     logo: 'imgs/hulu.svg',
-    url: 'https://www.hulu.com/',
+    url: 'https://www.hulu.com',
     color: '#1CE783',
     style: {},
     userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
@@ -72,7 +72,7 @@ module.exports = [
     title: 'Floatplane',
     hidden: true,
     logo: 'imgs/floatplane.svg',
-    url: 'https://floatplane.com/',
+    url: 'https://floatplane.com',
     color: '#00AEEF',
     style: {},
     userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
@@ -83,7 +83,7 @@ module.exports = [
     title: 'Plex',
     hidden: true,
     logo: 'imgs/plex.svg',
-    url: 'https://app.plex.tv/desktop/',
+    url: 'https://app.plex.tv/desktop',
     color: '#EBAF00',
     style: {},
     permissions: []
@@ -92,7 +92,7 @@ module.exports = [
     name: 'HBO Max',
     title: 'HBO Max',
     logo: 'imgs/hbo_max.svg',
-    url: 'https://www.hbomax.com/',
+    url: 'https://www.hbomax.com',
     color: '#4306BA',
     style: {},
     permissions: []
@@ -101,7 +101,7 @@ module.exports = [
     name: 'Amazon Prime Video',
     title: 'Amazon Prime Video',
     logo: 'imgs/amazon_prime_video.svg',
-    url: 'https://www.primevideo.com/',
+    url: 'https://www.primevideo.com',
     color: '#46ABE2',
     style: {},
     permissions: []
@@ -110,7 +110,7 @@ module.exports = [
     name: 'Disney+',
     title: 'Disney+',
     logo: 'imgs/disney+.svg',
-    url: 'https://www.disneyplus.com/',
+    url: 'https://www.disneyplus.com',
     color: '#AEFDFE',
     style: {},
     permissions: []
@@ -120,7 +120,7 @@ module.exports = [
     title: 'CBS All Access',
     hidden: true,
     logo: 'imgs/cbs_all_access.png',
-    url: 'https://www.cbs.com/all-access/',
+    url: 'https://www.cbs.com/all-access',
     color: '#4CA3DD',
     style: {},
     permissions: []
@@ -146,10 +146,20 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Crackle',
+    title: 'Crackle',
+    hidden: true,
+    logo: 'imgs/crackle.svg',
+    url: 'https://www.crackle.com',
+    color: '#FF601C',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Apple TV+',
     title: 'Apple TV',
     logo: 'imgs/apple_tv.svg',
-    url: 'https://tv.apple.com/',
+    url: 'https://tv.apple.com',
     color: '#DDDDDD',
     style: {},
     permissions: []
@@ -159,7 +169,7 @@ module.exports = [
     title: 'Apple Music',
     hidden: true,
     logo: 'imgs/apple_music.svg',
-    url: 'https://music.apple.com/',
+    url: 'https://music.apple.com',
     color: '#AB0012',
     style: {},
     permissions: []
@@ -208,7 +218,7 @@ module.exports = [
     name: 'Peacock TV',
     title: 'Peacock TV',
     logo: 'imgs/peacock.svg',
-    url: 'https://www.peacocktv.com/',
+    url: 'https://www.peacocktv.com',
     color: '#05AC3F',
     style: {},
     permissions: []
@@ -227,7 +237,7 @@ module.exports = [
     title: 'Dailymotion',
     hidden: true,
     logo: 'imgs/dailymotion.svg',
-    url: 'https://www.dailymotion.com/',
+    url: 'https://www.dailymotion.com',
     color: '#FFFFFF',
     style: {},
     permissions: []
@@ -237,7 +247,7 @@ module.exports = [
     title: 'Starz',
     hidden: true,
     logo: 'imgs/starz.svg',
-    url: 'https://www.starz.com/',
+    url: 'https://www.starz.com',
     color: '#006576',
     style: {},
     permissions: []
@@ -257,7 +267,7 @@ module.exports = [
     title: 'Woolyss HTML5 Media Tester',
     hidden: true,
     logo: 'imgs/woolyss.svg',
-    url: 'https://tools.woolyss.com/html5-audio-video-tester/',
+    url: 'https://tools.woolyss.com/html5-audio-video-tester',
     color: '#811AC0',
     style: {},
     permissions: []
@@ -267,7 +277,7 @@ module.exports = [
     title: 'Google (for testing or web browsing)',
     hidden: true,
     logo: 'imgs/google.svg',
-    url: 'https://www.google.com/',
+    url: 'https://www.google.com',
     color: '#EA4335',
     style: {},
     permissions: []

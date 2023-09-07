@@ -181,6 +181,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             const helpWindow = new BrowserWindow({
               width: 632,
               height: 600,
+              useContentSize: true,
               title: "Quark Player Help",
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
@@ -205,11 +206,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'About Quark Player',
           accelerator: 'CmdorCtrl+Alt+A',
+          acceleratorWorksWhenHidden: false,
           visible: isMac ? true : false,
           click() {
             const aboutWindow = new BrowserWindow({
-              width: isWin ? 532 : 532,
-              height: isWin ? 528 : 508,
+              width: 512,
+              height: 480,
+              useContentSize: true,
               title: "About Quark Player",
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
@@ -594,7 +597,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open chrome://gpu',
           accelerator: 'CmdorCtrl+Alt+G',
           click() {
-            const gpuWindow = new BrowserWindow({width: 900, height: 700, title: "GPU Internals"});
+            const gpuWindow = new BrowserWindow({width: 900, height: 700, useContentSize: true, title: "GPU Internals"});
             gpuWindow.loadURL('chrome://gpu');
             electronLog.info('Opened chrome://gpu');
           }
@@ -603,7 +606,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open chrome://process-internals',
           accelerator: 'CmdorCtrl+Alt+P',
           click() {
-            const procsWindow = new BrowserWindow({width: 900, height: 700, title: "Process Model Internals"});
+            const procsWindow = new BrowserWindow({width: 900, height: 700, useContentSize: true, title: "Process Model Internals"});
             procsWindow.loadURL('chrome://process-internals');
             electronLog.info('Opened chrome://process-internals');
           }
@@ -612,7 +615,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open chrome://media-internals',
           accelerator: 'CmdorCtrl+Alt+M',
           click() {
-            const mediaWindow = new BrowserWindow({width: 900, height: 700, title: "Media Internals"});
+            const mediaWindow = new BrowserWindow({width: 900, height: 700, useContentSize: true, title: "Media Internals"});
             mediaWindow.loadURL('chrome://media-internals');
             electronLog.info('Opened chrome://media-internals');
           }
@@ -623,7 +626,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           acceleratorWorksWhenHidden: false,
           click() {
-            const yiffWindow = new BrowserWindow({width: isWin ? 600 : 600, height: isWin ? 848 : 818, title: "Catgirl Fridge"});
+            const yiffWindow = new BrowserWindow({width: 600, height: 818, useContentSize: true, title: "Catgirl Fridge"});
             electronLog.info('Opening test image')
             //yiffWindow.loadFile('./ui/imgs/juno-ass.png');
             yiffWindow.loadFile('./ui/yiff.html');
@@ -674,7 +677,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               //'https://github.com/oscartbeaumont/ElectronPlayer#readme'
             //);
             //electronLog.info('Opened external browser');
-            new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+            new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
           }
         },
         { label: 'Maintained by Alex313031',
@@ -683,7 +686,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               //'https://github.com/Alex313031/quarkplayer#readme'
             //);
             //electronLog.info('Opened external browser');
-            new BrowserWindow({width: 1024, height: 768}).loadURL('https://github.com/Alex313031/quark-player#readme');
+            new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/Alex313031/quark-player#readme');
           }
         },
         { type: 'separator' },
@@ -691,7 +694,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 642 : 624, title: "humans.txt"});
+            const humansWindow = new BrowserWindow({width: 532, height: 600, useContentSize: true, title: "humans.txt"});
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
@@ -700,8 +703,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View License',
           accelerator: 'CmdorCtrl+Alt+Shift+L',
           click() {
-            const humansWindow = new BrowserWindow({width: isWin ? 532 : 532, height: isWin ? 632 : 614, title: "License"});
-            humansWindow.loadFile('./ui/license.md');
+            const licenseWindow = new BrowserWindow({width: 532, height: 550, useContentSize: true, title: "License"});
+            licenseWindow.loadFile('./ui/license.md');
             electronLog.info('Opened license.md');
           }
         },
@@ -710,8 +713,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+A',
           click() {
             const aboutWindow = new BrowserWindow({
-              width: isWin ? 532 : 532,
-              height: isWin ? 528 : 508,
+              width: 512,
+              height: 480,
+              useContentSize: true,
               title: "About Quark Player",
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
