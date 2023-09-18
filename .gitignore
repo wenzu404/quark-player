@@ -1,9 +1,11 @@
 .DS_Store
+.eslintcache
+Thumbs.db
 /dist/
+/electron/
 /test/
 /release/
 node_modules
-thumbs.db
 
 # IntelliJ platform
 .idea/

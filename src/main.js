@@ -252,7 +252,9 @@ async function createWindow() {
   mainWindow.webContents.on('dom-ready', browserWindowDomReady);
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', mainWindowClosed);
+  mainWindow.on('closed', () => {
+    mainWindowClosed();
+  });
 
   // Emitted when website requests permissions - Electron default allows any permission this restricts websites
   mainWindow.webContents.session.setPermissionRequestHandler(
@@ -749,9 +751,10 @@ app.whenReady().then(async () => {
   } else if (argsCmd.includes('--help') || argsCmd.includes('-h')) {
     electronLog.info('Opening Help');
     openHelpWindow();
-  } else if (argsCmd.includes('--widevine-info')) {
+  } else if (argsCmd.includes('--cdm-info')) {
     await components.whenReady();
-    console.log('\nWidevineCDM Component Info:\n', components.status(), '\n');
+    console.log('WidevineCDM Component Info:\n');
+    console.log(components.status());
     app.quit();
   } else {
 

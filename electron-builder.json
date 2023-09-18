@@ -1,7 +1,7 @@
 {
-  "electronVersion": "22.3.23",
+  "electronVersion": "22.3.24",
   "electronDownload": {
-    "version": "22.3.23+wvcus",
+    "version": "22.3.24+wvcus",
     "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
   },
   "asar": true,
@@ -56,6 +56,7 @@
     "shortcutName": "Quark Player",
     "artifactName": "quark_player_setup_${version}_${arch}.${ext}",
     "deleteAppDataOnUninstall": false,
+    "oneClick": false,
     "uninstallDisplayName": "Quark Player ${version}"
   },
   "portable": {
