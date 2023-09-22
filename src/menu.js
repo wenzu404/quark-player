@@ -3,12 +3,18 @@ const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
 const electronLog = require('electron-log');
+// Export app info
+const appName = app.getName();
+var appVersion = app.getVersion();
+const userDataDir = app.getPath('userData');
+const userLogFile = path.join(userDataDir, 'logs/main.log');
 
 module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   var servicesMenuItems = [];
   var defaultServiceMenuItems = [];
   var enabledServicesMenuItems = [];
-  
+  let examplePlaceholder;
+
   // Globally export what OS we are on
   const isLinux = process.platform === 'linux';
   const isWin = process.platform === 'win32';
@@ -64,21 +70,31 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           services = currServices;
           store.set('services', currServices);
         }
-        app.emit('relaunch-confirm');
+        app.emit('relaunch');
       }
     }));
   }
 
   return Menu.buildFromTemplate([
     {
-      label: 'Quark Player',
+      label: appName,
       submenu: [
+        {
+          label: 'Main Menu',
+          accelerator: 'CmdOrCtrl+M',
+          click() {
+            electronLog.info('Opening main menu...');
+            mainWindow.webContents.userAgent = defaultUserAgent;
+            mainWindow.loadFile('./ui/index.html');
+          }
+        },
         {
           label: 'Go Back',
           accelerator: 'Alt+Left',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.goBack();
-            electronLog.info('Navigated back');
+            var currentURL = focusedWindow.webContents.getURL();
+            electronLog.info('Navigated backward to ' + [ currentURL ]);
           }
         },
         {
@@ -86,22 +102,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Alt+Right',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.goForward();
-            electronLog.info('Navigated forward');
-          }
-        },
-        {
-          label: 'New Window',
-          accelerator: 'CmdorCtrl+N',
-          click() {
-            app.emit('new-window');
-          }
-        },
-        {
-          label: 'Close Window',
-          accelerator: 'CmdorCtrl+W',
-          click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.close();
-            electronLog.info('Closed a window');
+            var currentURL = focusedWindow.webContents.getURL();
+            electronLog.info('Navigated forward to ' + [ currentURL ]);
           }
         },
         { type: 'separator' },
@@ -205,7 +207,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About Quark Player',
-          accelerator: 'CmdorCtrl+Alt+A',
+          accelerator: 'Cmd+Alt+A',
           acceleratorWorksWhenHidden: false,
           visible: isMac ? true : false,
           click() {
@@ -324,9 +326,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               size: mainWindow.getSize()
             });
 
-            // Restart the app
-            //app.relaunch();
-            //app.quit();
             app.emit('relaunch-confirm');
           },
           checked: store.get('options.adblock')
@@ -364,13 +363,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Omit https:// from Custom URL',
           type: 'checkbox',
-          click(e) {
+          click() {
             if (store.get('options.customOmitHttps')) {
               store.set('options.customOmitHttps', false);
             } else {
               store.set('options.customOmitHttps', true);
             }
-            // app.emit('relaunch-confirm');
           },
           checked: store.get('options.customOmitHttps')
         },
@@ -378,7 +376,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: store.get('options.useLightMode') ? 'Use Dark Mode' : 'Use Light Mode',
           type: 'checkbox',
           accelerator: 'CmdorCtrl+Shift+D',
-          click(e) {
+          click() {
             if (store.get('options.useLightMode')) {
               store.set('options.useLightMode', false);
             } else {
@@ -424,14 +422,14 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Picture In Picture *',
           type: 'checkbox',
+          visible: isMac || isLinux || isWin,
           click(e) {
             store.set('options.pictureInPicture', e.checked);
             app.emit('relaunch-confirm');
           },
           checked: store.get('options.pictureInPicture')
             ? store.get('options.pictureInPicture')
-            : false,
-          visible: isMac || isLinux || isWin
+            : false
         },
         {
           label: 'Start in Fullscreen',
@@ -450,19 +448,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             store.clear();
 
             // Clear Engine Cache
-            let engineCachePath = path.join(
-              app.getPath('userData'),
-              'adblock-engine-cache.txt'
-            );
+            let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
             fs.access(engineCachePath, fs.constants.F_OK, (err) => {
               if (!err) {
                 fs.unlinkSync(engineCachePath);
               }
             });
 
-            // Restart the app
-            //app.relaunch();
-            //app.quit();
             app.emit('reset-confirm');
           }
         },
@@ -471,7 +463,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
     },
     {
       role: 'editMenu',
-      label: 'Edit',
       submenu: [
         { role: 'undo' },
         { role: 'redo' },
@@ -487,70 +478,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
     },
     {
       role: 'viewMenu',
-      label: 'View',
-      submenu: [
-        {
-          label: 'Go Back',
-          accelerator: 'Alt+Left',
-          click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.goBack();
-            electronLog.info('Navigated back');
-          }
-        },
-        {
-          label: 'Go Forward',
-          accelerator: 'Alt+Right',
-          click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.goForward();
-            electronLog.info('Navigated forward');
-          }
-        },
-        {
-          label: 'New Window',
-          accelerator: 'CmdorCtrl+N',
-          click() {
-            app.emit('new-window');
-          }
-        },
-        {
-          label: 'Close Window',
-          accelerator: 'CmdorCtrl+W',
-          click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.close();
-            electronLog.info('Closed a window');
-          }
-        },
-        { type: 'separator' },
-        {
-          role: 'zoomin'
-        },
-        {
-          role: 'zoomout'
-        },
-        {
-          role: 'resetzoom'
-        },
-        { type: 'separator' },
-        {
-          role: 'togglefullscreen'
-        }
-      ]
-    },
-    {
-      label: 'Developer',
       submenu: [
         {
           label: 'Reload',
           accelerator: 'CmdOrCtrl+R',
-          click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.reload();
-          }
-        },
-        {
-          label: 'Reload F5',
-          accelerator:  'F5',
-          visible: false,
-          acceleratorWorksWhenHidden: true,
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.reload();
           }
@@ -563,24 +494,112 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'Toggle Developer Tools',
+          accelerator: isMac ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+          click(item, focusedWindow) {
+            var currentURL = focusedWindow.webContents.getURL();
+            electronLog.info('Toggling Developer Tools on ' + currentURL);
+            focusedWindow.webContents.toggleDevTools();
+          }
+        },
+        { type: 'separator' },
+        { role: 'zoomin' },
+        { role: 'zoomout' },
+        { role: 'resetzoom' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      role: 'windowMenu',
+      submenu: [
+        {
+          label: 'Go Back',
+          accelerator: 'Alt+Left',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.goBack();
+            var currentURL = focusedWindow.webContents.getURL();
+            electronLog.info('Navigated backward to ' + [ currentURL ]);
+          }
+        },
+        {
+          label: 'Go Forward',
+          accelerator: 'Alt+Right',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.goForward();
+            var currentURL = focusedWindow.webContents.getURL();
+            electronLog.info('Navigated forward to ' + [ currentURL ]);
+          }
+        },
+        {
+          label: 'New Window',
+          accelerator: 'CmdorCtrl+N',
+          click() {
+            app.emit('new-window');
+          }
+        },
+        {
+          label: 'Minimize Window',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.minimize();
+            electronLog.info('Minimized a window');
+          }
+        },
+        {
+          label: 'Close Window',
+          accelerator: 'CmdorCtrl+W',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.close();
+            electronLog.info('Closed a Window');
+          }
+        }
+      ]
+    },
+    {
+      label: 'Developer',
+      submenu: [
+        {
+          label: 'Reload F5',
+          accelerator:  'F5',
+          visible: false,
+          acceleratorWorksWhenHidden: true,
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.reload();
+          }
+        },
+        {
+          label: 'Open Log File',
+          click() {
+            electronLog.info('Opening ' + [ userLogFile ]);
+            const logWindow = new BrowserWindow({width: 600, height: 768, useContentSize: true, title: userLogFile});
+            logWindow.loadFile(userLogFile);
+          }
+        },
+        {
           label: 'Edit Config File',
           click() {
             store.openInEditor();
             electronLog.info('Editing Config File');
+            if (isLinux) {
+              return;
+            } else {
+              console.log('\n Note that JSON must be a recognized file type \n for the OS to open the config.json file.\n');
+            }
           }
         },
         {
-          label: 'Toggle Developer Tools',
-          accelerator: isMac ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-          click(item, focusedWindow) {
-            focusedWindow.webContents.toggleDevTools();
+          label: 'Open User Data Dir',
+          click() {
+            electronLog.info('Opening ' + [ userDataDir ]);
+            shell.openPath(userDataDir);
           }
         },
         { type: 'separator' },
         {
           label: 'Open Electron DevTools',
-          accelerator: isMac ? 'CmdorCtrl+Shift+F12' : 'F12',
+          accelerator: isMac ? 'Cmd+Shift+F12' : 'F12',
           click(item, focusedWindow) {
+            electronLog.info('Opening Electron DevTools on mainWindow.');
             focusedWindow.openDevTools({ mode: 'detach' });
           }
         },
@@ -590,6 +609,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           visible: false,
           acceleratorWorksWhenHidden: true,
           click(item, focusedWindow) {
+            electronLog.info('Opening Electron DevTools on mainWindow.');
             focusedWindow.openDevTools({ mode: 'detach' });
           }
         },
@@ -635,7 +655,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Disable Acceleration',
           type: 'checkbox',
-          click(e) {
+          click() {
             if (store.get('options.disableAcceleration')) {
               store.set('options.disableAcceleration', false);
             } else {
@@ -648,7 +668,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Enable Vulkan',
           type: 'checkbox',
-          click(e) {
+          click() {
             if (store.get('options.enableVulkan')) {
               store.set('options.enableVulkan', false);
             } else {
@@ -670,7 +690,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       role: 'help',
       label: 'About',
       submenu: [
-        { label: 'Quark Player v' + app.getVersion(), enabled: false },
+        { label: appName + ' v' + appVersion, enabled: false },
         { label: 'Created by Oscar Beaumont &&',
           click() {
             //shell.openExternal(
@@ -714,7 +734,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click() {
             const aboutWindow = new BrowserWindow({
               width: 512,
-              height: 480,
+              height: 500,
               useContentSize: true,
               title: "About Quark Player",
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),

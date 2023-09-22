@@ -2,7 +2,7 @@
   "name": "quark-player",
   "appName": "quark-player",
   "productName": "Quark Player",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
   "engines": {
@@ -14,7 +14,7 @@
     "test": "npm run eslint ; npm run stylelint",
     "lint": "npm run eslint ; npm run stylelint",
     "burn": "rimraf package-lock.json && rimraf src/package-lock.json",
-    "clean": "rimraf dist && rimraf test/ && rimraf src/node_modules && rimraf node_modules",
+    "clean": "rimraf dist/ && rimraf test/ && rimraf src/node_modules/ && rimraf node_modules/",
     "distclean": "rimraf dist",
     "eslint": "eslint \"src/**/*.js*\"",
     "stylelint": "stylelint \"src/**/*.css*\"",

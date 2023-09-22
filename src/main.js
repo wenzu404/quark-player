@@ -24,13 +24,18 @@ const headerScript = fs.readFileSync(
 require('@electron/remote/main').initialize();
 
 // Create Global Varibles
-let mainWindow; // Global Windows Object
-let mainActivated; // Global activate? Object
-let mainNewActivated; // Global new window activate? Object
+let mainWindow; // Global Window Object
+let newWindow; // Global New Window Object
+let helpWindow; // Global Help Window Object
+ // Global activate? Objects
+let mainActivated;
+let mainNewActivated;
 const argsCmd = process.argv; // Global cmdline object.
-const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
+// const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
 const menu = require('./menu');
 const store = new Store();
+const appName = app.getName();
+const userDataDir = app.getPath('userData');
 
 // Floating UA variable
 let defaultUserAgent;
@@ -40,7 +45,7 @@ try {
   require('electron-reloader')(module);
 } catch { /* empty */ }
 
-// Export app version from package.json
+// Get app version from package.json
 var appVersion = app.getVersion();
 // Export Electron versions
 const electronVer = process.versions.electron;
@@ -95,17 +100,12 @@ async function createWindow() {
     toolbar: true
   });
   require("@electron/remote/main").enable(mainWindow.webContents);
-  //mainWindow.setTitle(require('./package.json').appName);
 
   defaultUserAgent = mainWindow.webContents.userAgent;
 
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
-    let engineCachePath = path.join(
-      app.getPath('userData'),
-      'adblock-engine-cache.txt'
-    );
-
+    let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     if (fs.existsSync(engineCachePath)) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
       var engine = await ElectronBlocker.deserialize(
@@ -155,7 +155,7 @@ async function createWindow() {
 
   // Detect and update config on null version
   if (!store.get('version')) {
-    store.set('version', app.getVersion());
+    store.set('version', appVersion);
     store.set('services', []);
     electronLog.info('Initialized Configuration');
   }
@@ -228,7 +228,7 @@ async function createWindow() {
   }
 
   // Emitted when the window is closing
-  mainWindow.on('close', e => {
+  mainWindow.on('close', () => {
     // Save open service if lastOpenedPage is the default service
     if (store.get('options.defaultService') == 'lastOpenedPage') {
       store.set('options.lastOpenedPage', mainWindow.getURL());
@@ -241,11 +241,13 @@ async function createWindow() {
           position: mainWindow.getPosition(),
           size: mainWindow.getSize()
         });
+        electronLog.error('Saved windowDetails.');
       } else {
-        console.error('Error: Window was not defined while trying to save windowDetails.');
+        electronLog.error('Error: Window was not defined while trying to save windowDetails.');
         return;
       }
     }
+    electronLog.info('mainWindow.close()');
   });
 
   // Inject Header Script On Page Load If In Frameless Window
@@ -286,7 +288,7 @@ async function createWindow() {
 
 async function createNewWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
+  newWindow = new BrowserWindow({
     title: 'Quark Player (New Instance)',
     resizable: true,
     maximizable: true,
@@ -325,18 +327,13 @@ async function createNewWindow() {
     fullscreen: store.get('options.launchFullscreen'),
     toolbar: true
   });
-  require("@electron/remote/main").enable(mainWindow.webContents);
-  //mainWindow.setTitle(require('./package.json').appName);
+  require("@electron/remote/main").enable(newWindow.webContents);
 
-  defaultUserAgent = mainWindow.webContents.userAgent;
+  defaultUserAgent = newWindow.webContents.userAgent;
 
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
-    let engineCachePath = path.join(
-      app.getPath('userData'),
-      'adblock-engine-cache.txt'
-    );
-
+    let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     if (fs.existsSync(engineCachePath)) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
       var engine = await ElectronBlocker.deserialize(
@@ -358,18 +355,18 @@ async function createNewWindow() {
   let windowDetails = store.get('options.windowDetails');
   let relaunchWindowDetails = store.get('relaunch.windowDetails');
   if (relaunchWindowDetails) {
-    mainWindow.setSize(
+    newWindow.setSize(
       relaunchWindowDetails.size[0],
       relaunchWindowDetails.size[1]
     );
-    mainWindow.setPosition(
+    newWindow.setPosition(
       relaunchWindowDetails.position[0],
       relaunchWindowDetails.position[1]
     );
     store.delete('relaunch.windowDetails');
   } else if (windowDetails) {
-    mainWindow.setSize(windowDetails.size[0], windowDetails.size[1]);
-    mainWindow.setPosition(
+    newWindow.setSize(windowDetails.size[0], windowDetails.size[1]);
+    newWindow.setPosition(
       windowDetails.position[0],
       windowDetails.position[1]
     );
@@ -378,15 +375,15 @@ async function createNewWindow() {
   // Configire Picture In Picture
   if (store.get('options.pictureInPicture') && isMac) {
     app.dock.hide();
-    mainWindow.setAlwaysOnTop(true, 'floating');
-    mainWindow.setVisibleOnAllWorkspaces(true);
-    mainWindow.setFullScreenable(false);
+    newWindow.setAlwaysOnTop(true, 'floating');
+    newWindow.setVisibleOnAllWorkspaces(true);
+    newWindow.setFullScreenable(false);
     app.dock.show();
   }
 
   // Detect and update config on null version
   if (!store.get('version')) {
-    store.set('version', app.getVersion());
+    store.set('version', appVersion);
     store.set('services', []);
     electronLog.info('Initialized Configuration');
   }
@@ -418,9 +415,6 @@ async function createNewWindow() {
     }
   });
 
-  // Create The Menubar
-  Menu.setApplicationMenu(menu(store, global.services, mainWindow, app, defaultUserAgent));
-
   if (store.get('options.useLightMode')) {
     nativeTheme.themeSource = 'light';
   } else {
@@ -434,59 +428,49 @@ async function createNewWindow() {
 
   if (relaunchToPage !== undefined) {
     electronLog.info('Relaunching page: ' + relaunchToPage);
-    mainWindow.loadURL(relaunchToPage);
+    newWindow.loadURL(relaunchToPage);
     store.delete('relaunch.toPage');
   } else if (defaultService == 'lastOpenedPage' && lastOpenedPage) {
     electronLog.info('Loading the last opened page: ' + lastOpenedPage);
-    mainWindow.loadURL(lastOpenedPage);
+    newWindow.loadURL(lastOpenedPage);
   } else if (defaultService != undefined) {
     defaultService = global.services.find(
       service => service.name == defaultService
     );
     if (defaultService.url) {
       electronLog.info('Loading the default service: ' + defaultService.url);
-      mainWindow.loadURL(defaultService.url);
-      mainWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
+      newWindow.loadURL(defaultService.url);
+      newWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
     } else {
       electronLog.warn(
         "Error: Default service does not have a URL set. Falling back to main menu."
       );
-      mainWindow.loadFile('./ui/index.html');
+      newWindow.loadFile('./ui/index.html');
     }
   } else {
     electronLog.info('Loading main menu');
-    mainWindow.loadFile('./ui/index.html');
+    newWindow.loadFile('./ui/index.html');
   }
 
   // Emitted when the window is closing
-  mainWindow.on('close', e => {
+  newWindow.on('close', () => {
     // Save open service if lastOpenedPage is the default service
     if (store.get('options.defaultService') == 'lastOpenedPage') {
-      store.set('options.lastOpenedPage', mainWindow.getURL());
+      store.set('options.lastOpenedPage', newWindow.getURL());
     }
-
-    // If enabled store the window details so they can be restored upon restart
-    if (store.get('options.windowDetails')) {
-      if (mainWindow) {
-        store.set('options.windowDetails', {
-          position: mainWindow.getPosition(),
-          size: mainWindow.getSize()
-        });
-      } else {
-        console.error('Error: Window was not defined while trying to save windowDetails.');
-        return;
-      }
-    }
+    electronLog.info('newWindow.close()');
   });
 
   // Inject Header Script On Page Load If In Frameless Window
-  mainWindow.webContents.on('dom-ready', browserWindowDomReady);
+  newWindow.webContents.on('dom-ready', browserWindowDomReady);
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', mainNewWindowClosed);
+  newWindow.on('closed', () => {
+    newWindowClosed();
+  });
 
   // Emitted when website requests permissions - Electron default allows any permission this restricts websites
-  mainWindow.webContents.session.setPermissionRequestHandler(
+  newWindow.webContents.session.setPermissionRequestHandler(
     (webContents, permission, callback) => {
       let websiteOrigin = new URL(webContents.getURL()).origin;
       let service = global.services.find(
@@ -515,10 +499,12 @@ async function createNewWindow() {
 
 async function openHelpWindow() {
   helpWindow = new BrowserWindow({
+    title: "Quark Player Help",
+    resizable: true,
+    maximizable: false,
     width: 632,
     height: 600,
     useContentSize: true,
-    title: "Quark Player Help",
     icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
@@ -533,6 +519,17 @@ async function openHelpWindow() {
       enableRemoteModule: true,
       preload: path.join(__dirname, 'client-preload.js'),
     },
+    trafficLightPosition: {
+      x: 16,
+      y: 16,
+    },
+    // Window Styling
+    transparent: isLinux ? true : false,
+    autoHideMenuBar: false,
+    darkTheme: store.get('options.useLightMode') ? false : true,
+    vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
+    backgroundColor: '#00000000',
+    toolbar: true
   });
   defaultUserAgent = helpWindow.webContents.userAgent;
   Menu.setApplicationMenu(Menu.buildFromTemplate([
@@ -542,7 +539,7 @@ async function openHelpWindow() {
     {
       label: 'Go Back',
       accelerator: 'Alt+Left',
-      click(item) {
+      click(helpWindow) {
         helpWindow.webContents.goBack();
         electronLog.info('Navigated back');
       }
@@ -550,33 +547,23 @@ async function openHelpWindow() {
     {
       label: 'Go Forward',
       accelerator: 'Alt+Right',
-      click(item) {
+      click(helpWindow) {
         helpWindow.webContents.goForward();
         electronLog.info('Navigated forward');
-      }
-    },
-    {
-      label: 'Close Window',
-      accelerator: 'CmdorCtrl+W',
-      click(item) {
-        helpWindow.close();
-        electronLog.info('Closed help window');
       }
     },
     { type: 'separator' },
     {
       label: 'Quit Quark Player',
-      accelerator: 'CmdOrCtrl+Q', // TODO: Non Mac Shortcut
-      click() {
-        app.quit();
-      }
+      accelerator: 'CmdOrCtrl+Q',
+      role: 'quit'
     }]
   },
   {
   role: 'help',
   label: 'About',
   submenu: [
-    { label: 'Quark Player v' + app.getVersion(), enabled: false },
+    { label: appName + ' v' + appVersion, enabled: false },
     { label: 'Created by Oscar Beaumont &&',
       click() {
         new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
@@ -637,6 +624,13 @@ async function openHelpWindow() {
     }]}
   ]));
   require("@electron/remote/main").enable(helpWindow.webContents);
+
+  if (store.get('options.useLightMode')) {
+    nativeTheme.themeSource = 'light';
+  } else {
+    nativeTheme.themeSource = 'dark';
+  }
+
   helpWindow.loadFile('./ui/help.html');
   electronLog.info('Opened help.html');
 }
@@ -654,11 +648,11 @@ contextMenu({
   showInspectElement: true,
   showLookUpSelection: true,
   showSearchWithGoogle: true,
-  prepend: (defaultActions, parameters, browserWindow) => [
+  prepend: (defaultActions, parameters) => [
   { label: 'Open Video in New Window',
     // Only show it when right-clicking video
     visible: parameters.mediaType === 'video',
-    click: (linkURL) => {
+    click: () => {
       const newWin = new BrowserWindow({
       title: 'New Window',
       width: 1024,
@@ -686,7 +680,7 @@ contextMenu({
   { label: 'Open Link in New Window',
     // Only show it when right-clicking a link
     visible: parameters.linkURL.trim().length > 0,
-    click: (linkURL) => {
+    click: () => {
       const newWin = new BrowserWindow({
       title: 'New Window',
       width: 1024,
@@ -713,7 +707,17 @@ contextMenu({
   }]
 });
 
-// This method is called when the browser window's dom is ready
+// Run when window is closed. This cleans up the mainWindow object to save resources.
+function mainWindowClosed() {
+  mainActivated = null;
+}
+
+// Run when a secondary window is closed. This cleans up the mainNewWindow object to save resources.
+function newWindowClosed() {
+  mainNewActivated = null;
+}
+
+// This method is called when the BrowserWindow's DOM is ready
 // it is used to inject the header if pictureInPicture mode and
 // hideWindowFrame are enabled.
 function browserWindowDomReady() {
@@ -721,20 +725,11 @@ function browserWindowDomReady() {
     store.get('options.pictureInPicture') || store.get('options.hideWindowFrame')
   ) {
     // TODO: This is a temp fix and a proper fix should be developed
-    if (mainWindow != null) {
+    if (mainWindow !== null || newWindow !== null) {
       mainWindow.webContents.executeJavaScript(headerScript);
+      newWindow?.webContents.executeJavaScript(headerScript);
     }
   }
-}
-
-// Run when window is closed. This cleans up the mainWindow object to save resources.
-function mainWindowClosed() {
-  mainActivated = null;
-}
-
-// Run when a secondary window is closed. This cleans up the mainNewWindow object to save resources.
-function mainNewWindowClosed() {
-  mainNewActivated = null;
 }
 
 // This method will be called when Electron has finished
@@ -758,27 +753,27 @@ app.whenReady().then(async () => {
     app.quit();
   } else {
 
-  // Log app version to console
-  electronLog.info(`Quark Player v` + appVersion);
-  // Initialize Widevine
-  await components.whenReady();
-  electronLog.info('WidevineCDM component ready.');
+    // Log app version to console
+    electronLog.info(`Quark Player v` + appVersion);
+    // Initialize Widevine
+    await components.whenReady();
+    electronLog.info('WidevineCDM component ready.');
 
-  // Show version info and acceleration/vulkan warnings if applicable
-  if (store.get('options.disableAcceleration')) {
-    electronLog.warn('NOTE: Running with acceleration disabled!');
-    if (store.get('options.enableVulkan')) {
-      electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+    // Show version info and acceleration/vulkan warnings if applicable
+    if (store.get('options.disableAcceleration')) {
+      electronLog.warn('NOTE: Running with acceleration disabled!');
+      if (store.get('options.enableVulkan')) {
+        electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+      }
+    } else {
+      if (store.get('options.enableVulkan')) {
+        electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+      }
     }
-  } else {
-    if (store.get('options.enableVulkan')) {
-      electronLog.warn('NOTE: Running with experimental Vulkan backend!');
-    }
-  }
 
-  // The timeout fixes the trasparent background on Linux ???? why
-  //setTimeout(createWindow, 500);
-  createWindow();
+    // The timeout fixes the trasparent background on Linux ???? why
+    //setTimeout(createWindow, 500);
+    createWindow();
   }
 });
 
@@ -905,11 +900,15 @@ app.on('relaunch', () => {
 
   // Destroy the BrowserWindow
   mainWindow.webContents.removeListener('dom-ready', browserWindowDomReady);
+  newWindow?.webContents.removeListener('dom-ready', browserWindowDomReady);
   // Remove app Close listener
   mainWindow.removeListener('closed', mainWindowClosed);
+  newWindow?.removeListener('closed', newWindowClosed);
   // Close App
   mainWindow.close();
+  newWindow?.close();
   mainWindow = undefined;
+  newWindow = undefined;
 
   // Create a New BrowserWindow
   electronLog.info('App relaunched! [ Loading main.js ]');
@@ -930,11 +929,15 @@ app.on('restart', () => {
 
   // Destroy the BrowserWindow
   mainWindow.webContents.removeListener('dom-ready', browserWindowDomReady);
+  newWindow?.webContents.removeListener('dom-ready', browserWindowDomReady);
   // Remove app Close listener
   mainWindow.removeListener('closed', mainWindowClosed);
+  newWindow?.removeListener('closed', newWindowClosed);
   // Close App
   mainWindow.close();
-  mainWindow = null;
+  newWindow?.close();
+  mainWindow = undefined;
+  newWindow = undefined;
 
   // Tell app we are going to relaunch
   app.relaunch();
@@ -1020,15 +1023,16 @@ app.on('reset-confirm', () => {
       })
 })
 
-// Change the windows url when told to by the ui
+// Navigate to given URL when told to by the UI
 ipcMain.on('open-url', (e, service) => {
   electronLog.info('Opening service: ' + service.name);
-  mainWindow.webContents.userAgent = service.userAgent ? service.userAgent : defaultUserAgent;
-  mainWindow.loadURL(service.url);
+  const currentWindow = BrowserWindow.getFocusedWindow();
+  currentWindow.webContents.userAgent = service.userAgent ? service.userAgent : defaultUserAgent;
+  currentWindow.loadURL(service.url);
 });
 
 // Disable fullscreen when button pressed
-ipcMain.on('exit-fullscreen', e => {
+ipcMain.on('exit-fullscreen', () => {
   if (store.get('options.pictureInPicture')) {
     store.delete('options.pictureInPicture');
   } else if (store.get('options.hideWindowFrame')) {
@@ -1049,9 +1053,12 @@ app.on('window-all-closed', () => {
 // On macOS it's common to re-create a window in the app when the
 // dock icon is clicked and there are no other windows open.
 app.on('activate', () => {
-  if (mainActivated === null) {
+  if (mainActivated == null) {
     electronLog.info('App Re-Activated [ Loading main.js ]');
     createWindow();
+  }
+  if (mainActivated == null && mainNewActivated !== null) {
+    return;
   }
 });
 
@@ -1059,12 +1066,12 @@ app.on('activate', () => {
 app.on('new-window', () => {
   createNewWindow();
   electronLog.info('Created new BrowserWindow');
-  mainWindow.webContents.once('dom-ready',() => {
-      mainWindow.setTitle(`Quark Player (New Instance)`);
+  newWindow.webContents.once('dom-ready',() => {
+      newWindow.setTitle(`Quark Player (New Instance)`);
   });
 });
 
-// Called on disallowed remote API below
+// Called on disallowed remote APIs below
 function rejectEvent(event) {
   event.preventDefault();
 }

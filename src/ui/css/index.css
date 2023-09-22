@@ -12,6 +12,15 @@ html {
     --h3-select: #0E7EEA;
   }
 }
+:root.light {
+  --bgcolor: rgba(232, 232, 232, 96%);
+  --textcolor: #000;
+  --border: rgba(52, 52, 52, 96%);
+  --service-hover: rgba(0, 0, 0, 0.1);
+  --service-active: rgba(32, 32, 32, 0.2);
+  --service-shadow: rgba(0, 0, 0, 0.3);
+  --h3-select: #0E7EEA;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --bgcolor: rgba(52, 52, 52, 96%);
@@ -22,15 +31,6 @@ html {
     --service-shadow: rgba(0, 0, 0, 0.4);
     --h3-select: #8AB4F8;
   }
-}
-:root.light {
-  --bgcolor: rgba(232, 232, 232, 96%);
-  --textcolor: #000;
-  --border: rgba(52, 52, 52, 96%);
-  --service-hover: rgba(0, 0, 0, 0.1);
-  --service-active: rgba(32, 32, 32, 0.2);
-  --service-shadow: rgba(0, 0, 0, 0.3);
-  --h3-select: #0E7EEA;
 }
 :root.dark {
   --bgcolor: rgba(52, 52, 52, 96%);
@@ -43,6 +43,11 @@ html {
 }
 * {
   box-sizing: border-box;
+}
+hr {
+  background-color: var(--invert);
+  height: 2px;
+  border: none;
 }
 body {
   -webkit-app-region: drag;
