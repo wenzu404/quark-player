@@ -4,9 +4,9 @@ html {
 @media (prefers-color-scheme: light) {
   :root {
     --bgcolor: rgba(232, 232, 232, 96%);
-    --invert: rgba(52, 52, 52, 96%);
+    --invert: #262626;
     --textcolor: #000;
-    --border: rgba(52, 52, 52, 96%);
+    --border: #262626;
     --linkcolor: #00e;
     --visitedcolor: #551a8b;
     --service-hover: rgba(0, 0, 0, 0.1);
@@ -17,9 +17,9 @@ html {
 }
 :root.light {
   --bgcolor: rgba(232, 232, 232, 96%);
-  --invert: rgba(52, 52, 52, 96%);
+  --invert: #262626;
   --textcolor: #000;
-  --border: rgba(52, 52, 52, 96%);
+  --border: #262626;
   --linkcolor: #00e;
   --visitedcolor: #551a8b;
   --service-hover: rgba(0, 0, 0, 0.1);
@@ -29,7 +29,7 @@ html {
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bgcolor: rgba(52, 52, 52, 96%);
+    --bgcolor: #262626;
     --invert: rgba(232, 232, 232, 96%);
     --textcolor: #fff;
     --border: rgba(128, 128, 128, 96%);
@@ -42,7 +42,7 @@ html {
   }
 }
 :root.dark {
-  --bgcolor: rgba(52, 52, 52, 96%);
+  --bgcolor: #262626;
   --invert: rgba(232, 232, 232, 96%);
   --textcolor: #fff;
   --border: rgba(128, 128, 128, 96%);
