@@ -503,9 +503,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         { type: 'separator' },
+        { role: 'resetzoom' },
         { role: 'zoomin' },
         { role: 'zoomout' },
-        { role: 'resetzoom' },
         { type: 'separator' },
         { role: 'togglefullscreen' }
       ]
