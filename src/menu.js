@@ -470,10 +470,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         { role: 'cut' },
         { role: 'copy' },
         { role: 'paste' },
-        { role: 'pasteandmatchstyle' },
+        { role: 'pasteAndMatchStyle' },
         { role: 'delete' },
         { type: 'separator' },
-        { role: 'selectall' }
+        { role: 'selectAll' }
       ]
     },
     {
@@ -503,9 +503,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         { type: 'separator' },
-        { role: 'resetzoom' },
-        { role: 'zoomin' },
-        { role: 'zoomout' },
+        { role: 'resetZoom' },
+        { role: 'zoomIn' },
+        { role: 'zoomOut' },
         { type: 'separator' },
         { role: 'togglefullscreen' }
       ]

@@ -32,7 +32,7 @@ let mainActivated;
 let mainNewActivated;
 const argsCmd = process.argv; // Global cmdline object.
 // const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
-const menu = require('./menu');
+const menu = require('./menu.js');
 const store = new Store();
 const appName = app.getName();
 const userDataDir = app.getPath('userData');
@@ -241,7 +241,7 @@ async function createWindow() {
           position: mainWindow.getPosition(),
           size: mainWindow.getSize()
         });
-        electronLog.error('Saved windowDetails.');
+        electronLog.info('Saved windowDetails.');
       } else {
         electronLog.error('Error: Window was not defined while trying to save windowDetails.');
         return;

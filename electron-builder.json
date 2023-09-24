@@ -6,7 +6,7 @@
   },
   "asar": true,
   "productName": "Quark Player",
-  "appId": "com.alex313031.quarkplayer",
+  "appId": "com.alex313031.quark-player",
   "generateUpdatesFilesForAllChannels": false,
   "directories": {
       "app": "src",
