@@ -247,6 +247,7 @@ module.exports = [
   {
     name: 'Vimeo',
     title: 'Vimeo',
+    hidden: true,
     logo: 'imgs/vimeo.png',
     url: 'https://vimeo.com/watch',
     color: '#1AB7EA',
