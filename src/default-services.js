@@ -236,6 +236,16 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'TubiTV',
+    title: 'Tubi TV',
+    hidden: true,
+    logo: 'imgs/tubi.svg',
+    url: 'https://tubitv.com',
+    color: '#F54E00',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Twitch',
     title: 'Twitch',
     logo: 'imgs/twitch.svg',
