@@ -23,6 +23,9 @@ const headerScript = fs.readFileSync(
 // Initialize Electron remote module
 require('@electron/remote/main').initialize();
 
+// Restrict main.log size to 100Kb
+electronLog.transports.file.maxSize = 1024 * 100;
+
 // Create Global Varibles
 let mainWindow; // Global Window Object
 let newWindow; // Global New Window Object
