@@ -783,9 +783,6 @@ app.whenReady().then(async () => {
 if (store.get('options.disableAcceleration')) {
   // Enable new Canvas2D APIs
   app.commandLine.appendSwitch('new-canvas-2d-api');
-  // These two allow easier local web development
-  // Allow file:// URIs to read other file:// URIs
-  app.commandLine.appendSwitch('allow-file-access-from-files');
   // Enable local DOM to access all resources in a tree
   app.commandLine.appendSwitch('enable-local-file-accesses');
   // Enable QUIC for faster handshakes
@@ -793,7 +790,10 @@ if (store.get('options.disableAcceleration')) {
   // Enable inspecting ALL layers
   app.commandLine.appendSwitch('enable-ui-devtools');
   // app.commandLine.appendSwitch('use-gl','desktop');
-
+  if (!store.get('options.useLightMode')) {
+    // Force Dark Mode
+    app.commandLine.appendSwitch('force-dark-mode');
+  }
   // Enable useful features
   if (isLinux) {
     if (store.get('options.enableVulkan')) {
@@ -833,23 +833,24 @@ if (store.get('options.disableAcceleration')) {
   // Inform GPU process that GPU context will not be lost in power saving modes
   // Useful for fixing blank or pink screens/videos upon system resume, etc
   app.commandLine.appendSwitch('gpu-no-context-lost');
-  // Enable native CPU-mappable GPU memory buffer support on Linux
   if (isLinux) {
+    // Enable native CPU-mappable GPU memory buffer support on Linux
     app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
   }
   // Enable transparent overlays
   app.commandLine.appendSwitch('enable-transparent-visuals');
   // Enable new Canvas2D APIs
   app.commandLine.appendSwitch('new-canvas-2d-api');
-  // These two allow easier local web development
-  // Allow file:// URIs to read other file:// URIs
-  app.commandLine.appendSwitch('allow-file-access-from-files');
   // Enable local DOM to access all resources in a tree
   app.commandLine.appendSwitch('enable-local-file-accesses');
   // Enable QUIC for faster handshakes
   app.commandLine.appendSwitch('enable-quic');
   // Enable inspecting ALL layers
   app.commandLine.appendSwitch('enable-ui-devtools');
+  if (!store.get('options.useLightMode')) {
+    // Force Dark Mode
+    app.commandLine.appendSwitch('force-dark-mode');
+  }
   // Enable all WebGL Features
   app.commandLine.appendSwitch('enable-webgl-draft-extensions');
   // Enable WebGPU
