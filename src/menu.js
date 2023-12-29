@@ -646,7 +646,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           acceleratorWorksWhenHidden: false,
           click() {
-            const testWindow = new BrowserWindow({width: 600, height: 818, useContentSize: true, title: "Catgirl Fridge"});
+            const testWindow = new BrowserWindow({width: 600, height: 600, useContentSize: true, title: "DalÍ Art"});
             electronLog.info('Opening test image')
             testWindow.loadFile('./ui/test.html');
           }
