@@ -48,6 +48,7 @@ if (isLinux) {
   osType = 'BSD';
 }
 const archType = Os.arch();
+
 // Show app version in about.html
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
