@@ -46,7 +46,7 @@
     "@cliqz/adblocker-electron": "1.26.7",
     "@cliqz/adblocker-electron-preload": "1.26.7",
     "@cliqz/adblocker-extended-selectors": "1.26.7",
-    "@electron/remote": "2.0.12",
+    "@electron/remote": "2.1.1",
     "electron-context-menu": "3.6.1",
     "electron-localshortcut": "3.2.1",
     "electron-log": "4.4.8",
