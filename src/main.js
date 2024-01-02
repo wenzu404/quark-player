@@ -80,9 +80,6 @@ async function createWindow() {
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      javascript: true,
-      plugins: true,
-      enableRemoteModule: true,
       preload: path.join(__dirname, 'client-preload.js'),
     },
     trafficLightPosition: {
@@ -109,7 +106,8 @@ async function createWindow() {
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
     let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
-    if (fs.existsSync(engineCachePath)) {
+    // Only load cache if there is no version mismatch
+    if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
       var engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
@@ -161,6 +159,8 @@ async function createWindow() {
     store.set('version', appVersion);
     store.set('services', []);
     electronLog.info('Initialized Configuration');
+  } else {
+    store.set('version', appVersion);
   }
 
   // Load the services and merge the user's with default services
@@ -308,9 +308,6 @@ async function createNewWindow() {
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      javascript: true,
-      plugins: true,
-      enableRemoteModule: true,
       preload: path.join(__dirname, 'client-preload.js'),
     },
     trafficLightPosition: {
@@ -337,7 +334,8 @@ async function createNewWindow() {
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
     let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
-    if (fs.existsSync(engineCachePath)) {
+    // Only load cache if there is no version mismatch
+    if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
       var engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
@@ -389,6 +387,8 @@ async function createNewWindow() {
     store.set('version', appVersion);
     store.set('services', []);
     electronLog.info('Initialized Configuration');
+  } else {
+    store.set('version', appVersion);
   }
 
   // Load the services and merge the user's with default services
@@ -513,13 +513,10 @@ async function openHelpWindow() {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       contextIsolation: false,
-      sandbox: false,
+      sandbox: true,
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      javascript: true,
-      plugins: true,
-      enableRemoteModule: true,
       preload: path.join(__dirname, 'client-preload.js'),
     },
     trafficLightPosition: {
@@ -614,9 +611,6 @@ async function openHelpWindow() {
             experimentalFeatures: true,
             webviewTag: true,
             devTools: true,
-            javascript: true,
-            plugins: true,
-            enableRemoteModule: true,
             preload: path.join(__dirname, 'client-preload.js'),
           },
         });
@@ -664,14 +658,8 @@ contextMenu({
       webPreferences: {
         nodeIntegration: false,
         nodeIntegrationInWorker: false,
-        contextIsolation: false,
-        sandbox: true,
         experimentalFeatures: true,
-        webviewTag: true,
         devTools: true,
-        javascript: true,
-        plugins: true,
-        enableRemoteModule: true,
       },
       darkTheme: store.get('options.useLightMode') ? false : true,
       vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
@@ -692,14 +680,8 @@ contextMenu({
       webPreferences: {
         nodeIntegration: false,
         nodeIntegrationInWorker: false,
-        contextIsolation: false,
-        sandbox: true,
         experimentalFeatures: true,
-        webviewTag: true,
         devTools: true,
-        javascript: true,
-        plugins: true,
-        enableRemoteModule: true,
       },
       darkTheme: store.get('options.useLightMode') ? false : true,
       vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',

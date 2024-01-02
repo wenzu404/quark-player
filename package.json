@@ -3,7 +3,7 @@
   "appName": "quark-player",
   "productName": "Quark Player",
   "applicationId": "com.alex313031.quark-player",
-  "version": "3.2.7",
+  "version": "3.2.8",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
   "engines": {
@@ -42,7 +42,7 @@
     "cross-env": "7.0.3",
     "electron": "git+https://github.com/castlabs/electron-releases#v22.3.27+wvcus",
     "electron-builder": "23.6.0",
-    "eslint": "8.43.0",
+    "eslint": "8.44.0",
     "patch-package": "7.0.2",
     "postinstall-postinstall": "2.1.0",
     "rimraf": "3.0.2",
@@ -50,18 +50,18 @@
     "stylelint-config-standard": "29.0.0"
   },
   "dependencies": {
-    "@cliqz/adblocker": "1.26.7",
-    "@cliqz/adblocker-content": "1.26.7",
-    "@cliqz/adblocker-electron": "1.26.7",
-    "@cliqz/adblocker-electron-preload": "1.26.7",
-    "@cliqz/adblocker-extended-selectors": "1.26.7",
+    "@cliqz/adblocker": "1.26.12",
+    "@cliqz/adblocker-content": "1.26.12",
+    "@cliqz/adblocker-electron": "1.26.12",
+    "@cliqz/adblocker-electron-preload": "1.26.12",
+    "@cliqz/adblocker-extended-selectors": "1.26.12",
     "@electron/remote": "2.1.1",
     "electron-context-menu": "3.6.1",
     "electron-localshortcut": "3.2.1",
-    "electron-log": "4.4.8",
+    "electron-log": "5.0.3",
     "electron-prompt": "1.7.0",
     "electron-store": "8.1.0",
-    "node-fetch": "2.6.13"
+    "node-fetch": "2.7.0"
   },
   "resolutions": {
     "electron": "git+https://github.com/castlabs/electron-releases#v22.3.27+wvcus"

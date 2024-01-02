@@ -111,7 +111,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Ctrl+Shift+O',
           click() {
             dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
-            electronLog.info('Opened file:' + result.filePaths);
+            electronLog.info('Opened file: ' + result.filePaths);
             var openURI = result.filePaths
             const openWindow = new BrowserWindow({
               webPreferences: {
@@ -122,9 +122,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                javascript: true,
-                plugins: true,
-                enableRemoteModule: true,
               },
             });
             openWindow.loadFile(openURI[0]);
@@ -190,13 +187,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
                 contextIsolation: false,
-                sandbox: false,
+                sandbox: true,
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                javascript: true,
-                plugins: true,
-                enableRemoteModule: true,
                 preload: path.join(__dirname, 'client-preload.js'),
               },
             });
@@ -225,9 +219,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                javascript: true,
-                plugins: true,
-                enableRemoteModule: true,
                 preload: path.join(__dirname, 'client-preload.js'),
               },
             });
@@ -729,7 +720,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About App',
-          accelerator: 'CmdorCtrl+Alt+A',
+          accelerator: 'CmdorCtrl+Alt+Shift+A',
           click() {
             const aboutWindow = new BrowserWindow({
               width: 512,
@@ -745,9 +736,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                javascript: true,
-                plugins: true,
-                enableRemoteModule: true,
                 preload: path.join(__dirname, 'client-preload.js'),
               },
             });
