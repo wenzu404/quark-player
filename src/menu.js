@@ -107,7 +107,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         { type: 'separator' },
-        { label: 'Open File',
+        {
+          label: 'Open File',
           accelerator: 'Ctrl+Shift+O',
           click() {
             dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
