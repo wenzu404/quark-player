@@ -5,22 +5,23 @@ const fs = require('fs');
 const electronLog = require('electron-log');
 // Export app info
 const appName = app.getName();
-var appVersion = app.getVersion();
+const appVersion = app.getVersion();
 const userDataDir = app.getPath('userData');
 const userLogFile = path.join(userDataDir, 'logs/main.log');
 
 module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
-  var servicesMenuItems = [];
-  var defaultServiceMenuItems = [];
-  var enabledServicesMenuItems = [];
+  let servicesMenuItems = [];
+  let defaultServiceMenuItems = [];
+  let enabledServicesMenuItems = [];
   let examplePlaceholder;
 
   // Globally export what OS we are on
   const isLinux = process.platform === 'linux';
   const isWin = process.platform === 'win32';
   const isMac = process.platform === 'darwin';
+
   // Enable remote module on sub-windows
-  require("@electron/remote/main").enable(mainWindow.webContents);
+  require('@electron/remote/main').enable(mainWindow.webContents);
 
   if (services !== undefined) {
     // Menu with all services that can be clicked for easy switching
@@ -39,7 +40,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       label: service.name,
       type: 'checkbox',
       checked: store.get('options.defaultService')
-          ? store.get('options.defaultService') == service.name
+          ? store.get('options.defaultService') === service.name
           : false,
       click(e) {
         e.menu.items.forEach(e => {
@@ -55,8 +56,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       type: 'checkbox',
       checked: !service.hidden,
       click() {
-        if(service._defaultService) {
-          let currServices = store.get('services');
+        if (service._defaultService) {
+          const currServices = store.get('services');
           currServices.push({
             name: service.name,
             hidden: !service.hidden
@@ -64,8 +65,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           services = currServices;
           store.set('services', currServices);
         } else {
-          let currServices = store.get('services');
-          let currService = currServices.find(s => service.name == s.name);
+          const currServices = store.get('services');
+          const currService = currServices.find(s => service.name === s.name);
           currService.hidden = service.hidden ? undefined : true
           services = currServices;
           store.set('services', currServices);
@@ -93,7 +94,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Alt+Left',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.goBack();
-            var currentURL = focusedWindow.webContents.getURL();
+            const currentURL = focusedWindow.webContents.getURL();
             electronLog.info('Navigated backward to ' + [ currentURL ]);
           }
         },
@@ -102,7 +103,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Alt+Right',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.goForward();
-            var currentURL = focusedWindow.webContents.getURL();
+            const currentURL = focusedWindow.webContents.getURL();
             electronLog.info('Navigated forward to ' + [ currentURL ]);
           }
         },
@@ -113,7 +114,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click() {
             dialog.showOpenDialog({ properties: ['openFile'] }).then(result => {
             electronLog.info('Opened file: ' + result.filePaths);
-            var openURI = result.filePaths
+            const openURI = result.filePaths
             const openWindow = new BrowserWindow({
               webPreferences: {
                 nodeIntegration: false,
@@ -122,11 +123,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 sandbox: true,
                 experimentalFeatures: true,
                 webviewTag: true,
-                devTools: true,
-              },
+                devTools: true
+              }
             });
             openWindow.loadFile(openURI[0]);
-            openWindow.setTitle(openURI[0])});
+            openWindow.setTitle(openURI[0])
+            });
           }
         },
         {
@@ -151,7 +153,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           })
           .then(inputtedURL => {
             if (inputtedURL != null) {
-              if(inputtedURL == '') {
+              if (inputtedURL === '') {
                 if (store.get('options.customOmitHttps')) {
                   inputtedURL = 'https://example.org';
                 } else {
@@ -182,7 +184,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 632,
               height: 600,
               useContentSize: true,
-              title: "Quark Player Help",
+              title: 'Quark Player Help',
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
@@ -192,10 +194,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                preload: path.join(__dirname, 'client-preload.js'),
-              },
+                preload: path.join(__dirname, 'client-preload.js')
+              }
             });
-            require("@electron/remote/main").enable(helpWindow.webContents);
+            require('@electron/remote/main').enable(helpWindow.webContents);
             helpWindow.loadFile('./ui/help.html');
             electronLog.info('Opened help.html');
           }
@@ -210,7 +212,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 512,
               height: 480,
               useContentSize: true,
-              title: "About Quark Player",
+              title: 'About Quark Player',
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
@@ -220,10 +222,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                preload: path.join(__dirname, 'client-preload.js'),
-              },
+                preload: path.join(__dirname, 'client-preload.js')
+              }
             });
-            require("@electron/remote/main").enable(aboutWindow.webContents);
+            require('@electron/remote/main').enable(aboutWindow.webContents);
             aboutWindow.loadFile('./ui/about.html');
             electronLog.info('Opened about.html');
           }
@@ -233,7 +235,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Quit Quark Player',
           accelerator: 'CmdOrCtrl+Q',
           role: 'quit'
-        },
+        }
       ]
     },
     {
@@ -270,7 +272,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           })
           .then(inputtedURL => {
             if (inputtedURL != null) {
-              if(inputtedURL == '') {
+              if (inputtedURL === '') {
                 if (store.get('options.customOmitHttps')) {
                   inputtedURL = 'https://example.org';
                 } else {
@@ -310,7 +312,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             store.set('options.adblock', e.checked);
 
             // Store details to remeber when relaunched
-            if (mainWindow.getURL() != '') {
+            if (mainWindow.getURL() !== '') {
               store.set('relaunch.toPage', mainWindow.getURL());
             }
             store.set('relaunch.windowDetails', {
@@ -440,7 +442,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             store.clear();
 
             // Clear Engine Cache
-            let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
+            const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
             fs.access(engineCachePath, fs.constants.F_OK, (err) => {
               if (!err) {
                 fs.unlinkSync(engineCachePath);
@@ -489,7 +491,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Toggle Developer Tools',
           accelerator: isMac ? 'Alt+Command+I' : 'Ctrl+Shift+I',
           click(item, focusedWindow) {
-            var currentURL = focusedWindow.webContents.getURL();
+            const currentURL = focusedWindow.webContents.getURL();
             electronLog.info('Toggling Developer Tools on ' + currentURL);
             focusedWindow.webContents.toggleDevTools();
           }
@@ -510,7 +512,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Alt+Left',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.goBack();
-            var currentURL = focusedWindow.webContents.getURL();
+            const currentURL = focusedWindow.webContents.getURL();
             electronLog.info('Navigated backward to ' + [ currentURL ]);
           }
         },
@@ -519,7 +521,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'Alt+Right',
           click(item, focusedWindow) {
             if (focusedWindow) focusedWindow.webContents.goForward();
-            var currentURL = focusedWindow.webContents.getURL();
+            const currentURL = focusedWindow.webContents.getURL();
             electronLog.info('Navigated forward to ' + [ currentURL ]);
           }
         },
@@ -552,7 +554,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       submenu: [
         {
           label: 'Reload F5',
-          accelerator:  'F5',
+          accelerator: 'F5',
           visible: false,
           acceleratorWorksWhenHidden: true,
           click(item, focusedWindow) {
@@ -563,7 +565,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open Log File',
           click() {
             electronLog.info('Opening ' + [ userLogFile ]);
-            const logWindow = new BrowserWindow({width: 600, height: 768, useContentSize: true, title: userLogFile});
+            const logWindow = new BrowserWindow({ width: 600, height: 768, useContentSize: true, title: userLogFile });
             logWindow.loadFile(userLogFile);
           }
         },
@@ -573,9 +575,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             store.openInEditor();
             electronLog.info('Editing Config File');
             if (isLinux) {
-              return;
+              electronLog.info('\n Note that JSON must be a recognized file type \n for the OS to open the config.json file.\n');
             } else {
-              console.log('\n Note that JSON must be a recognized file type \n for the OS to open the config.json file.\n');
+              electronLog.info('\n Note that JSON must be a recognized file type \n for the OS to open the config.json file.\n');
             }
           }
         },
@@ -609,7 +611,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open chrome://gpu',
           accelerator: 'CmdorCtrl+Alt+G',
           click() {
-            const gpuWindow = new BrowserWindow({width: 900, height: 700, useContentSize: true, title: "GPU Internals"});
+            const gpuWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'GPU Internals' });
             gpuWindow.loadURL('chrome://gpu');
             electronLog.info('Opened chrome://gpu');
           }
@@ -618,7 +620,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open chrome://process-internals',
           accelerator: 'CmdorCtrl+Alt+P',
           click() {
-            const procsWindow = new BrowserWindow({width: 900, height: 700, useContentSize: true, title: "Process Model Internals"});
+            const procsWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'Process Model Internals' });
             procsWindow.loadURL('chrome://process-internals');
             electronLog.info('Opened chrome://process-internals');
           }
@@ -627,7 +629,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Open chrome://media-internals',
           accelerator: 'CmdorCtrl+Alt+M',
           click() {
-            const mediaWindow = new BrowserWindow({width: 900, height: 700, useContentSize: true, title: "Media Internals"});
+            const mediaWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'Media Internals' });
             mediaWindow.loadURL('chrome://media-internals');
             electronLog.info('Opened chrome://media-internals');
           }
@@ -638,7 +640,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           acceleratorWorksWhenHidden: false,
           click() {
-            const testWindow = new BrowserWindow({width: 600, height: 600, useContentSize: true, title: "DalÍ Art"});
+            const testWindow = new BrowserWindow({ width: 600, height: 600, useContentSize: true, title: 'DalÍ Art' });
             electronLog.info('Opening test image')
             testWindow.loadFile('./ui/test.html');
           }
@@ -682,22 +684,24 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
       label: 'About',
       submenu: [
         { label: appName + ' v' + appVersion, enabled: false },
-        { label: 'Created by Oscar Beaumont &&',
+        {
+          label: 'Created by Oscar Beaumont &&',
           click() {
             //shell.openExternal(
               //'https://github.com/oscartbeaumont/ElectronPlayer#readme'
             //);
             //electronLog.info('Opened external browser');
-            new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+            new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
           }
         },
-        { label: 'Maintained by Alex313031',
+        {
+          label: 'Maintained by Alex313031',
           click() {
             //shell.openExternal(
               //'https://github.com/Alex313031/quarkplayer#readme'
             //);
             //electronLog.info('Opened external browser');
-            new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/Alex313031/quark-player#readme');
+            new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/Alex313031/quark-player#readme');
           }
         },
         { type: 'separator' },
@@ -705,7 +709,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({width: 532, height: 600, useContentSize: true, title: "humans.txt"});
+            const humansWindow = new BrowserWindow({ width: 532, height: 600, useContentSize: true, title: 'humans.txt' });
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
@@ -714,7 +718,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View License',
           accelerator: 'CmdorCtrl+Alt+Shift+L',
           click() {
-            const licenseWindow = new BrowserWindow({width: 532, height: 550, useContentSize: true, title: "License"});
+            const licenseWindow = new BrowserWindow({ width: 532, height: 550, useContentSize: true, title: 'License' });
             licenseWindow.loadFile('./ui/license.md');
             electronLog.info('Opened license.md');
           }
@@ -727,7 +731,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 512,
               height: 500,
               useContentSize: true,
-              title: "About Quark Player",
+              title: 'About Quark Player',
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
@@ -737,10 +741,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 experimentalFeatures: true,
                 webviewTag: true,
                 devTools: true,
-                preload: path.join(__dirname, 'client-preload.js'),
-              },
+                preload: path.join(__dirname, 'client-preload.js')
+              }
             });
-            require("@electron/remote/main").enable(aboutWindow.webContents);
+            require('@electron/remote/main').enable(aboutWindow.webContents);
             aboutWindow.loadFile('./ui/about.html');
             electronLog.info('Opened about.html');
           }

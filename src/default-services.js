@@ -94,7 +94,7 @@ module.exports = [
     url: 'https://floatplane.com',
     color: '#00AEEF',
     style: {},
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36',
     permissions: []
   },
   {
@@ -123,7 +123,7 @@ module.exports = [
     url: 'https://www.hulu.com',
     color: '#1CE783',
     style: {},
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36',
     permissions: []
   },
   {
@@ -212,7 +212,7 @@ module.exports = [
     url: 'https://watch.sling.com',
     color: '#14ABE0',
     style: {},
-    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36",
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36',
     permissions: []
   },
   {
@@ -301,7 +301,7 @@ module.exports = [
     url: 'https://youtube.com/tv',
     color: '#FF0000',
     style: {},
-    userAgent: "Mozilla/5.0 (SMART-TV; LINUX; Tizen 5.0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/5.0 TV Safari/537.36",
+    userAgent: 'Mozilla/5.0 (SMART-TV; LINUX; Tizen 5.0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/5.0 TV Safari/537.36',
     permissions: []
   },
   {

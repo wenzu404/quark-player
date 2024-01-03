@@ -1,16 +1,12 @@
 // Modules to control application life and create native browser window
-const fs = require('fs'),
-  path = require('path'),
-  { app, session, components, BrowserWindow, nativeTheme, Menu, ipcMain, dialog } = require('electron'),
-  contextMenu = require('electron-context-menu'),
-  electronLog = require('electron-log'),
-  Store = require('electron-store'),
-  {
-    ElectronBlocker,
-    fullLists,
-    Request
-  } = require('@cliqz/adblocker-electron'),
-  fetch = require('node-fetch');
+const fs = require('fs');
+const path = require('path');
+const { app, session, components, BrowserWindow, nativeTheme, Menu, ipcMain, dialog } = require('electron');
+const contextMenu = require('electron-context-menu');
+const electronLog = require('electron-log');
+const Store = require('electron-store');
+const { ElectronBlocker, fullLists, Request } = require('@cliqz/adblocker-electron');
+const fetch = require('node-fetch');
 
 // contextBridge = require('electron').contextBridge,
 
@@ -37,7 +33,6 @@ const argsCmd = process.argv; // Global cmdline object.
 // const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
 const menu = require('./menu.js');
 const store = new Store();
-const appName = app.getName();
 const userDataDir = app.getPath('userData');
 
 // Floating UA variable
@@ -48,8 +43,9 @@ try {
   require('electron-reloader')(module);
 } catch { /* empty */ }
 
-// Get app version from package.json
-var appVersion = app.getVersion();
+// Get app details from package.json
+const appName = app.getName();
+const appVersion = app.getVersion();
 // Export Electron versions
 const electronVer = process.versions.electron;
 const chromeVer = process.versions.chrome;
@@ -80,11 +76,11 @@ async function createWindow() {
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      preload: path.join(__dirname, 'client-preload.js'),
+      preload: path.join(__dirname, 'client-preload.js')
     },
     trafficLightPosition: {
       x: 16,
-      y: 16,
+      y: 16
     },
     // Window Styling
     transparent: isLinux ? true : false,
@@ -99,13 +95,13 @@ async function createWindow() {
     fullscreen: store.get('options.launchFullscreen'),
     toolbar: true
   });
-  require("@electron/remote/main").enable(mainWindow.webContents);
+  require('@electron/remote/main').enable(mainWindow.webContents);
 
   defaultUserAgent = mainWindow.webContents.userAgent;
 
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
-    let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
+    const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     // Only load cache if there is no version mismatch
     if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
@@ -125,8 +121,8 @@ async function createWindow() {
   }
 
   // Reset the Window's size and location
-  let windowDetails = store.get('options.windowDetails');
-  let relaunchWindowDetails = store.get('relaunch.windowDetails');
+  const windowDetails = store.get('options.windowDetails');
+  const relaunchWindowDetails = store.get('relaunch.windowDetails');
   if (relaunchWindowDetails) {
     mainWindow.setSize(
       relaunchWindowDetails.size[0],
@@ -138,7 +134,10 @@ async function createWindow() {
     );
     store.delete('relaunch.windowDetails');
   } else if (windowDetails) {
-    mainWindow.setSize(windowDetails.size[0], windowDetails.size[1]);
+    mainWindow.setSize(
+      windowDetails.size[0],
+      windowDetails.size[1]
+    );
     mainWindow.setPosition(
       windowDetails.position[0],
       windowDetails.position[1]
@@ -164,11 +163,11 @@ async function createWindow() {
   }
 
   // Load the services and merge the user's with default services
-  let userServices = store.get('services') || [];
+  const userServices = store.get('services') || [];
   global.services = userServices;
 
   require('./default-services').forEach(dservice => {
-    let service = userServices.find(service => service.name == dservice.name);
+    const service = userServices.find(service => service.name === dservice.name);
     if (service) {
       // Enumerate service properties from default-services.js
       global.services[userServices.indexOf(service)] = {
@@ -182,7 +181,7 @@ async function createWindow() {
         permissions: service.permissions
           ? service.permissions
           : dservice.permissions,
-        hidden: service.hidden != undefined ? service.hidden : dservice.hidden,
+        hidden: service.hidden !== undefined ? service.hidden : dservice.hidden
       };
     } else {
       dservice._defaultService = true;
@@ -200,29 +199,27 @@ async function createWindow() {
   }
 
   // Load the UI or the Default Service
-  let defaultService = store.get('options.defaultService'),
-    lastOpenedPage = store.get('options.lastOpenedPage'),
-    relaunchToPage = store.get('relaunch.toPage');
+  let defaultService = store.get('options.defaultService');
+  const lastOpenedPage = store.get('options.lastOpenedPage');
+  const relaunchToPage = store.get('relaunch.toPage');
 
   if (relaunchToPage !== undefined) {
     electronLog.info('Relaunching page: ' + relaunchToPage);
     mainWindow.loadURL(relaunchToPage);
     store.delete('relaunch.toPage');
-  } else if (defaultService == 'lastOpenedPage' && lastOpenedPage) {
+  } else if (defaultService === 'lastOpenedPage' && lastOpenedPage) {
     electronLog.info('Loading the last opened page: ' + lastOpenedPage);
     mainWindow.loadURL(lastOpenedPage);
-  } else if (defaultService != undefined) {
+  } else if (defaultService !== undefined) {
     defaultService = global.services.find(
-      service => service.name == defaultService
+      service => service.name === defaultService
     );
     if (defaultService.url) {
       electronLog.info('Loading the default service: ' + defaultService.url);
       mainWindow.loadURL(defaultService.url);
       mainWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
     } else {
-      electronLog.warn(
-        "Error: Default service does not have a URL set. Falling back to main menu."
-      );
+      electronLog.warn('Error: Default service does not have a URL set. Falling back to main menu.');
       mainWindow.loadFile('./ui/index.html');
     }
   } else {
@@ -233,7 +230,7 @@ async function createWindow() {
   // Emitted when the window is closing
   mainWindow.on('close', () => {
     // Save open service if lastOpenedPage is the default service
-    if (store.get('options.defaultService') == 'lastOpenedPage') {
+    if (store.get('options.defaultService') === 'lastOpenedPage') {
       store.set('options.lastOpenedPage', mainWindow.getURL());
     }
 
@@ -264,16 +261,16 @@ async function createWindow() {
   // Emitted when website requests permissions - Electron default allows any permission this restricts websites
   mainWindow.webContents.session.setPermissionRequestHandler(
     (webContents, permission, callback) => {
-      let websiteOrigin = new URL(webContents.getURL()).origin;
-      let service = global.services.find(
-        service => new URL(service.url).origin == websiteOrigin
+      const websiteOrigin = new URL(webContents.getURL()).origin;
+      const service = global.services.find(
+        service => new URL(service.url).origin === websiteOrigin
       );
 
       if (
         (service &&
           service.permissions &&
           service.permissions.includes(permission)) ||
-        permission == 'fullscreen'
+        permission === 'fullscreen'
       ) {
         electronLog.info(
           `Note: Allowed requested browser permission '${permission}' for site: '${websiteOrigin}'`
@@ -308,11 +305,11 @@ async function createNewWindow() {
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      preload: path.join(__dirname, 'client-preload.js'),
+      preload: path.join(__dirname, 'client-preload.js')
     },
     trafficLightPosition: {
       x: 16,
-      y: 16,
+      y: 16
     },
     // Window Styling
     transparent: isLinux ? true : false,
@@ -327,13 +324,13 @@ async function createNewWindow() {
     fullscreen: store.get('options.launchFullscreen'),
     toolbar: true
   });
-  require("@electron/remote/main").enable(newWindow.webContents);
+  require('@electron/remote/main').enable(newWindow.webContents);
 
   defaultUserAgent = newWindow.webContents.userAgent;
 
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
-    let engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
+    const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     // Only load cache if there is no version mismatch
     if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
@@ -353,8 +350,8 @@ async function createNewWindow() {
   }
 
   // Reset the Window's size and location
-  let windowDetails = store.get('options.windowDetails');
-  let relaunchWindowDetails = store.get('relaunch.windowDetails');
+  const windowDetails = store.get('options.windowDetails');
+  const relaunchWindowDetails = store.get('relaunch.windowDetails');
   if (relaunchWindowDetails) {
     newWindow.setSize(
       relaunchWindowDetails.size[0],
@@ -366,7 +363,10 @@ async function createNewWindow() {
     );
     store.delete('relaunch.windowDetails');
   } else if (windowDetails) {
-    newWindow.setSize(windowDetails.size[0], windowDetails.size[1]);
+    newWindow.setSize(
+      windowDetails.size[0],
+      windowDetails.size[1]
+    );
     newWindow.setPosition(
       windowDetails.position[0],
       windowDetails.position[1]
@@ -392,11 +392,11 @@ async function createNewWindow() {
   }
 
   // Load the services and merge the user's with default services
-  let userServices = store.get('services') || [];
+  const userServices = store.get('services') || [];
   global.services = userServices;
 
   require('./default-services').forEach(dservice => {
-    let service = userServices.find(service => service.name == dservice.name);
+    const service = userServices.find(service => service.name === dservice.name);
     if (service) {
       // Enumerate service properties from default-services.js
       global.services[userServices.indexOf(service)] = {
@@ -410,7 +410,7 @@ async function createNewWindow() {
         permissions: service.permissions
           ? service.permissions
           : dservice.permissions,
-        hidden: service.hidden != undefined ? service.hidden : dservice.hidden,
+        hidden: service.hidden !== undefined ? service.hidden : dservice.hidden
       };
     } else {
       dservice._defaultService = true;
@@ -425,29 +425,27 @@ async function createNewWindow() {
   }
 
   // Load the UI or the Default Service
-  let defaultService = store.get('options.defaultService'),
-    lastOpenedPage = store.get('options.lastOpenedPage'),
-    relaunchToPage = store.get('relaunch.toPage');
+  const defaultService = store.get('options.defaultService');
+  const lastOpenedPage = store.get('options.lastOpenedPage');
+  const relaunchToPage = store.get('relaunch.toPage');
 
   if (relaunchToPage !== undefined) {
     electronLog.info('Relaunching page: ' + relaunchToPage);
     newWindow.loadURL(relaunchToPage);
     store.delete('relaunch.toPage');
-  } else if (defaultService == 'lastOpenedPage' && lastOpenedPage) {
+  } else if (defaultService === 'lastOpenedPage' && lastOpenedPage) {
     electronLog.info('Loading the last opened page: ' + lastOpenedPage);
     newWindow.loadURL(lastOpenedPage);
-  } else if (defaultService != undefined) {
+  } else if (defaultService !== undefined) {
     defaultService = global.services.find(
-      service => service.name == defaultService
+      service => service.name === defaultService
     );
     if (defaultService.url) {
       electronLog.info('Loading the default service: ' + defaultService.url);
       newWindow.loadURL(defaultService.url);
       newWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
     } else {
-      electronLog.warn(
-        "Error: Default service does not have a URL set. Falling back to main menu."
-      );
+      electronLog.warn('Error: Default service does not have a URL set. Falling back to main menu.');
       newWindow.loadFile('./ui/index.html');
     }
   } else {
@@ -458,7 +456,7 @@ async function createNewWindow() {
   // Emitted when the window is closing
   newWindow.on('close', () => {
     // Save open service if lastOpenedPage is the default service
-    if (store.get('options.defaultService') == 'lastOpenedPage') {
+    if (store.get('options.defaultService') === 'lastOpenedPage') {
       store.set('options.lastOpenedPage', newWindow.getURL());
     }
     electronLog.info('newWindow.close()');
@@ -475,16 +473,16 @@ async function createNewWindow() {
   // Emitted when website requests permissions - Electron default allows any permission this restricts websites
   newWindow.webContents.session.setPermissionRequestHandler(
     (webContents, permission, callback) => {
-      let websiteOrigin = new URL(webContents.getURL()).origin;
-      let service = global.services.find(
-        service => new URL(service.url).origin == websiteOrigin
+      const websiteOrigin = new URL(webContents.getURL()).origin;
+      const service = global.services.find(
+        service => new URL(service.url).origin === websiteOrigin
       );
 
       if (
         (service &&
           service.permissions &&
           service.permissions.includes(permission)) ||
-        permission == 'fullscreen'
+        permission === 'fullscreen'
       ) {
         electronLog.info(
           `Note: Allowed requested browser permission '${permission}' for site: '${websiteOrigin}'`
@@ -502,7 +500,7 @@ async function createNewWindow() {
 
 async function openHelpWindow() {
   helpWindow = new BrowserWindow({
-    title: "Quark Player Help",
+    title: 'Quark Player Help',
     resizable: true,
     maximizable: false,
     width: 632,
@@ -517,11 +515,11 @@ async function openHelpWindow() {
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      preload: path.join(__dirname, 'client-preload.js'),
+      preload: path.join(__dirname, 'client-preload.js')
     },
     trafficLightPosition: {
       x: 16,
-      y: 16,
+      y: 16
     },
     // Window Styling
     transparent: isLinux ? true : false,
@@ -564,14 +562,16 @@ async function openHelpWindow() {
   label: 'About',
   submenu: [
     { label: appName + ' v' + appVersion, enabled: false },
-    { label: 'Created by Oscar Beaumont &&',
+    {
+      label: 'Created by Oscar Beaumont &&',
       click() {
-        new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+        new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
       }
     },
-    { label: 'Maintained by Alex313031',
+    {
+      label: 'Maintained by Alex313031',
       click() {
-        new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/Alex313031/quark-player#readme');
+        new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/Alex313031/quark-player#readme');
       }
     },
     { type: 'separator' },
@@ -579,7 +579,7 @@ async function openHelpWindow() {
       label: 'View Humans.txt',
       accelerator: 'CmdorCtrl+Alt+Shift+H',
       click() {
-        const humansWindow = new BrowserWindow({width: 532, height: 600, useContentSize: true, title: "humans.txt"});
+        const humansWindow = new BrowserWindow({ width: 532, height: 600, useContentSize: true, title: 'humans.txt' });
         humansWindow.loadFile('./ui/humans.txt');
         electronLog.info('Opened humans.txt :)');
       }
@@ -588,7 +588,7 @@ async function openHelpWindow() {
       label: 'View License',
       accelerator: 'CmdorCtrl+Alt+Shift+L',
       click() {
-        const licenseWindow = new BrowserWindow({width: 532, height: 550, useContentSize: true, title: "License"});
+        const licenseWindow = new BrowserWindow({ width: 532, height: 550, useContentSize: true, title: 'License' });
         licenseWindow.loadFile('./ui/license.md');
         electronLog.info('Opened license.md');
       }
@@ -601,7 +601,7 @@ async function openHelpWindow() {
           width: 512,
           height: 480,
           useContentSize: true,
-          title: "About Quark Player",
+          title: 'About Quark Player',
           icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
           webPreferences: {
             nodeIntegration: false,
@@ -611,16 +611,17 @@ async function openHelpWindow() {
             experimentalFeatures: true,
             webviewTag: true,
             devTools: true,
-            preload: path.join(__dirname, 'client-preload.js'),
-          },
+            preload: path.join(__dirname, 'client-preload.js')
+          }
         });
-        require("@electron/remote/main").enable(aboutWindow.webContents);
+        require('@electron/remote/main').enable(aboutWindow.webContents);
         aboutWindow.loadFile('./ui/about.html');
         electronLog.info('Opened about.html');
       }
-    }]}
+    }]
+    }
   ]));
-  require("@electron/remote/main").enable(helpWindow.webContents);
+  require('@electron/remote/main').enable(helpWindow.webContents);
 
   if (store.get('options.useLightMode')) {
     nativeTheme.themeSource = 'light';
@@ -646,7 +647,8 @@ contextMenu({
   showLookUpSelection: true,
   showSearchWithGoogle: true,
   prepend: (defaultActions, parameters) => [
-  { label: 'Open Video in New Window',
+  {
+    label: 'Open Video in New Window',
     // Only show it when right-clicking video
     visible: parameters.mediaType === 'video',
     click: () => {
@@ -659,16 +661,17 @@ contextMenu({
         nodeIntegration: false,
         nodeIntegrationInWorker: false,
         experimentalFeatures: true,
-        devTools: true,
+        devTools: true
       },
       darkTheme: store.get('options.useLightMode') ? false : true,
-      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
+      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark'
       });
       const vidURL = parameters.srcURL;
       newWin.loadURL(vidURL);
     }
   },
-  { label: 'Open Link in New Window',
+  {
+    label: 'Open Link in New Window',
     // Only show it when right-clicking a link
     visible: parameters.linkURL.trim().length > 0,
     click: () => {
@@ -681,10 +684,10 @@ contextMenu({
         nodeIntegration: false,
         nodeIntegrationInWorker: false,
         experimentalFeatures: true,
-        devTools: true,
+        devTools: true
       },
       darkTheme: store.get('options.useLightMode') ? false : true,
-      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
+      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark'
       });
       const toURL = parameters.linkURL;
       newWin.loadURL(toURL);
@@ -719,14 +722,14 @@ function browserWindowDomReady() {
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-app.whenReady().then(async () => {
+app.whenReady().then(async() => {
   // Show versions
   if (argsCmd.includes('--version') || argsCmd.includes('-v')) {
-    console.log(`\n  Quark Player Version: ` + appVersion);
-    console.log(`  Electron Version: ` + electronVer);
-    console.log(`  Chromium Version: ` + chromeVer);
-    console.log(`  NodeJS Version: ` + nodeVer);
-    console.log(`  V8 Version: ` + v8Ver + '\n');
+    console.log('\n  Quark Player Version: ' + appVersion);
+    console.log('  Electron Version: ' + electronVer);
+    console.log('  Chromium Version: ' + chromeVer);
+    console.log('  NodeJS Version: ' + nodeVer);
+    console.log('  V8 Version: ' + v8Ver + '\n');
     app.quit();
   } else if (argsCmd.includes('--help') || argsCmd.includes('-h')) {
     electronLog.info('Opening Help');
@@ -737,9 +740,8 @@ app.whenReady().then(async () => {
     console.log(components.status());
     app.quit();
   } else {
-
     // Log app version to console
-    electronLog.info(`Quark Player v` + appVersion);
+    electronLog.info('Quark Player v' + appVersion);
     // Initialize Widevine
     await components.whenReady();
     electronLog.info('WidevineCDM component ready.');
@@ -780,24 +782,24 @@ if (store.get('options.disableAcceleration')) {
   if (isLinux) {
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan'
       );
-      app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
+      app.commandLine.appendSwitch('disable-features', 'UseChromeOSDirectVideoDecoder');
     } else {
       app.commandLine.appendSwitch(
-      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL'
       );
-      app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
+      app.commandLine.appendSwitch('disable-features', 'UseChromeOSDirectVideoDecoder');
     }
   } else {
     // VAAPI is only applicable on linux so copy the above without the VAAPI flags
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan'
       );
     } else {
       app.commandLine.appendSwitch(
-      'enable-features','CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL'
       );
     }
   }
@@ -843,23 +845,23 @@ if (store.get('options.disableAcceleration')) {
   if (isLinux) {
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,Vulkan',
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,Vulkan'
       );
     } else {
       app.commandLine.appendSwitch(
-      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks',
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks'
       );
     }
-    app.commandLine.appendSwitch('disable-features','UseChromeOSDirectVideoDecoder',);
+    app.commandLine.appendSwitch('disable-features', 'UseChromeOSDirectVideoDecoder');
   } else {
     // VAAPI is only applicable on linux so copy the above without the VAAPI flags
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan',
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan'
       );
     } else {
       app.commandLine.appendSwitch(
-      'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL'
       );
     }
   }
@@ -876,7 +878,7 @@ if (store.get('options.disableAcceleration')) {
 app.on('relaunch', () => {
   electronLog.info('Relaunching Quark Player...');
   // Store details to remeber when relaunched
-  if (mainWindow.getURL() != '') {
+  if (mainWindow.getURL() !== '') {
     store.set('relaunch.toPage', mainWindow.getURL());
   }
   store.set('relaunch.windowDetails', {
@@ -905,7 +907,7 @@ app.on('relaunch', () => {
 app.on('restart', () => {
   electronLog.warn('Restarting Electron...');
   // Store details to remeber when relaunched
-  if (mainWindow.getURL() != '') {
+  if (mainWindow.getURL() !== '') {
     store.set('relaunch.toPage', mainWindow.getURL());
   }
   store.set('relaunch.windowDetails', {
@@ -937,7 +939,7 @@ app.on('relaunch-confirm', () => {
     dialog.showMessageBox(mainWindow, {
         'type': 'question',
         'title': 'Relaunch Confirmation',
-        'message': "Are you sure you want to relaunch Quark Player?",
+        'message': 'Are you sure you want to relaunch Quark Player?',
         'buttons': [
             'Yes',
             'No'
@@ -963,7 +965,7 @@ app.on('restart-confirm', () => {
     dialog.showMessageBox(mainWindow, {
         'type': 'question',
         'title': 'Restart Confirmation',
-        'message': "Are you sure you want to restart Quark Player?",
+        'message': 'Are you sure you want to restart Quark Player?',
         'buttons': [
             'Yes',
             'No'
@@ -988,7 +990,7 @@ app.on('reset-confirm', () => {
     dialog.showMessageBox(mainWindow, {
         'type': 'question',
         'title': 'Settings Reset Confirmation',
-        'message': "Are you sure you want to reset *all* \nsettings to their defaults?",
+        'message': 'Are you sure you want to reset *all* \nsettings to their defaults?',
         'buttons': [
             'Yes',
             'No'
@@ -1044,6 +1046,7 @@ app.on('activate', () => {
     createWindow();
   }
   if (mainActivated == null && mainNewActivated !== null) {
+    electronLog.warn('mainActivated == null && mainNewActivated !== null');
     return;
   }
 });
@@ -1052,8 +1055,8 @@ app.on('activate', () => {
 app.on('new-window', () => {
   createNewWindow();
   electronLog.info('Created new BrowserWindow');
-  newWindow.webContents.once('dom-ready',() => {
-      newWindow.setTitle(`Quark Player (New Instance)`);
+  newWindow.webContents.once('dom-ready', () => {
+      newWindow.setTitle('Quark Player (New Instance)');
   });
 });
 
