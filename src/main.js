@@ -1060,6 +1060,10 @@ app.on('new-window', () => {
   });
 });
 
+app.on('will-quit', () => {
+  electronLog.warn('Quark Player is quitting now');
+});
+
 // Called on disallowed remote APIs below
 function rejectEvent(event) {
   event.preventDefault();
