@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
   for (const dependency of ['electron', 'chrome', 'node', 'v8']) {
     replaceText(`${dependency}-version`, process.versions[dependency]);
   }
-  replaceText(`electron2-version`, process.versions.electron);
+  replaceText('electron2-version', process.versions.electron);
 });
 
 // Get app version from package.json
