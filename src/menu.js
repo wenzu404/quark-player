@@ -572,12 +572,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Edit Config File',
           click() {
-            store.openInEditor();
             electronLog.info('Editing Config File');
             if (isLinux) {
               electronLog.info('\n Note that JSON must be a recognized file type \n for the OS to open the config.json file.\n');
+              electronLog.info('\n On Linux, a default text editor for handling JSON files must also be present and configured correctly.\n');
+              store.openInEditor();
+              return;
             } else {
               electronLog.info('\n Note that JSON must be a recognized file type \n for the OS to open the config.json file.\n');
+              store.openInEditor();
             }
           }
         },
