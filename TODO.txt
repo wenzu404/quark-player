@@ -6,3 +6,5 @@ update service logos : partially completed
 main accent color: #AE5EE0
 
 - Add Dependency Updates Alerter Bot
+
+ - Add "Open Service" menu under enable/disable services menu
