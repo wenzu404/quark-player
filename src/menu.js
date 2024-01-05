@@ -728,7 +728,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About App',
-          accelerator: 'CmdorCtrl+Alt+Shift+A',
+          accelerator: 'CmdorCtrl+Alt+A',
           click() {
             const aboutWindow = new BrowserWindow({
               width: 512,
