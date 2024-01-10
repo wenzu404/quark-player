@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2023 Alex313031
+Copyright (c) 2023 - 2024 Alex313031
 Copyright (c) 2018 - 2021 Oscar Beaumont
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
