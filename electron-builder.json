@@ -17,7 +17,7 @@
   "asarUnpack": [ "default-services.js" ],
   "extraFiles": [
     {
-      "from": "assets/icon64.png"
+      "from": "assets/icon.png"
     },
     {
       "from": "assets/README.txt"
@@ -26,8 +26,8 @@
   "linux": {
     "target": [
       "zip",
-      "AppImage",
-      "deb"
+      "deb",
+      "appimage"
     ],
     "maintainer": "Alex313031",
     "vendor": "Alex313031",
