@@ -203,7 +203,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
-          label: 'About Quark Player',
+          label: 'About ' + appName,
           accelerator: 'Cmd+Alt+A',
           acceleratorWorksWhenHidden: false,
           visible: isMac ? true : false,
@@ -212,6 +212,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 512,
               height: 480,
               useContentSize: true,
+              autoHideMenuBar: true,
               title: 'About Quark Player',
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
@@ -712,7 +713,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View Humans.txt',
           accelerator: 'CmdorCtrl+Alt+Shift+H',
           click() {
-            const humansWindow = new BrowserWindow({ width: 532, height: 600, useContentSize: true, title: 'humans.txt' });
+            const humansWindow = new BrowserWindow({
+              width: 532,
+              height: 600,
+              useContentSize: true,
+              autoHideMenuBar: true,
+              title: 'humans.txt'
+            });
             humansWindow.loadFile('./ui/humans.txt');
             electronLog.info('Opened humans.txt :)');
           }
@@ -721,7 +728,13 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'View License',
           accelerator: 'CmdorCtrl+Alt+Shift+L',
           click() {
-            const licenseWindow = new BrowserWindow({ width: 532, height: 550, useContentSize: true, title: 'License' });
+            const licenseWindow = new BrowserWindow({
+              width: 532,
+              height: 550,
+              useContentSize: true,
+              autoHideMenuBar: true,
+              title: 'License'
+            });
             licenseWindow.loadFile('./ui/license.md');
             electronLog.info('Opened license.md');
           }
@@ -734,7 +747,8 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 512,
               height: 500,
               useContentSize: true,
-              title: 'About Quark Player',
+              autoHideMenuBar: true,
+              title: 'About ' + appName,
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
