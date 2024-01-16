@@ -60,7 +60,7 @@ const isMac = process.platform === 'darwin';
 async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    title: 'Quark Player',
+    title: appName,
     resizable: true,
     maximizable: true,
     width: 1024,
@@ -289,7 +289,7 @@ async function createWindow() {
 async function createNewWindow() {
   // Create the browser window.
   newWindow = new BrowserWindow({
-    title: 'Quark Player (New Instance)',
+    title: appName + ' (New Instance)',
     resizable: true,
     maximizable: true,
     width: 1024,
@@ -500,7 +500,7 @@ async function createNewWindow() {
 
 async function openHelpWindow() {
   helpWindow = new BrowserWindow({
-    title: 'Quark Player Help',
+    title: appName + ' Help',
     resizable: true,
     maximizable: false,
     width: 632,
@@ -532,7 +532,7 @@ async function openHelpWindow() {
   defaultUserAgent = helpWindow.webContents.userAgent;
   Menu.setApplicationMenu(Menu.buildFromTemplate([
   {
-  label: 'Quark Player',
+  label: appName,
   submenu: [
     {
       label: 'Go Back',
@@ -552,7 +552,7 @@ async function openHelpWindow() {
     },
     { type: 'separator' },
     {
-      label: 'Quit Quark Player',
+      label: 'Quit ' + appName,
       accelerator: 'CmdOrCtrl+Q',
       role: 'quit'
     }]
@@ -601,7 +601,7 @@ async function openHelpWindow() {
           width: 512,
           height: 480,
           useContentSize: true,
-          title: 'About Quark Player',
+          title: 'About ' + appName,
           icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
           webPreferences: {
             nodeIntegration: false,
@@ -725,7 +725,7 @@ function browserWindowDomReady() {
 app.whenReady().then(async() => {
   // Show versions
   if (argsCmd.includes('--version') || argsCmd.includes('-v')) {
-    console.log('\n  Quark Player Version: ' + appVersion);
+    console.log('\n  ' + appName + ' Version: ' + appVersion);
     console.log('  Electron Version: ' + electronVer);
     console.log('  Chromium Version: ' + chromeVer);
     console.log('  NodeJS Version: ' + nodeVer);
@@ -741,7 +741,7 @@ app.whenReady().then(async() => {
     app.quit();
   } else {
     // Log app version to console
-    electronLog.info('Quark Player v' + appVersion);
+    electronLog.info(appName + ' v' + appVersion);
     // Initialize Widevine
     await components.whenReady();
     electronLog.info('WidevineCDM component ready.');
@@ -876,7 +876,7 @@ if (store.get('options.disableAcceleration')) {
 // settings that Electron doesn't allow to be changed in an active
 // browser window.
 app.on('relaunch', () => {
-  electronLog.info('Relaunching Quark Player...');
+  electronLog.info('Relaunching ' + appName + '...');
   // Store details to remeber when relaunched
   if (mainWindow.getURL() !== '') {
     store.set('relaunch.toPage', mainWindow.getURL());
@@ -1056,12 +1056,12 @@ app.on('new-window', () => {
   createNewWindow();
   electronLog.info('Created new BrowserWindow');
   newWindow.webContents.once('dom-ready', () => {
-      newWindow.setTitle('Quark Player (New Instance)');
+      newWindow.setTitle(appName + ' (New Instance)');
   });
 });
 
 app.on('will-quit', () => {
-  electronLog.warn('Quark Player is quitting now');
+  electronLog.warn(appName + ' is quitting now');
 });
 
 // Called on disallowed remote APIs below

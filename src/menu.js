@@ -184,7 +184,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               width: 632,
               height: 600,
               useContentSize: true,
-              title: 'Quark Player Help',
+              title: appName + ' Help',
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
@@ -213,7 +213,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               height: 480,
               useContentSize: true,
               autoHideMenuBar: true,
-              title: 'About Quark Player',
+              title: 'About ' + appName,
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
@@ -233,7 +233,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         { type: 'separator' },
         {
-          label: 'Quit Quark Player',
+          label: 'Quit ' + appName,
           accelerator: 'CmdOrCtrl+Q',
           role: 'quit'
         }
