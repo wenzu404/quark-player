@@ -255,6 +255,16 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Viki',
+    title: 'Viki',
+    hidden: true,
+    logo: 'imgs/viki.svg',
+    url: 'https://www.viki.com/',
+    color: '#0C9BFF',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Vimeo',
     title: 'Vimeo',
     hidden: true,
