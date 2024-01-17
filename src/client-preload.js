@@ -9,7 +9,7 @@ to inject into the about page.
 */
 
 const remote = require('@electron/remote');
-const Os = require('os')
+const Os = require('os');
 global.ipc = require('electron').ipcRenderer;
 
 // Globally export what OS we are on
