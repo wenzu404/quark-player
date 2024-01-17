@@ -1060,6 +1060,10 @@ app.on('new-window', () => {
   });
 });
 
+app.on('before-quit', () => {
+  isQuitting = true;
+});
+
 app.on('will-quit', () => {
   electronLog.warn(appName + ' is quitting now');
 });
