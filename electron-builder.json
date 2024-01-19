@@ -29,6 +29,7 @@
       "deb",
       "appimage"
     ],
+    "icon": "build/icons",
     "maintainer": "Alex313031",
     "vendor": "Alex313031",
     "synopsis": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
