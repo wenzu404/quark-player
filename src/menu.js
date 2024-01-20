@@ -24,10 +24,21 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   require('@electron/remote/main').enable(mainWindow.webContents);
 
   if (services !== undefined) {
-    // Menu with all services that can be clicked for easy switching
+    // Menu with enabled services that can be clicked for easy switching
     servicesMenuItems = services.map(service => ({
       label: service.name,
       visible: !service.hidden,
+      click() {
+        electronLog.info('Loading URL: ' + service.url);
+        mainWindow.loadURL(service.url);
+        mainWindow.send('run-loader', service);
+      }
+    }));
+
+    // Menu with all services that can be clicked for easy switching
+    allServicesMenuItems = services.map(service => ({
+      label: service.name,
+      visible: true,
       click() {
         electronLog.info('Loading URL: ' + service.url);
         mainWindow.loadURL(service.url);
@@ -84,7 +95,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Main Menu',
           accelerator: 'CmdOrCtrl+M',
           click() {
-            electronLog.info('Opening main menu...');
+            electronLog.info('Opening main menu');
             mainWindow.webContents.userAgent = defaultUserAgent;
             mainWindow.loadFile('./ui/index.html');
           }
@@ -246,59 +257,18 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           label: 'Main Menu',
           accelerator: 'CmdOrCtrl+M',
           click() {
-            electronLog.info('Opening main menu...');
+            electronLog.info('Opening main menu');
             mainWindow.webContents.userAgent = defaultUserAgent;
             mainWindow.loadFile('./ui/index.html');
           }
         },
         {
-          label: 'Open Custom URL',
-          accelerator: 'CmdOrCtrl+O',
-          click(item, focusedWindow) {
-            if (store.get('options.customOmitHttps')) {
-              examplePlaceholder = 'https://example.org';
-            } else {
-              examplePlaceholder = 'example.org';
-            }
-            prompt({
-              title: 'Open Custom URL',
-              label: 'URL:',
-              alwaysOnTop: true,
-              showWhenReady: true,
-              resizable: true,
-              menuBarVisible: true,
-              inputAttrs: {
-                  placeholder: examplePlaceholder
-              }
-          })
-          .then(inputtedURL => {
-            if (inputtedURL != null) {
-              if (inputtedURL === '') {
-                if (store.get('options.customOmitHttps')) {
-                  inputtedURL = 'https://example.org';
-                } else {
-                  inputtedURL = 'example.org';
-                }
-              }
-              if (store.get('options.customOmitHttps')) {
-                electronLog.info('Opening Custom URL: ' + inputtedURL);
-              } else {
-                electronLog.info('Opening Custom URL: ' + 'https://' + inputtedURL);
-              }
-              if (store.get('options.customOmitHttps')) {
-                focusedWindow.loadURL(inputtedURL);
-              } else {
-                focusedWindow.loadURL('https://' + inputtedURL);
-              }
-            }
-          })
-          .catch(console.error);
-          }
-        },
-        { type: 'separator' },
-        {
-          label: 'Enable/Disable Services *',
+          label: 'Enable/Disable Default Services *',
           submenu: enabledServicesMenuItems
+        },
+        {
+          label: 'Open Service:',
+          submenu: allServicesMenuItems
         },
         { type: 'separator' }
       ].concat(servicesMenuItems)

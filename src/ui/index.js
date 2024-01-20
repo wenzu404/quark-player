@@ -87,9 +87,7 @@ services.forEach(service => {
 
     animateLoader(service, img);
     console.log(`Animation load`);
-    console.log(
-      `Switching to service ${service.name}} at URL: ${service.url}...`
-    );
+    console.log(`Switching to service ${service.name}} at URL: ${service.url}`);
     ipc.send('open-url', service);
   });
 });
@@ -103,7 +101,5 @@ ipc.on('run-loader', (e, service) => {
 
   animateLoader(service, img);
   console.log(`Animation load`);
-  console.log(
-    `Switching to service ${service.name}} at URL: ${service.url}...`
-  );
+  console.log(`Switching to service ${service.name}} at URL: ${service.url}`);
 });
