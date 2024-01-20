@@ -66,6 +66,7 @@ async function createWindow() {
     width: 1024,
     height: 768,
     useContentSize: true,
+    autoHideMenuBar: store.get('options.autoHideMenuBar') ? true : false,
     icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
@@ -84,7 +85,6 @@ async function createWindow() {
     },
     // Window Styling
     transparent: isLinux ? true : false,
-    autoHideMenuBar: false,
     darkTheme: store.get('options.useLightMode') ? false : true,
     vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
     frame: store.get('options.pictureInPicture')
@@ -295,6 +295,7 @@ async function createNewWindow() {
     width: 1024,
     height: 768,
     useContentSize: true,
+    autoHideMenuBar: store.get('options.autoHideMenuBar') ? true : false,
     icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
     webPreferences: {
       nodeIntegration: false,
@@ -313,7 +314,6 @@ async function createNewWindow() {
     },
     // Window Styling
     transparent: isLinux ? true : false,
-    autoHideMenuBar: false,
     darkTheme: store.get('options.useLightMode') ? false : true,
     vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
     frame: store.get('options.pictureInPicture')

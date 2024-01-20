@@ -290,7 +290,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               position: mainWindow.getPosition(),
               size: mainWindow.getSize()
             });
-
             app.emit('relaunch-confirm');
           },
           checked: store.get('options.adblock')
@@ -348,6 +347,20 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               store.set('options.useLightMode', true);
             }
             app.emit('relaunch-confirm');
+          },
+          checked: false
+        },
+        {
+          label: store.get('options.autoHideMenuBar') ? 'Show MenuBar' : 'Hide MenuBar',
+          type: 'checkbox',
+          click() {
+            if (store.get('options.autoHideMenuBar')) {
+              store.set('options.autoHideMenuBar', false);
+            } else {
+              store.set('options.autoHideMenuBar', true);
+            }
+            electronLog.info('Note: Changing menu visibility setting');
+            app.emit('relaunch');
           },
           checked: false
         },
@@ -419,7 +432,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
                 fs.unlinkSync(engineCachePath);
               }
             });
-
             app.emit('reset-confirm');
           }
         },
