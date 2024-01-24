@@ -376,9 +376,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Frameless Window *',
           type: 'checkbox',
-          accelerator: 'CmdorCtrl+Alt+F',
+          accelerator: isMac ? 'Cmd+Alt+F' : 'Ctrl+Alt+F',
           click(e) {
             store.set('options.hideWindowFrame', e.checked);
+            electronLog.info('Note: Toggling frameless mode');
             app.emit('relaunch-confirm');
           },
           checked: store.get('options.hideWindowFrame')
