@@ -224,8 +224,9 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               height: 480,
               useContentSize: true,
               autoHideMenuBar: true,
+              skipTaskbar: true,
               title: 'About ' + appName,
-              icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
+              icon: path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
                 nodeIntegrationInWorker: false,
@@ -731,6 +732,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               height: 500,
               useContentSize: true,
               autoHideMenuBar: true,
+              skipTaskbar: true,
               title: 'About ' + appName,
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
