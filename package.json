@@ -36,7 +36,9 @@
   "bugs": {
     "url": "https://github.com/Alex313031/quarkplayer/issues"
   },
+  "website": "https://thorium.rocks/quark-player",
   "license": "MIT",
+  "copyright": "Copyright © 2024 Alex313031",
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
