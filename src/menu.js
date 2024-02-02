@@ -735,7 +735,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               useContentSize: true,
               autoHideMenuBar: true,
               skipTaskbar: true,
-              title: 'About ' + appName,
+              title: 'About App',
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
