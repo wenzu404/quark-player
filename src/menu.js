@@ -90,7 +90,39 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   return Menu.buildFromTemplate([
     {
       label: appName,
+      role: 'appMenu',
       submenu: [
+        {
+          label: 'About ' + appName,
+          accelerator: 'Cmd+Alt+A',
+          acceleratorWorksWhenHidden: false,
+          visible: isMac ? true : false,
+          click() {
+            const aboutWindow = new BrowserWindow({
+              width: 512,
+              height: 480,
+              useContentSize: true,
+              autoHideMenuBar: true,
+              skipTaskbar: true,
+              title: 'About ' + appName,
+              icon: path.join(__dirname, 'icon64.png'),
+              webPreferences: {
+                nodeIntegration: false,
+                nodeIntegrationInWorker: false,
+                contextIsolation: false,
+                sandbox: false,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                preload: path.join(__dirname, 'client-preload.js')
+              }
+            });
+            require('@electron/remote/main').enable(aboutWindow.webContents);
+            aboutWindow.loadFile('./ui/about.html');
+            electronLog.info('Opened about.html');
+          }
+        },
+        { type: 'separator' },
         {
           label: 'Main Menu',
           accelerator: 'CmdOrCtrl+M',
@@ -211,36 +243,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             require('@electron/remote/main').enable(helpWindow.webContents);
             helpWindow.loadFile('./ui/help.html');
             electronLog.info('Opened help.html');
-          }
-        },
-        {
-          label: 'About ' + appName,
-          accelerator: 'Cmd+Alt+A',
-          acceleratorWorksWhenHidden: false,
-          visible: isMac ? true : false,
-          click() {
-            const aboutWindow = new BrowserWindow({
-              width: 512,
-              height: 480,
-              useContentSize: true,
-              autoHideMenuBar: true,
-              skipTaskbar: true,
-              title: 'About ' + appName,
-              icon: path.join(__dirname, 'icon64.png'),
-              webPreferences: {
-                nodeIntegration: false,
-                nodeIntegrationInWorker: false,
-                contextIsolation: false,
-                sandbox: false,
-                experimentalFeatures: true,
-                webviewTag: true,
-                devTools: true,
-                preload: path.join(__dirname, 'client-preload.js')
-              }
-            });
-            require('@electron/remote/main').enable(aboutWindow.webContents);
-            aboutWindow.loadFile('./ui/about.html');
-            electronLog.info('Opened about.html');
           }
         },
         { type: 'separator' },
