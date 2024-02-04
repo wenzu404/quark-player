@@ -646,49 +646,70 @@ contextMenu({
   showSearchWithGoogle: true,
   prepend: (defaultActions, parameters) => [
   {
-    label: 'Open Video in New Window',
-    // Only show it when right-clicking video
-    visible: parameters.mediaType === 'video',
-    click: () => {
-      const newWin = new BrowserWindow({
-      title: 'New Window',
-      width: 1024,
-      height: 768,
-      useContentSize: true,
-      webPreferences: {
-        nodeIntegration: false,
-        nodeIntegrationInWorker: false,
-        experimentalFeatures: true,
-        devTools: true
-      },
-      darkTheme: store.get('options.useLightMode') ? false : true,
-      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark'
-      });
-      const vidURL = parameters.srcURL;
-      newWin.loadURL(vidURL);
-    }
-  },
-  {
     label: 'Open Link in New Window',
     // Only show it when right-clicking a link
     visible: parameters.linkURL.trim().length > 0,
     click: () => {
-      const newWin = new BrowserWindow({
-      title: 'New Window',
-      width: 1024,
-      height: 768,
-      useContentSize: true,
-      webPreferences: {
-        nodeIntegration: false,
-        nodeIntegrationInWorker: false,
-        experimentalFeatures: true,
-        devTools: true
-      },
-      darkTheme: store.get('options.useLightMode') ? false : true,
-      vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark'
-      });
       const toURL = parameters.linkURL;
-      newWin.loadURL(toURL);
+      const linkWin = new BrowserWindow({
+        title: 'New Window',
+        width: 1024,
+        height: 700,
+        useContentSize: true,
+        darkTheme: store.get('options.useLightMode') ? false : true,
+        webPreferences: {
+          nodeIntegration: false,
+          nodeIntegrationInWorker: false,
+          experimentalFeatures: true,
+          devTools: true
+        }
+      });
+      linkWin.loadURL(toURL);
+      electronLog.info('Opened Link in New Window');
+    }
+  },
+  {
+    label: 'Open Image in New Window',
+    // Only show it when right-clicking an image
+    visible: parameters.mediaType === 'image',
+    click: () => {
+      const imgURL = parameters.srcURL;
+      const imgTitle = imgURL.substring(imgURL.lastIndexOf('/') + 1);
+      const imgWin = new BrowserWindow({
+        title: imgTitle,
+        useContentSize: true,
+        darkTheme: store.get('options.useLightMode') ? false : true,
+        webPreferences: {
+          nodeIntegration: false,
+          nodeIntegrationInWorker: false,
+          experimentalFeatures: true,
+          devTools: true
+        }
+      });
+      imgWin.loadURL(imgURL);
+      electronLog.info('Opened Image in New Window');
+    }
+  },
+  {
+    label: 'Open Video in New Window',
+    // Only show it when right-clicking a video
+    visible: parameters.mediaType === 'video',
+    click: () => {
+      const vidURL = parameters.srcURL;
+      const vidTitle = vidURL.substring(vidURL.lastIndexOf('/') + 1);
+      const vidWin = new BrowserWindow({
+        title: vidTitle,
+        useContentSize: true,
+        darkTheme: store.get('options.useLightMode') ? false : true,
+        webPreferences: {
+          nodeIntegration: false,
+          nodeIntegrationInWorker: false,
+          experimentalFeatures: true,
+          devTools: true
+        }
+      });
+      vidWin.loadURL(vidURL);
+      electronLog.info('Popped out Video');
     }
   }]
 });
