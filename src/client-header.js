@@ -46,9 +46,9 @@ document.body.insertAdjacentHTML(
       left: 0;
       width: 100%;
       height: 16px;
-      opacity: 1 !important;
+      opacity: 1;
       background-color: var(--bar-color);
-      z-index: 4;
+      z-index: 3;
       cursor: -webkit-grab;
       cursor: grab;
       -webkit-user-drag: none;
@@ -61,7 +61,7 @@ document.body.insertAdjacentHTML(
       color: var(--btn-color);
       padding-top: 24px;
       padding-left: 8px;
-      z-index: 5;
+      z-index: 4;
       cursor: -webkit-grab;
       cursor: grab;
       -webkit-user-drag: none;
