@@ -285,7 +285,6 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           type: 'checkbox',
           click(e) {
             store.set('options.adblock', e.checked);
-
             // Store details to remeber when relaunched
             if (mainWindow.getURL() !== '') {
               store.set('relaunch.toPage', mainWindow.getURL());
@@ -393,14 +392,12 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Remember Window Details',
           type: 'checkbox',
-          click() {
-            if (store.get('options.windowDetails')) {
-              store.delete('options.windowDetails');
-            } else {
-              store.set('options.windowDetails', {});
-            }
+          click(e) {
+            store.set('options.windowDetails', e.checked);
           },
-          checked: !!store.get('options.windowDetails')
+          checked: store.get('options.windowDetails')
+            ? store.get('options.windowDetails')
+            : false
         },
         {
           label: 'Picture In Picture *',
@@ -626,8 +623,16 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           }
         },
         {
+          label: 'Open chrome://histograms',
+          visible: process.env.QUARK_TEST === '1',
+          click() {
+            const histogramWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'Histogram Internals' });
+            histogramWindow.loadURL('chrome://histograms');
+            electronLog.info('Opened chrome://histograms');
+          }
+        },
+        {
           label: 'Open Test Image',
-          // visible: process.env.QUARK_TEST === '1',
           accelerator: 'CmdorCtrl+Alt+Shift+T',
           acceleratorWorksWhenHidden: false,
           click() {

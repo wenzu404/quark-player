@@ -22,7 +22,7 @@
     "build": "cross-env NODE_ENV=production electron-builder --dir",
     "buildWin": "cross-env NODE_ENV=production electron-builder -w --x64 --dir && cross-env NODE_ENV=production electron-builder -w --ia32 --dir",
     "buildMac": "cross-env NODE_ENV=production electron-builder -m --x64 --dir && cross-env NODE_ENV=production electron-builder -m --arm64 --dir",
-    "dev": "cross-env QUARK_TEST=1 NODE_ENV=development ELECTRON_ENABLE_LOGGING=1 electron --enable-logging=file --user-data-dir=./test src",
+    "dev": "npm run test && cross-env QUARK_TEST=1 NODE_ENV=development ELECTRON_ENABLE_LOGGING=1 electron --enable-logging=file --user-data-dir=./test src",
     "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
     "distLinux": "cross-env NODE_ENV=production electron-builder -l",
     "distWin": "cross-env NODE_ENV=production electron-builder -w --x64 --pd dist/win-unpacked && cross-env NODE_ENV=production electron-builder -w --ia32 --pd dist/win-ia32-unpacked",

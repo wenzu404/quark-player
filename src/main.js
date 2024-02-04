@@ -30,7 +30,7 @@ let helpWindow; // Global Help Window Object
 let mainActivated;
 let mainNewActivated;
 const argsCmd = process.argv; // Global cmdline object.
-// const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
+const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
 const menu = require('./menu.js');
 const store = new Store();
 const userDataDir = app.getPath('userData');
@@ -104,13 +104,14 @@ async function createWindow() {
   if (store.get('options.adblock')) {
     const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     // Only load cache if there is no version mismatch
+    let engine;
     if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
-      var engine = await ElectronBlocker.deserialize(
+      engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
       );
     } else {
-      var engine = await ElectronBlocker.fromLists(fetch, fullLists);
+      engine = await ElectronBlocker.fromLists(fetch, fullLists);
     }
     engine.enableBlockingInSession(session.defaultSession);
 
@@ -145,7 +146,7 @@ async function createWindow() {
     );
   }
 
-  // Configire Picture In Picture
+  // Configure Picture In Picture
   if (store.get('options.pictureInPicture') && isMac) {
     app.dock.hide();
     mainWindow.setAlwaysOnTop(true, 'floating');
@@ -154,10 +155,12 @@ async function createWindow() {
     app.dock.show();
   }
 
-  // Detect and update config on null version
+  // Detect and set config on null version
   if (!store.get('version')) {
     store.set('version', appVersion);
     store.set('services', []);
+    store.set('options.adblock', true);
+    store.set('options.windowDetails', true);
     electronLog.info('Initialized Configuration');
   } else {
     store.set('version', appVersion);
@@ -205,18 +208,18 @@ async function createWindow() {
   const relaunchToPage = store.get('relaunch.toPage');
 
   if (relaunchToPage !== undefined) {
-    electronLog.info('Relaunching page: ' + relaunchToPage);
+    electronLog.info('Relaunching page: ' + [ relaunchToPage ]);
     mainWindow.loadURL(relaunchToPage);
     store.delete('relaunch.toPage');
   } else if (defaultService === 'lastOpenedPage' && lastOpenedPage) {
-    electronLog.info('Loading the last opened page: ' + lastOpenedPage);
+    electronLog.info('Loading the last opened page: ' + [ lastOpenedPage ]);
     mainWindow.loadURL(lastOpenedPage);
   } else if (defaultService !== undefined) {
     const defaultService = global.services.find(
       service => service.name === defaultService
     );
     if (defaultService.url) {
-      electronLog.info('Loading the default service: ' + defaultService.url);
+      electronLog.info('Loading the default service: ' + [ defaultService.url ]);
       mainWindow.loadURL(defaultService.url);
       mainWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
     } else {
@@ -335,13 +338,14 @@ async function createNewWindow() {
   if (store.get('options.adblock')) {
     const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     // Only load cache if there is no version mismatch
+    let engine;
     if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
-      var engine = await ElectronBlocker.deserialize(
+      engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
       );
     } else {
-      var engine = await ElectronBlocker.fromLists(fetch, fullLists);
+      engine = await ElectronBlocker.fromLists(fetch, fullLists);
     }
     engine.enableBlockingInSession(session.defaultSession);
 
@@ -376,22 +380,13 @@ async function createNewWindow() {
     );
   }
 
-  // Configire Picture In Picture
+  // Configure Picture In Picture
   if (store.get('options.pictureInPicture') && isMac) {
     app.dock.hide();
     newWindow.setAlwaysOnTop(true, 'floating');
     newWindow.setVisibleOnAllWorkspaces(true);
     newWindow.setFullScreenable(false);
     app.dock.show();
-  }
-
-  // Detect and update config on null version
-  if (!store.get('version')) {
-    store.set('version', appVersion);
-    store.set('services', []);
-    electronLog.info('Initialized Configuration');
-  } else {
-    store.set('version', appVersion);
   }
 
   // Load the services and merge the user's with default services
@@ -433,18 +428,18 @@ async function createNewWindow() {
   const relaunchToPage = store.get('relaunch.toPage');
 
   if (relaunchToPage !== undefined) {
-    electronLog.info('Relaunching page: ' + relaunchToPage);
+    electronLog.info('Relaunching page: ' + [ relaunchToPage ]);
     newWindow.loadURL(relaunchToPage);
     store.delete('relaunch.toPage');
   } else if (defaultService === 'lastOpenedPage' && lastOpenedPage) {
-    electronLog.info('Loading the last opened page: ' + lastOpenedPage);
+    electronLog.info('Loading the last opened page: ' + [ lastOpenedPage ]);
     newWindow.loadURL(lastOpenedPage);
   } else if (defaultService !== undefined) {
     const defaultService = global.services.find(
       service => service.name === defaultService
     );
     if (defaultService.url) {
-      electronLog.info('Loading the default service: ' + defaultService.url);
+      electronLog.info('Loading the default service: ' + [ defaultService.url ]);
       newWindow.loadURL(defaultService.url);
       newWindow.webContents.userAgent = defaultService.userAgent ? defaultService.userAgent : defaultUserAgent;
     } else {
@@ -742,6 +737,43 @@ app.whenReady().then(async() => {
     console.log('WidevineCDM Component Info:\n');
     console.log(components.status());
     app.quit();
+  } else if (argsCmd.includes('--service')) {
+    // Log app version to console
+    electronLog.info(appName + ' v' + appVersion);
+    // Initialize Widevine
+    await components.whenReady();
+    electronLog.info('WidevineCDM component ready.');
+
+    // Show version info and acceleration/vulkan warnings if applicable
+    if (store.get('options.disableAcceleration')) {
+      electronLog.warn('NOTE: Running with acceleration disabled!');
+      if (store.get('options.enableVulkan')) {
+        electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+      }
+    } else {
+      if (store.get('options.enableVulkan')) {
+        electronLog.warn('NOTE: Running with experimental Vulkan backend!');
+      }
+    }
+    // For the --service cmdline flag
+    let serviceOverride;
+    let serviceOverrideUrl;
+    if (argsCmd2) {
+      serviceOverrideUrl = argsCmd2;
+    }
+    // Get the URL specified at the cmdline
+    serviceOverride = serviceOverrideUrl;
+
+    // The timeout fixes the trasparent background on Linux ???? why
+    //setTimeout(createWindow, 500);
+    createWindow();
+    // Load the URL specified at the cmdline
+    if (serviceOverride !== undefined) {
+      if (serviceOverride) {
+        mainWindow.loadURL(serviceOverride);
+        electronLog.info('Note: Opening service specified on commandline at ' + [ serviceOverrideUrl ]);
+      }
+    }
   } else {
     // Log app version to console
     electronLog.info(appName + ' v' + appVersion);
@@ -993,7 +1025,7 @@ app.on('reset-confirm', () => {
     dialog.showMessageBox(mainWindow, {
         'type': 'question',
         'title': 'Settings Reset Confirmation',
-        'message': 'Are you sure you want to reset *all* \nsettings to their defaults?',
+        'message': 'Are you sure you want to reset *All* \nsettings to their defaults?',
         'buttons': [
             'Yes',
             'No'
@@ -1009,14 +1041,14 @@ app.on('reset-confirm', () => {
               app.relaunch();
               app.quit();
               app.emit('relaunch');
-              electronLog.warn('Note: Reset All Settings!');
+              electronLog.warn('Note: Reset *All* Settings.');
           }
       })
 })
 
 // Navigate to given URL when told to by the UI
 ipcMain.on('open-url', (e, service) => {
-  electronLog.info('Opening service: ' + service.name);
+  electronLog.info('Opening service: ' + [ service.name ]);
   const currentWindow = BrowserWindow.getFocusedWindow();
   currentWindow.webContents.userAgent = service.userAgent ? service.userAgent : defaultUserAgent;
   currentWindow.loadURL(service.url);
