@@ -882,7 +882,7 @@ if (store.get('options.disableAcceleration')) {
       );
     }
   }
-  // Enable remote debugging only if we in development mode
+  // Enable remote debugging only if we are in development mode
   if (process.env.NODE_ENV === 'development') {
     app.commandLine.appendSwitch('remote-debugging-port', '9222');
   }
@@ -944,7 +944,7 @@ if (store.get('options.disableAcceleration')) {
       );
     }
   }
-  // Enable remote debugging only if we in development mode
+  // Enable remote debugging only if we are in development mode
   if (process.env.NODE_ENV === 'development') {
     app.commandLine.appendSwitch('remote-debugging-port', '9222');
   }
