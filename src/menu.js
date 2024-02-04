@@ -11,6 +11,7 @@ const userLogFile = path.join(userDataDir, 'logs/main.log');
 
 module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   let servicesMenuItems = [];
+  let allServicesMenuItems = [];
   let defaultServiceMenuItems = [];
   let enabledServicesMenuItems = [];
   let examplePlaceholder;
@@ -383,7 +384,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click(e) {
             store.set('options.hideWindowFrame', e.checked);
             electronLog.info('Note: Toggling frameless mode');
-            app.emit('relaunch-confirm');
+            app.emit('relaunch');
           },
           checked: store.get('options.hideWindowFrame')
             ? store.get('options.hideWindowFrame')

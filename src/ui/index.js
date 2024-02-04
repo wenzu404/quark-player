@@ -4,6 +4,8 @@ This script renders the main menu ui.
 
 let servicesElem = document.querySelector('.services');
 
+console.log(`Welcome to the Quark Player DevTools Console!`);
+
 function isLoading() {
   return document.body.classList.contains('loading');
 }
@@ -50,7 +52,8 @@ function animateLoader(service, img) {
   }, 1);
 }
 
-// initialize services
+// Initialize services
+// eslint-disable-next-line no-undef
 services.forEach(service => {
   // skip if service is hidden
   if (service.hidden) {
@@ -88,11 +91,13 @@ services.forEach(service => {
     animateLoader(service, img);
     console.log(`Animation load`);
     console.log(`Switching to service ${service.name}} at URL: ${service.url}`);
+    // eslint-disable-next-line no-undef
     ipc.send('open-url', service);
   });
 });
 
-// if requested by menu
+// If requested by menu
+// eslint-disable-next-line no-undef
 ipc.on('run-loader', (e, service) => {
   if (isLoading()) return;
 

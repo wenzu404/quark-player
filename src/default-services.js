@@ -28,6 +28,15 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'Arte',
+    title: 'Arte',
+    logo: 'imgs/arte.svg',
+    url: 'https://arte.tv',
+    color: '#FA572E',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'CBS All Access',
     title: 'CBS All Access',
     hidden: true,

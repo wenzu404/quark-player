@@ -51,6 +51,7 @@ hr {
 }
 body {
   -webkit-app-region: drag;
+  z-index: 3;
   margin: 0;
   background-color: var(--bgcolor);
   display: grid;
@@ -123,7 +124,7 @@ body.loading .services {
 .loader {
   position: fixed;
   transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1); /* easeOutQuint */
-  z-index: 100;
+  z-index: 1;
 }
 .loader > .ripple {
   position: fixed;

@@ -5,7 +5,7 @@ const { app, session, components, BrowserWindow, nativeTheme, Menu, ipcMain, dia
 const contextMenu = require('electron-context-menu');
 const electronLog = require('electron-log');
 const Store = require('electron-store');
-const { ElectronBlocker, fullLists, Request } = require('@cliqz/adblocker-electron');
+const { ElectronBlocker, fullLists } = require('@cliqz/adblocker-electron');
 const fetch = require('node-fetch');
 
 // contextBridge = require('electron').contextBridge,
@@ -200,7 +200,7 @@ async function createWindow() {
   }
 
   // Load the UI or the Default Service
-  let defaultService = store.get('options.defaultService');
+  const defaultService = store.get('options.defaultService');
   const lastOpenedPage = store.get('options.lastOpenedPage');
   const relaunchToPage = store.get('relaunch.toPage');
 
@@ -212,7 +212,7 @@ async function createWindow() {
     electronLog.info('Loading the last opened page: ' + lastOpenedPage);
     mainWindow.loadURL(lastOpenedPage);
   } else if (defaultService !== undefined) {
-    defaultService = global.services.find(
+    const defaultService = global.services.find(
       service => service.name === defaultService
     );
     if (defaultService.url) {
@@ -440,7 +440,7 @@ async function createNewWindow() {
     electronLog.info('Loading the last opened page: ' + lastOpenedPage);
     newWindow.loadURL(lastOpenedPage);
   } else if (defaultService !== undefined) {
-    defaultService = global.services.find(
+    const defaultService = global.services.find(
       service => service.name === defaultService
     );
     if (defaultService.url) {
@@ -1061,10 +1061,6 @@ app.on('new-window', () => {
   newWindow.webContents.once('dom-ready', () => {
       newWindow.setTitle(appName + ' (New Instance)');
   });
-});
-
-app.on('before-quit', () => {
-  isQuitting = true;
 });
 
 app.on('will-quit', () => {

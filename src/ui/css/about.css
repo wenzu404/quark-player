@@ -32,7 +32,7 @@ html {
 @media (prefers-color-scheme: dark) {
   :root {
     --bgcolor: #262626;
-    --bold: #000000;
+    --bold: #000;
     --invert: rgba(232, 232, 232, 96%);
     --textcolor: #fff;
     --border: rgba(128, 128, 128, 96%);
@@ -46,7 +46,7 @@ html {
 }
 :root.dark {
   --bgcolor: #262626;
-  --bold: #000000;
+  --bold: #000;
   --invert: rgba(232, 232, 232, 96%);
   --textcolor: #fff;
   --border: rgba(128, 128, 128, 96%);
