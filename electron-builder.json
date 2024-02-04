@@ -28,6 +28,7 @@
     "target": [
       "zip",
       "deb",
+      "rpm",
       "appimage"
     ],
     "icon": "build/icons",
