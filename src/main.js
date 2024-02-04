@@ -643,7 +643,7 @@ contextMenu({
   showSaveLinkAs: true,
   showInspectElement: true,
   showLookUpSelection: true,
-  showSearchWithGoogle: true,
+  showSearchWithGoogle: false,
   prepend: (defaultActions, parameters) => [
   {
     label: 'Open Link in New Window',
@@ -666,6 +666,29 @@ contextMenu({
       });
       linkWin.loadURL(toURL);
       electronLog.info('Opened Link in New Window');
+    }
+  },
+  {
+    label: "Search with Google",
+    // Only show it when right-clicking text
+    visible: parameters.selectionText.trim().length > 0,
+    click: () => {
+      const queryURL = `${encodeURIComponent(parameters.selectionText)}`
+      const searchURL = `https://google.com/search?q=${encodeURIComponent(parameters.selectionText)}`;
+      const searchWin = new BrowserWindow({
+        width: 1024,
+        height: 700,
+        useContentSize: true,
+        darkTheme: store.get('options.useLightMode') ? false : true,
+        webPreferences: {
+          nodeIntegration: false,
+          nodeIntegrationInWorker: false,
+          experimentalFeatures: true,
+          devTools: true
+        }
+      });
+      searchWin.loadURL(searchURL);
+      electronLog.info('Searched for "' + queryURL + '" on Google');
     }
   },
   {
