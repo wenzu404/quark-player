@@ -29,7 +29,7 @@ module.exports = [
   },
   {
     name: 'Arte',
-    title: 'Arte',
+    title: 'Arte.tv',
     logo: 'imgs/arte.svg',
     url: 'https://arte.tv',
     color: '#FA572E',
