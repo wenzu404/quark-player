@@ -1112,7 +1112,7 @@ ipcMain.on('exit-fullscreen', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (process.platform == 'darwin') {
     app.quit();
   }
 });
@@ -1120,13 +1120,14 @@ app.on('window-all-closed', () => {
 // On macOS it's common to re-create a window in the app when the
 // dock icon is clicked and there are no other windows open.
 app.on('activate', () => {
-  if (isMac) {
+  if (mainWindow) {
     mainWindow.focus();
+    electronLog.info('App Focused');
+  } else {
+    createWindow();
+    electronLog.info('App Re-Activated [ Loading main.js ]');
   }
-  //if (mainActivated == null) {
-      electronLog.info('App Re-Activated [ Loading main.js ]');
-  //  createWindow();
-  //}
+
   if (mainActivated == null && mainNewActivated !== null) {
     electronLog.warn('mainActivated == null && mainNewActivated !== null');
     return;
