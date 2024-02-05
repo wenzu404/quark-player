@@ -40,10 +40,10 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
     allServicesMenuItems = services.map(service => ({
       label: service.name,
       visible: true,
-      click() {
+      click(item, focusedWindow) {
         electronLog.info('Loading URL: ' + service.url);
-        mainWindow.loadURL(service.url);
-        mainWindow.send('run-loader', service);
+        if (focusedWindow) focusedWindow.loadURL(service.url);
+        focusedWindow.send('run-loader', service);
       }
     }));
 

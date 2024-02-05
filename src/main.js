@@ -1120,10 +1120,10 @@ app.on('window-all-closed', () => {
 // On macOS it's common to re-create a window in the app when the
 // dock icon is clicked and there are no other windows open.
 app.on('activate', () => {
-  if (mainActivated == null) {
-    electronLog.info('App Re-Activated [ Loading main.js ]');
-    createWindow();
-  }
+  //if (mainActivated == null) {
+      electronLog.info('App Re-Activated [ Loading main.js ]');
+  //  createWindow();
+  //}
   if (mainActivated == null && mainNewActivated !== null) {
     electronLog.warn('mainActivated == null && mainNewActivated !== null');
     return;
