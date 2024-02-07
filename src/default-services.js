@@ -126,6 +126,15 @@ module.exports = [
     permissions: []
   },
   {
+    name: 'HDFull TV',
+    title: 'HDFull',
+    logo: 'imgs/hd_full.png',
+    url: 'https://hdfull.sbs',
+    color: '#129ED9',
+    style: {},
+    permissions: []
+  },
+  {
     name: 'Hulu',
     title: 'Hulu',
     logo: 'imgs/hulu.svg',
@@ -170,6 +179,16 @@ module.exports = [
     logo: 'imgs/peacock.svg',
     url: 'https://www.peacocktv.com',
     color: '#05AC3F',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'Playdede',
+    title: 'Playdede',
+    hidden: true,
+    logo: 'imgs/playdede.png',
+    url: 'https://playdede.us/',
+    color: '#FFFFFF',
     style: {},
     permissions: []
   },
