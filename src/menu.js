@@ -123,7 +123,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             electronLog.info('Opened about.html');
           }
         },
-        { type: 'separator' },
+        //{ type: 'separator' },
         {
           label: 'Main Menu',
           accelerator: 'CmdOrCtrl+M',
