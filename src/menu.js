@@ -5,9 +5,11 @@ const fs = require('fs');
 const electronLog = require('electron-log');
 // Export app info
 const appName = app.getName();
+const userHome = app.getPath('home');
 const appVersion = app.getVersion();
 const userDataDir = app.getPath('userData');
 const userLogFile = path.join(userDataDir, 'logs/main.log');
+const userMacLogFile = path.join(userHome, 'Library/Logs', appName, 'main.log');
 
 module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
   let servicesMenuItems = [];
@@ -549,9 +551,15 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         {
           label: 'Open Log File',
           click() {
-            electronLog.info('Opening ' + [ userLogFile ]);
-            const logWindow = new BrowserWindow({ width: 600, height: 768, useContentSize: true, title: userLogFile });
-            logWindow.loadFile(userLogFile);
+            if (isMac) {
+              electronLog.info('Opening ' + [ userMacLogFile ]);
+              const logWindow = new BrowserWindow({ width: 600, height: 768, useContentSize: true, title: userMacLogFile });
+              logWindow.loadFile(userMacLogFile);
+            } else {
+              electronLog.info('Opening ' + [ userLogFile ]);
+              const logWindow = new BrowserWindow({ width: 600, height: 768, useContentSize: true, title: userLogFile });
+              logWindow.loadFile(userLogFile);
+            }
           }
         },
         {
