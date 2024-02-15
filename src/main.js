@@ -1110,11 +1110,22 @@ ipcMain.on('exit-fullscreen', () => {
   app.emit('relaunch');
 });
 
+app.on('toggle-menubar', () => {
+  if (store.get('options.autoHideMenuBar')) {
+    mainWindow.autoHideMenuBar = true;
+    mainWindow.menuBarVisible = false;
+  } else {
+    mainWindow.autoHideMenuBar = false;
+    mainWindow.menuBarVisible = true;
+  }
+  electronLog.info('Note: Changed menu visibility setting');
+});
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  if (process.platform == 'darwin') {
+  //if (process.platform !== 'darwin') {
     app.quit();
-  }
+  //}
 });
 
 // On macOS it's common to re-create a window in the app when the

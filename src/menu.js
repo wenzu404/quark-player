@@ -364,8 +364,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
             } else {
               store.set('options.autoHideMenuBar', true);
             }
-            electronLog.info('Note: Changing menu visibility setting');
-            app.emit('relaunch');
+            app.emit('toggle-menubar');
           },
           checked: false
         },
