@@ -978,8 +978,8 @@ app.on('relaunch', () => {
   newWindow = undefined;
 
   // Create a New BrowserWindow
-  electronLog.info('App relaunched! [ Loading main.js ]');
   createWindow();
+  electronLog.info('App relaunched! [ Loading main.js ]');
 });
 
 // Full restart, quitting Electron. Triggered by developer menu and disabling acceleration
