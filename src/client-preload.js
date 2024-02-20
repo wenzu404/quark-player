@@ -8,8 +8,8 @@ It also dynamically gets versions of stuff
 to inject into the about page.
 */
 
-const remote = require('@electron/remote');
 const Os = require('os');
+const remote = require('@electron/remote');
 global.ipc = require('electron').ipcRenderer;
 
 // Globally export what OS we are on
