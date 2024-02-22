@@ -103,7 +103,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
           click() {
             const aboutWindow = new BrowserWindow({
               width: 512,
-              height: 480,
+              height: 500,
               useContentSize: true,
               autoHideMenuBar: true,
               skipTaskbar: true,
@@ -740,7 +740,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
         },
         {
           label: 'About App',
-          accelerator: 'CmdorCtrl+Alt+A',
+          accelerator: 'Ctrl+Alt+A',
           click() {
             const aboutWindow = new BrowserWindow({
               width: 512,
@@ -748,7 +748,7 @@ module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
               useContentSize: true,
               autoHideMenuBar: true,
               skipTaskbar: true,
-              title: 'About App',
+              title: 'About ' + appName,
               icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
               webPreferences: {
                 nodeIntegration: false,
