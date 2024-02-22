@@ -124,11 +124,13 @@ module.exports = [
     url: 'https://www.hbomax.com',
     color: '#4306BA',
     style: {},
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36',
     permissions: []
   },
   {
     name: 'HDFull TV',
     title: 'HDFull',
+    hidden: true,
     logo: 'imgs/hd_full.png',
     url: 'https://hdfull.sbs',
     color: '#129ED9',
@@ -143,6 +145,16 @@ module.exports = [
     color: '#1CE783',
     style: {},
     userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.215 Safari/537.36',
+    permissions: []
+  },
+  {
+    name: 'JioCinema',
+    title: 'JioCinema',
+    hidden: true,
+    logo: 'imgs/jiocinema.svg',
+    url: 'https://www.jiocinema.com',
+    color: '#D9008D',
+    style: {},
     permissions: []
   },
   {
@@ -230,6 +242,16 @@ module.exports = [
     logo: 'imgs/runtime_tv.png',
     url: 'https://www.runtime.tv',
     color: '#FFDD00',
+    style: {},
+    permissions: []
+  },
+  {
+    name: 'SiriusXM',
+    title: 'SiriusXM',
+    hidden: true,
+    logo: 'imgs/siriusxm.svg',
+    url: 'https://www.siriusxm.com/player/home',
+    color: '#0000EB',
     style: {},
     permissions: []
   },

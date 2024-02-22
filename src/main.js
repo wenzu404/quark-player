@@ -105,7 +105,7 @@ async function createWindow() {
     const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     // Only load cache if there is no version mismatch
     let engine;
-    if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
+    if (fs.existsSync(engineCachePath) && (store.get('version') === '3.3.4')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
       engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
@@ -339,7 +339,7 @@ async function createNewWindow() {
     const engineCachePath = path.join(userDataDir, 'adblock-engine-cache.txt');
     // Only load cache if there is no version mismatch
     let engine;
-    if (fs.existsSync(engineCachePath) && (store.get('version') === '3.2.8')) {
+    if (fs.existsSync(engineCachePath) && (store.get('version') === '3.3.4')) {
       electronLog.info('Adblock engine cache found. Loading it into main process...');
       engine = await ElectronBlocker.deserialize(
         fs.readFileSync(engineCachePath)
