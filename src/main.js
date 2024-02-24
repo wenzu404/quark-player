@@ -780,12 +780,12 @@ if (store.get('options.disableAcceleration')) {
   if (isLinux) {
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan'
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,Vulkan'
       );
       app.commandLine.appendSwitch('disable-features', 'UseChromeOSDirectVideoDecoder');
     } else {
       app.commandLine.appendSwitch(
-      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL'
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets'
       );
       app.commandLine.appendSwitch('disable-features', 'UseChromeOSDirectVideoDecoder');
     }
@@ -793,11 +793,11 @@ if (store.get('options.disableAcceleration')) {
     // VAAPI is only applicable on linux so copy the above without the VAAPI flags
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan'
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,Vulkan'
       );
     } else {
       app.commandLine.appendSwitch(
-      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL'
+      'enable-features', 'CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets'
       );
     }
   }
@@ -843,11 +843,11 @@ if (store.get('options.disableAcceleration')) {
   if (isLinux) {
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,Vulkan'
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,Vulkan'
       );
     } else {
       app.commandLine.appendSwitch(
-      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks'
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks'
       );
     }
     app.commandLine.appendSwitch('disable-features', 'UseChromeOSDirectVideoDecoder');
@@ -855,11 +855,11 @@ if (store.get('options.disableAcceleration')) {
     // VAAPI is only applicable on linux so copy the above without the VAAPI flags
     if (store.get('options.enableVulkan')) {
       app.commandLine.appendSwitch(
-      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,Vulkan'
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,Vulkan'
       );
     } else {
       app.commandLine.appendSwitch(
-      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL'
+      'enable-features', 'CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets'
       );
     }
   }
