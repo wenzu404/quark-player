@@ -1,67 +1,51 @@
 html {
   font-family: Roboto, sans-serif;
 }
+* {
+  box-sizing: border-box;
+}
 @media (prefers-color-scheme: light) {
   :root {
     --bgcolor: rgba(232, 232, 232, 96%);
     --bold: rgba(232, 232, 232, 96%);
-    --invert: #262626;
     --textcolor: #000;
-    --border: #262626;
+    --border: rgba(52, 52, 52, 96%);
     --linkcolor: #00e;
     --visitedcolor: #551a8b;
-    --service-hover: rgba(0, 0, 0, 0.1);
-    --service-active: rgba(32, 32, 32, 0.2);
-    --service-shadow: rgba(0, 0, 0, 0.3);
-    --h3-select: #0E7EEA;
+    --h3-select: #0e7eea;
   }
 }
 :root.light {
   --bgcolor: rgba(232, 232, 232, 96%);
   --bold: rgba(232, 232, 232, 96%);
-  --invert: #262626;
   --textcolor: #000;
-  --border: #262626;
+  --border: rgba(52, 52, 52, 96%);
   --linkcolor: #00e;
   --visitedcolor: #551a8b;
-  --service-hover: rgba(0, 0, 0, 0.1);
-  --service-active: rgba(32, 32, 32, 0.2);
-  --service-shadow: rgba(0, 0, 0, 0.3);
-  --h3-select: #0E7EEA;
+  --h3-select: #0e7eea;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bgcolor: #262626;
+    --bgcolor: rgba(52, 52, 52, 96%);
     --bold: #000;
-    --invert: rgba(232, 232, 232, 96%);
     --textcolor: #fff;
     --border: rgba(128, 128, 128, 96%);
     --linkcolor: #5bf5bf;
     --visitedcolor: #ae5ee0;
-    --service-hover: rgba(100, 100, 100, 0.1);
-    --service-active: rgba(132, 132, 132, 0.1);
-    --service-shadow: rgba(0, 0, 0, 0.4);
-    --h3-select: #8AB4F8;
+    --h3-select: #8ab4f8;
   }
 }
 :root.dark {
-  --bgcolor: #262626;
+  --bgcolor: rgba(52, 52, 52, 96%);
   --bold: #000;
-  --invert: rgba(232, 232, 232, 96%);
   --textcolor: #fff;
   --border: rgba(128, 128, 128, 96%);
   --linkcolor: #5bf5bf;
   --visitedcolor: #ae5ee0;
-  --service-hover: rgba(100, 100, 100, 0.1);
-  --service-active: rgba(132, 132, 132, 0.1);
-  --service-shadow: rgba(0, 0, 0, 0.4);
-  --h3-select: #8AB4F8;
-}
-* {
-  box-sizing: border-box;
+  --h3-select: #8ab4f8;
 }
 hr {
-  background-color: var(--invert);
+  background-color: var(--border);
   height: 2px;
   border: none;
 }

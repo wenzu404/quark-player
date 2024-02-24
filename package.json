@@ -3,7 +3,7 @@
   "appName": "quark-player",
   "productName": "Quark Player",
   "applicationId": "com.alex313031.quark-player",
-  "version": "3.4.0",
+  "version": "3.3.5",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
   "engines": {
@@ -14,7 +14,7 @@
     "winstart": "electron src",
     "test": "npm run eslint ; npm run stylelint",
     "lint": "npm run eslint ; npm run stylelint",
-    "burn": "rimraf package-lock.json && rimraf src/package-lock.json",
+    "burn": "rimraf package-lock.json && rimraf src/package-lock.json && npm run clean",
     "clean": "rimraf dist/ && rimraf test/ && rimraf src/node_modules/ && rimraf node_modules/",
     "distclean": "rimraf dist",
     "eslint": "eslint \"src/**/*.js*\"",
@@ -22,7 +22,7 @@
     "build": "cross-env NODE_ENV=production electron-builder --dir",
     "buildWin": "cross-env NODE_ENV=production electron-builder -w --x64 --dir && cross-env NODE_ENV=production electron-builder -w --ia32 --dir",
     "buildMac": "cross-env NODE_ENV=production electron-builder -m --x64 --dir && cross-env NODE_ENV=production electron-builder -m --arm64 --dir",
-    "dev": "npm run test && cross-env QUARK_TEST=1 NODE_ENV=development ELECTRON_ENABLE_LOGGING=1 electron --enable-logging=file --user-data-dir=./test src",
+    "dev": "npm run test && cross-env QUARK_TEST=1 NODE_ENV=development ELECTRON_ENABLE_LOGGING=1 electron --enable-logging=file --user-data-dir=./test ./src",
     "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
     "distLinux": "cross-env NODE_ENV=production electron-builder -l",
     "distWin": "cross-env NODE_ENV=production electron-builder -w --x64 --pd dist/win-unpacked && cross-env NODE_ENV=production electron-builder -w --ia32 --pd dist/win-ia32-unpacked",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
-    "electron": "git+https://github.com/castlabs/electron-releases#v28.2.4+wvcus",
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.27+wvcus",
     "electron-builder": "23.6.0",
     "eslint": "8.44.0",
     "patch-package": "7.0.2",
@@ -66,6 +66,6 @@
     "node-fetch": "2.7.0"
   },
   "resolutions": {
-    "electron": "git+https://github.com/castlabs/electron-releases#v28.2.4+wvcus"
+    "electron": "git+https://github.com/castlabs/electron-releases#v22.3.27+wvcus"
   }
 }

@@ -1,6 +1,9 @@
 html {
   font-family: Roboto, sans-serif;
 }
+* {
+  box-sizing: border-box;
+}
 @media (prefers-color-scheme: light) {
   :root {
     --bgcolor: rgba(232, 232, 232, 96%);
@@ -9,7 +12,7 @@ html {
     --service-hover: rgba(0, 0, 0, 0.1);
     --service-active: rgba(32, 32, 32, 0.2);
     --service-shadow: rgba(0, 0, 0, 0.3);
-    --h3-select: #0E7EEA;
+    --h3-select: #0e7eea;
   }
 }
 :root.light {
@@ -19,7 +22,7 @@ html {
   --service-hover: rgba(0, 0, 0, 0.1);
   --service-active: rgba(32, 32, 32, 0.2);
   --service-shadow: rgba(0, 0, 0, 0.3);
-  --h3-select: #0E7EEA;
+  --h3-select: #0e7eea;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -29,7 +32,7 @@ html {
     --service-hover: rgba(100, 100, 100, 0.1);
     --service-active: rgba(132, 132, 132, 0.1);
     --service-shadow: rgba(0, 0, 0, 0.4);
-    --h3-select: #8AB4F8;
+    --h3-select: #8ab4f8;
   }
 }
 :root.dark {
@@ -39,13 +42,10 @@ html {
   --service-hover: rgba(100, 100, 100, 0.1);
   --service-active: rgba(132, 132, 132, 0.1);
   --service-shadow: rgba(0, 0, 0, 0.4);
-  --h3-select: #8AB4F8;
-}
-* {
-  box-sizing: border-box;
+  --h3-select: #8ab4f8;
 }
 hr {
-  background-color: var(--invert);
+  background-color: var(--border);
   height: 2px;
   border: none;
 }

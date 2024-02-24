@@ -5,7 +5,7 @@ node_js:
 os:
   - linux
   - osx
-  - windows # TODO: Enable Once Widevine Package Supports Windows
+  - windows
 
 # TEMP Fix: https://travis-ci.community/t/snap-deployment-stopped-working-out-of-nowhere/6908
 deploy:
@@ -40,6 +40,7 @@ deploy:
       - dist/*.dmg
       - dist/*.AppImage
       - dist/*.deb
+      - dist/*.rpm
       - dist/*.zip
       - dist/*.exe
     skip_cleanup: true

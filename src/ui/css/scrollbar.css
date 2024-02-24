@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 /* Scrolling settings */
 @media (prefers-color-scheme: light) {
   :root {

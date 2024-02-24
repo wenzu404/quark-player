@@ -1,7 +1,7 @@
-// Modules to control application life and create native browser window
+// Modules to control application life and create the browser window
+const { app, BrowserWindow, components, dialog, ipcMain, Menu, nativeTheme, session} = require('electron');
 const fs = require('fs');
 const path = require('path');
-const { app, session, components, BrowserWindow, nativeTheme, Menu, ipcMain, dialog } = require('electron');
 const contextMenu = require('electron-context-menu');
 const electronLog = require('electron-log');
 const Store = require('electron-store');
@@ -22,7 +22,7 @@ require('@electron/remote/main').initialize();
 // Restrict main.log size to 100Kb
 electronLog.transports.file.maxSize = 1024 * 100;
 
-// Create Global Varibles
+// Create Global Variables
 let mainWindow; // Global Window Object
 let newWindow; // Global New Window Object
 let helpWindow; // Global Help Window Object
@@ -32,6 +32,7 @@ let mainNewActivated;
 const argsCmd = process.argv; // Global cmdline object.
 const argsCmd2 = process.argv[2]; // (2nd) Global cmdline object.
 const menu = require('./menu.js');
+const helpmenu = require('./help-menu.js');
 const store = new Store();
 const userDataDir = app.getPath('userData');
 
@@ -193,8 +194,8 @@ async function createWindow() {
     }
   });
 
-  // Create The Menubar
-  Menu.setApplicationMenu(menu(store, global.services, mainWindow, app, defaultUserAgent));
+  // Create the menubar
+  Menu.setApplicationMenu(menu(app, defaultUserAgent, global.services, mainWindow, store));
 
   if (store.get('options.useLightMode')) {
     nativeTheme.themeSource = 'light';
@@ -509,7 +510,7 @@ async function openHelpWindow() {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       contextIsolation: false,
-      sandbox: true,
+      sandbox: false,
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
@@ -519,8 +520,9 @@ async function openHelpWindow() {
       x: 16,
       y: 16
     },
-    // Window Styling
-    transparent: isLinux ? true : false,
+    // Don't use transparency on help window in case
+    // user clicks one of the links at the bottom.
+    transparent: false,
     autoHideMenuBar: false,
     darkTheme: store.get('options.useLightMode') ? false : true,
     vibrancy: store.get('options.useLightMode') ? 'light' : 'ultra-dark',
@@ -528,97 +530,8 @@ async function openHelpWindow() {
     toolbar: true
   });
   defaultUserAgent = helpWindow.webContents.userAgent;
-  Menu.setApplicationMenu(Menu.buildFromTemplate([
-  {
-  label: appName,
-  submenu: [
-    {
-      label: 'Go Back',
-      accelerator: 'Alt+Left',
-      click(helpWindow) {
-        helpWindow.webContents.goBack();
-        electronLog.info('Navigated back');
-      }
-    },
-    {
-      label: 'Go Forward',
-      accelerator: 'Alt+Right',
-      click(helpWindow) {
-        helpWindow.webContents.goForward();
-        electronLog.info('Navigated forward');
-      }
-    },
-    { type: 'separator' },
-    {
-      label: 'Quit ' + appName,
-      accelerator: 'CmdOrCtrl+Q',
-      role: 'quit'
-    }]
-  },
-  {
-  role: 'help',
-  label: 'About',
-  submenu: [
-    { label: appName + ' v' + appVersion, enabled: false },
-    {
-      label: 'Created by Oscar Beaumont &&',
-      click() {
-        new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
-      }
-    },
-    {
-      label: 'Maintained by Alex313031',
-      click() {
-        new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/Alex313031/quark-player#readme');
-      }
-    },
-    { type: 'separator' },
-    {
-      label: 'View Humans.txt',
-      accelerator: 'CmdorCtrl+Alt+Shift+H',
-      click() {
-        const humansWindow = new BrowserWindow({ width: 532, height: 600, useContentSize: true, title: 'humans.txt' });
-        humansWindow.loadFile('./ui/humans.txt');
-        electronLog.info('Opened humans.txt :)');
-      }
-    },
-    {
-      label: 'View License',
-      accelerator: 'CmdorCtrl+Alt+Shift+L',
-      click() {
-        const licenseWindow = new BrowserWindow({ width: 532, height: 550, useContentSize: true, title: 'License' });
-        licenseWindow.loadFile('./ui/license.md');
-        electronLog.info('Opened license.md');
-      }
-    },
-    {
-      label: 'About App',
-      accelerator: 'CmdorCtrl+Alt+A',
-      click() {
-        const aboutWindow = new BrowserWindow({
-          width: 512,
-          height: 480,
-          useContentSize: true,
-          title: 'About ' + appName,
-          icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
-          webPreferences: {
-            nodeIntegration: false,
-            nodeIntegrationInWorker: false,
-            contextIsolation: false,
-            sandbox: false,
-            experimentalFeatures: true,
-            webviewTag: true,
-            devTools: true,
-            preload: path.join(__dirname, 'client-preload.js')
-          }
-        });
-        require('@electron/remote/main').enable(aboutWindow.webContents);
-        aboutWindow.loadFile('./ui/about.html');
-        electronLog.info('Opened about.html');
-      }
-    }]
-    }
-  ]));
+  // Create the help window menubar
+  Menu.setApplicationMenu(helpmenu(helpWindow));
   require('@electron/remote/main').enable(helpWindow.webContents);
 
   if (store.get('options.useLightMode')) {
@@ -774,12 +687,18 @@ app.whenReady().then(async() => {
     console.log('  V8 Version: ' + v8Ver + '\n');
     app.quit();
   } else if (argsCmd.includes('--help') || argsCmd.includes('-h')) {
-    electronLog.info('Opening Help');
+    console.log('\nValid commandline flags are:');
+    console.log('  --version | -v : Show versions and exit');
+    console.log('  --help | -h : Show this help');
+    console.log('  --cdm-info : Show WidevineCDM version info');
+    console.log('  --service <service URL> : Open ' + appName + ' directly to specified URL\n');
+    electronLog.info('Opening Help Window');
     openHelpWindow();
   } else if (argsCmd.includes('--cdm-info')) {
     await components.whenReady();
     console.log('WidevineCDM Component Info:\n');
     console.log(components.status());
+    console.log('');
     app.quit();
   } else if (argsCmd.includes('--service')) {
     // Log app version to console

@@ -1,17 +1,17 @@
-const { Menu, shell, BrowserWindow, app, dialog } = require('electron');
+const { app, BrowserWindow, dialog, Menu, shell } = require('electron');
 const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
 const electronLog = require('electron-log');
 // Export app info
 const appName = app.getName();
-const userHome = app.getPath('home');
 const appVersion = app.getVersion();
+const userHome = app.getPath('home');
 const userDataDir = app.getPath('userData');
 const userLogFile = path.join(userDataDir, 'logs/main.log');
 const userMacLogFile = path.join(userHome, 'Library/Logs', appName, 'main.log');
 
-module.exports = (store, services, mainWindow, app, defaultUserAgent) => {
+module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
   let servicesMenuItems = [];
   let allServicesMenuItems = [];
   let defaultServiceMenuItems = [];
