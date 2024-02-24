@@ -33,6 +33,8 @@ _The app's main menu interface_
 
 There are .exe installers, and portable .zips in [Releases](https://github.com/Alex313031/quarkplayer/releases).
 
+*__NOTE:__ The last version for Windows 7/8/8.1 is [v3.3.5](https://github.com/Alex313031/quark-player/releases/tag/v3.3.5)*
+
 ## Linux
 
 There are .deb installers, .AppImages, and portable .zips in [Releases](https://github.com/Alex313031/quarkplayer/releases).
