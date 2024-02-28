@@ -1,15 +1,8 @@
-const { app, BrowserWindow, dialog, Menu, shell } = require('electron');
+const { app, BrowserWindow, dialog, Menu, screen, shell } = require('electron');
 const prompt = require('electron-prompt');
 const path = require('path');
 const fs = require('fs');
 const electronLog = require('electron-log');
-// Export app info
-const appName = app.getName();
-const appVersion = app.getVersion();
-const userHome = app.getPath('home');
-const userDataDir = app.getPath('userData');
-const userLogFile = path.join(userDataDir, 'logs/main.log');
-const userMacLogFile = path.join(userHome, 'Library/Logs', appName, 'main.log');
 
 module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
   let servicesMenuItems = [];
@@ -18,10 +11,23 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
   let enabledServicesMenuItems = [];
   let examplePlaceholder;
 
+  // Export app info
+  const appName = app.getName();
+  const appVersion = app.getVersion();
+  const userHome = app.getPath('home');
+  const userDataDir = app.getPath('userData');
+  const userLogFile = path.join(userDataDir, 'logs/main.log');
+  const userMacLogFile = path.join(userHome, 'Library/Logs', appName, 'main.log');
+
   // Globally export what OS we are on
   const isLinux = process.platform === 'linux';
   const isWin = process.platform === 'win32';
   const isMac = process.platform === 'darwin';
+
+  // Get display bounds for centering secondary windows
+  let currentDisplay = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
+  let screenSize = currentDisplay.workArea;
+  let secondaryWindowX = Math.floor(screenSize.x + ((screenSize.width / 2)));
 
   // Enable remote module on sub-windows
   require('@electron/remote/main').enable(mainWindow.webContents);
@@ -122,6 +128,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
             });
             require('@electron/remote/main').enable(aboutWindow.webContents);
             aboutWindow.loadFile('./ui/about.html');
+            aboutWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened about.html');
           }
         },
@@ -173,6 +180,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
               }
             });
             openWindow.loadFile(openURI[0]);
+            openWindow.setBounds({ x: secondaryWindowX });
             openWindow.setTitle(openURI[0])
             });
           }
@@ -245,6 +253,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
             });
             require('@electron/remote/main').enable(helpWindow.webContents);
             helpWindow.loadFile('./ui/help.html');
+            helpWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened help.html');
           }
         },
@@ -554,10 +563,12 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
               electronLog.info('Opening ' + [ userMacLogFile ]);
               const logWindow = new BrowserWindow({ width: 600, height: 768, useContentSize: true, title: userMacLogFile });
               logWindow.loadFile(userMacLogFile);
+              logWindow.setBounds({ x: secondaryWindowX });
             } else {
               electronLog.info('Opening ' + [ userLogFile ]);
               const logWindow = new BrowserWindow({ width: 600, height: 768, useContentSize: true, title: userLogFile });
               logWindow.loadFile(userLogFile);
+              logWindow.setBounds({ x: secondaryWindowX });
             }
           }
         },
@@ -608,6 +619,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
           click() {
             const gpuWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'GPU Internals' });
             gpuWindow.loadURL('chrome://gpu');
+            gpuWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened chrome://gpu');
           }
         },
@@ -617,6 +629,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
           click() {
             const procsWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'Process Model Internals' });
             procsWindow.loadURL('chrome://process-internals');
+            procsWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened chrome://process-internals');
           }
         },
@@ -626,6 +639,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
           click() {
             const mediaWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'Media Internals' });
             mediaWindow.loadURL('chrome://media-internals');
+            mediaWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened chrome://media-internals');
           }
         },
@@ -635,6 +649,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
           click() {
             const histogramWindow = new BrowserWindow({ width: 900, height: 700, useContentSize: true, title: 'Histogram Internals' });
             histogramWindow.loadURL('chrome://histograms');
+            histogramWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened chrome://histograms');
           }
         },
@@ -646,6 +661,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
             const testWindow = new BrowserWindow({ width: 600, height: 600, useContentSize: true, title: 'DalÍ Art' });
             electronLog.info('Opening test image')
             testWindow.loadFile('./ui/test.html');
+            testWindow.setBounds({ x: secondaryWindowX });
           }
         },
         {
@@ -690,21 +706,25 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
         {
           label: 'Created by Oscar Beaumont &&',
           click() {
-            //shell.openExternal(
-              //'https://github.com/oscartbeaumont/ElectronPlayer#readme'
-            //);
-            //electronLog.info('Opened external browser');
-            new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+            const createdWindow = new BrowserWindow({ width: 1024, height: 768, useContentSize: true });
+            createdWindow.loadURL('https://github.com/oscartbeaumont/ElectronPlayer#readme');
+            createdWindow.setBounds({ x: secondaryWindowX });
           }
         },
         {
           label: 'Maintained by Alex313031',
           click() {
-            //shell.openExternal(
-              //'https://github.com/Alex313031/quarkplayer#readme'
-            //);
-            //electronLog.info('Opened external browser');
-            new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/Alex313031/quark-player#readme');
+            const maintainedWindow = new BrowserWindow({ width: 1024, height: 768, useContentSize: true });
+            maintainedWindow.loadURL('https://github.com/Alex313031/quark-player#readme');
+            maintainedWindow.setBounds({ x: secondaryWindowX });
+          }
+        },
+        { type: 'separator' },
+        {
+          label: 'Report an Issue',
+          click() {
+            shell.openExternal('https://github.com/Alex313031/quark-player/issues/new');
+            electronLog.info('Opened external browser');
           }
         },
         { type: 'separator' },
@@ -720,6 +740,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
               title: 'humans.txt'
             });
             humansWindow.loadFile('./ui/humans.txt');
+            humansWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened humans.txt :)');
           }
         },
@@ -735,6 +756,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
               title: 'License'
             });
             licenseWindow.loadFile('./ui/license.md');
+            licenseWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened license.md');
           }
         },
@@ -763,6 +785,7 @@ module.exports = (app, defaultUserAgent, services, mainWindow, store) => {
             });
             require('@electron/remote/main').enable(aboutWindow.webContents);
             aboutWindow.loadFile('./ui/about.html');
+            aboutWindow.setBounds({ x: secondaryWindowX });
             electronLog.info('Opened about.html');
           }
         }
