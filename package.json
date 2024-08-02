@@ -3,7 +3,7 @@
   "appName": "quark-player",
   "productName": "Quark Player",
   "applicationId": "com.alex313031.quark-player",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "description": "Electron based Web Video Services Player. Supporting Netflix, Youtube, Twitch, Floatplane and More.",
   "main": "./src/main.js",
   "engines": {
@@ -42,12 +42,12 @@
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
-    "electron": "git+https://github.com/castlabs/electron-releases#v28.3.1+wvcus",
+    "electron": "git+https://github.com/castlabs/electron-releases#v28.3.3+wvcus",
     "electron-builder": "23.6.0",
     "eslint": "8.44.0",
     "patch-package": "7.0.2",
     "postinstall-postinstall": "2.1.0",
-    "rimraf": "3.0.2",
+    "rimraf": "4.4.1",
     "stylelint": "14.16.1",
     "stylelint-config-standard": "29.0.0"
   },
@@ -59,12 +59,12 @@
     "@cliqz/adblocker-extended-selectors": "1.26.16",
     "@electron/remote": "2.1.2",
     "electron-context-menu": "3.6.1",
-    "electron-log": "5.1.2",
+    "electron-log": "5.1.7",
     "electron-prompt": "1.7.0",
     "electron-store": "8.2.0",
     "node-fetch": "2.7.0"
   },
   "resolutions": {
-    "electron": "git+https://github.com/castlabs/electron-releases#v28.3.1+wvcus"
+    "electron": "git+https://github.com/castlabs/electron-releases#v28.3.3+wvcus"
   }
 }
