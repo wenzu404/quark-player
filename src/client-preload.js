@@ -59,3 +59,41 @@ window.addEventListener('DOMContentLoaded', () => {
   replaceText('os-type', osType);
   replaceText('arch-type', archType);
 });
+
+// Spoof a modern user agent for Netflix to bypass E109 checks
+const netflixUA =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+
+if (location.hostname.endsWith('netflix.com')) {
+  try {
+    Object.defineProperty(navigator, 'userAgent', {
+      get: () => netflixUA
+    });
+
+    if ('userAgentData' in navigator) {
+      const uaData = {
+        brands: [
+          { brand: 'Chromium', version: '126' },
+          { brand: 'Not:A-Brand', version: '99' }
+        ],
+        mobile: false,
+        platform: 'Windows',
+        getHighEntropyValues: async hints => {
+          const high = {};
+          if (hints.includes('architecture')) high.architecture = 'x86';
+          if (hints.includes('bitness')) high.bitness = '64';
+          if (hints.includes('model')) high.model = '';
+          if (hints.includes('platformVersion')) high.platformVersion = '15.0.0';
+          if (hints.includes('fullVersion')) high.fullVersion = '126.0.0.0';
+          return high;
+        }
+      };
+
+      Object.defineProperty(navigator, 'userAgentData', {
+        get: () => uaData
+      });
+    }
+  } catch (e) {
+    console.error('Failed to spoof Netflix user agent', e);
+  }
+}
