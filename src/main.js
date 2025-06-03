@@ -40,6 +40,19 @@ const userDataDir = app.getPath('userData');
 // Floating UA variable
 let defaultUserAgent;
 
+// Override Netflix headers to work around outdated browser checks
+function setupNetflixHeaders(ses) {
+  const ua =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+  ses.webRequest.onBeforeSendHeaders({ urls: ['*://*.netflix.com/*'] }, (details, cb) => {
+    details.requestHeaders['User-Agent'] = ua;
+    details.requestHeaders['sec-ch-ua'] = '"Chromium";v="126", "Not.A/Brand";v="99"';
+    details.requestHeaders['sec-ch-ua-mobile'] = '?0';
+    details.requestHeaders['sec-ch-ua-platform'] = '"Windows"';
+    cb({ requestHeaders: details.requestHeaders });
+  });
+}
+
 // Needed for electron-context-menu
 try {
   require('electron-reloader')(module);
@@ -101,6 +114,7 @@ async function createWindow() {
   require('@electron/remote/main').enable(mainWindow.webContents);
 
   defaultUserAgent = mainWindow.webContents.userAgent;
+  setupNetflixHeaders(mainWindow.webContents.session);
 
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
@@ -335,6 +349,7 @@ async function createNewWindow() {
   require('@electron/remote/main').enable(newWindow.webContents);
 
   defaultUserAgent = newWindow.webContents.userAgent;
+  setupNetflixHeaders(newWindow.webContents.session);
 
   // Connect Adblocker to Window if enabled
   if (store.get('options.adblock')) {
