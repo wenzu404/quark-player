@@ -164,6 +164,10 @@ module.exports = [
     url: 'https://netflix.com/browse',
     color: '#E50914',
     style: {},
+    // Netflix recently dropped support for older Electron based browsers.
+    // Spoof a modern Chrome user-agent to restore playback functionality.
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
+      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
     permissions: []
   },
   {
